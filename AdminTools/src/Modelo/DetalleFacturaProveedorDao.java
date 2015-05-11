@@ -35,6 +35,12 @@ public class DetalleFacturaProveedorDao {
 			if(inventario!=null){
 				//se agrega al inventario la nueva cantidad
 				inventario.incremetarExistencia(detalle.getCantidad());
+				inventarioDao.actualizarInventario(inventario);
+			}
+			else{
+				inventario.setArticulo(detalle.getArticulo());
+				//inventario.setExistencia(detalle.);
+				inventarioDao.agregarInventario(inventario);				
 			}
 			resultado=true;
 		}catch (SQLException e) {

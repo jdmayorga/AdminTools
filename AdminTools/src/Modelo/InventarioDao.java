@@ -3,25 +3,72 @@ package Modelo;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
 public class InventarioDao {
 	private Conexion conexion;
 	private PreparedStatement buscarArticulo=null;
+	private PreparedStatement actualizarInventario=null;
+	private PreparedStatement insertarNuevaInventario=null;
 	
 	public InventarioDao(Conexion conn){
 		conexion=conn;
 		
 		try {
-			buscarArticulo=conexion.getConnection().prepareStatement("SELECT * FROM v_existenacia articulo.codigo_articulo=? ;");
+			buscarArticulo=conexion.getConnection().prepareStatement("SELECT * FROM v_existenacia where codigo_articulo=? ;");
+			actualizarInventario=conexion.getConnection().prepareStatement("UPDATE articulo_bodega SET existencia = ?, Precio = ? WHERE codigo_articulo = ?");
+			insertarNuevaInventario=conexion.getConnection().prepareStatement( "INSERT INTO articulo_bodega(codigo_bodega,codigo_articulo,existencia,precio_articulo) VALUES (?,?,?,?)");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para buscar marca por ID>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para agreagar inventario>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+	public boolean agregarInventario(Inventario inv){
+		boolean resultado=false;
+		try{
+			//para implementar varias bodegas hay que cambiar el codigo de la bodega
+			insertarNuevaInventario.setInt(1,1);
+			insertarNuevaInventario.setInt(2, inv.getArticulo().getId());
+			insertarNuevaInventario.setDouble(3,inv.getExistencia());
+			insertarNuevaInventario.setDouble(4,inv.getPrecioVenta());
+			insertarNuevaInventario.executeUpdate();
+			
+			resultado=true;
+		}catch (SQLException e) {
+			e.printStackTrace();
+			conexion.desconectar();
+			resultado= false;
+		}
+		return resultado;
+	}
+	
+	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para Actualizar los Inventario>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+	public boolean actualizarInventario(Inventario inv){
+		int resultado;
+		try {
+			
+			actualizarInventario.setDouble(1,inv.getExistencia());
+			actualizarInventario.setDouble(2,inv.getPrecioVenta());
+			actualizarInventario.setInt(3, inv.getArticulo().getId());
+			
+			resultado=actualizarInventario.executeUpdate();
+			//JOptionPane.showMessageDialog(null, a+","+resultado );
+			
+			return true;
+		
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return false;
+        }
+	}
+	
+	
+	
+	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para buscar articulo del inventario por ID>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 	public Inventario buscarArticulo(int i){
 		Inventario unArticulo=new Inventario();
 		ResultSet res=null;
@@ -47,6 +94,7 @@ public class InventarioDao {
 			} catch (SQLException e) {
 					JOptionPane.showMessageDialog(null, "Error, no se conecto");
 					System.out.println(e);
+					existe=false;
 			}
 			finally
 			{
