@@ -172,15 +172,20 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 					//Se recoge el id de la fila marcada
 			        int identificador= (int)this.view.getModelo().getValueAt(row, 0);
 					this.myArticulo=this.myArticuloDao.buscarArticulo(identificador);
-					this.view.getModelo().setArticulo(myArticulo, row);
-					//this.view.getModelo().getDetalle(row).setCantidad(1);
-					boolean toggle = false;
-					boolean extend = false;
-					this.view.getTablaArticulos().requestFocus();
-						
-					this.view.getTablaArticulos().changeSelection(row,colum+2, toggle, extend);
-						
-					calcularTotal(this.view.getModelo().getDetalle(row));
+					if(myArticulo!=null){
+						this.view.getModelo().setArticulo(myArticulo, row);
+						//this.view.getModelo().getDetalle(row).setCantidad(1);
+						boolean toggle = false;
+						boolean extend = false;
+						this.view.getTablaArticulos().requestFocus();
+							
+						this.view.getTablaArticulos().changeSelection(row,colum+2, toggle, extend);
+							
+						calcularTotal(this.view.getModelo().getDetalle(row));
+					}else{
+						JOptionPane.showMessageDialog(view, "No se encuentra el articulo");
+					}
+					
 					
 				}
 				if(colum==2){

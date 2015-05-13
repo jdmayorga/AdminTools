@@ -5,9 +5,23 @@ public class Kardex {
 	private String noDocumento;
 	private Articulo articulo=new Articulo();
 	private Bodega bodega=new Bodega();
-	private double entrada;
-	private double salida;
+	private double entrada=0;
+	private double salida=0.0;
+	private double existencia=0.0;
 	
+	public double getExistencia(){
+		return existencia;
+	}
+	public void setExistencia(double e){
+		existencia=e;
+	}
+	
+	public void incremetarExistencia(double i){
+		existencia+=i;
+	}
+	public void decrementarExistencia(double d){
+		existencia-=d;
+	}
 	
 	private String fecha;
 	

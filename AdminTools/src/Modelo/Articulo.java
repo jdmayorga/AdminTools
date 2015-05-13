@@ -13,8 +13,9 @@ public class Articulo {
 	private Marca mar=new Marca();
 	private Impuesto imp=new Impuesto();
 	private List<CodBarra> codigos;
-	private double precioVenta;
-	private double precioCompra;
+	private double precioVenta=0;
+	private double precioCompra=0;
+	private int tipoArticulo=0;
 	public Articulo(){
 		
 	}
@@ -26,6 +27,12 @@ public class Articulo {
 		imp=i;
 		codigos=cods;
 		precioVenta=p;
+	}
+	public void setTipoArticulo(int t){
+		tipoArticulo=t;
+	}
+	public int getTipoArticulo(){
+		return tipoArticulo;
 	}
 	public void setPrecioCompra(double pc){
 		precioCompra=pc;

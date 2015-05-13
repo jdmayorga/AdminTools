@@ -59,7 +59,7 @@ public class ViewListaArticulo extends JFrame {
 	public ViewListaArticulo(){
 		super("Articulos");
 		miEsquema=new BorderLayout();
-		setLayout(miEsquema);
+		getContentPane().setLayout(miEsquema);
 		
 		
 		
@@ -73,6 +73,7 @@ public class ViewListaArticulo extends JFrame {
 		
 		//agregar componentes al panel acciones
 		btnAgregar = new BotonAgregar();
+		btnAgregar.setMnemonic('r');
 		panelAccion.add(btnAgregar);
        
 		btnEliminar = new BotonEliminar();

@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 public class ArticuloDao {
 	private int idArticuloRegistrado;
 	
-	Conexion conexion=null;
+	private Conexion conexion=null;
 	private PreparedStatement insertarNuevaArticulo=null;
 	private PreparedStatement seleccionarTodasLosArticulos=null;
 	private PreparedStatement eliminarArticulo = null;
@@ -69,6 +69,7 @@ public class ArticuloDao {
 				unArticulo.getImpuestoObj().setPorcentaje(res.getString("impuesto"));
 				unArticulo.getImpuestoObj().setId(res.getInt("codigo_impuesto"));
 				unArticulo.setPrecioVenta(res.getDouble("precio_articulo"));
+				unArticulo.setTipoArticulo(res.getInt("tipo_articulo"));
 				articulos.add(unArticulo);
 			 }
 					
@@ -143,7 +144,7 @@ public class ArticuloDao {
 		
 	}
 	
-	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para buscar marca por ID>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para buscar articulo por por ID>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 	public Articulo buscarArticulo(int i){
 		Articulo unArticulo=new Articulo();
 		ResultSet res=null;

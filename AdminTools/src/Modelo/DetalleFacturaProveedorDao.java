@@ -7,9 +7,11 @@ public class DetalleFacturaProveedorDao {
 	private Conexion conexion;
 	private PreparedStatement agregarDetalle=null;
 	private InventarioDao inventarioDao;
+	private KardexDao kardexDao;
 	public DetalleFacturaProveedorDao(Conexion conn){
 		conexion=conn;
 		inventarioDao=new InventarioDao(conexion);
+		kardexDao=new KardexDao(conexion);
 		try {
 			agregarDetalle=conexion.getConnection().prepareStatement( "INSERT INTO detalle_factura_compra(numero_compra,codigo_articulo,precio,cantidad,impuesto,subtotal) VALUES (?,?,?,?,?,?)");
 		} catch (SQLException e) {
@@ -32,6 +34,8 @@ public class DetalleFacturaProveedorDao {
 			agregarDetalle.setDouble(6, detalle.getTotal());
 			agregarDetalle.executeUpdate();
 			
+			
+			
 			Inventario inventario=new Inventario();
 			//se consigue el inventario del articulo
 			inventario=inventarioDao.buscarArticulo(detalle.getArticulo().getId());
@@ -40,7 +44,6 @@ public class DetalleFacturaProveedorDao {
 			if(inventario!=null){
 				//se agrega al inventario la nueva cantidad
 				inventario.incremetarExistencia(detalle.getCantidad());
-				
 				//se actualizar el articulo del inventario
 				inventarioDao.actualizarInventario(inventario);
 			}
@@ -53,6 +56,20 @@ public class DetalleFacturaProveedorDao {
 				inventario1.setExistencia(detalle.getCantidad());
 				inventarioDao.agregarInventario(inventario1);				
 			}
+			
+			//se crea y guarda la nuevo movimiento del kardex
+			Kardex myKardex =new Kardex();
+			
+			myKardex.setArticulo(detalle.getArticulo());
+			myKardex.setEntrada(detalle.getCantidad());
+			
+			//hay que cambiar para implementar multiples bodegas
+			myKardex.getBodega().setId(1);
+			myKardex.setNoDocumento(""+noCompra);
+			
+			kardexDao.agregarEntrada(myKardex);
+			
+			
 			resultado=true;
 		}catch (SQLException e) {
 			e.printStackTrace();

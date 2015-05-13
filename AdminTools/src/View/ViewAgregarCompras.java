@@ -165,18 +165,18 @@ public class ViewAgregarCompras extends JDialog {
 		
 		//botones
 		btnGuardar = new BotonGuardar();
-		btnGuardar.setLocation(129, 506);
+		btnGuardar.setLocation(32, 506);
 		//tnCancelar.setLocation(42, 175);
 		getContentPane().add(btnGuardar);
 		btnActualizar=new BotonActualizar();
-		btnActualizar.setLocation(129, 506);
+		btnActualizar.setLocation(32, 506);
 		getContentPane().add(btnActualizar);
 		btnActualizar.setVisible(false);
 		
 		btnCancelar = new BotonCancelar();
 		
 		//btnCancelar.setBounds(212, 175, 135, 39);
-		btnCancelar.setLocation(486, 506);
+		btnCancelar.setLocation(270, 506);
 		getContentPane().add(btnCancelar);
 		
 		
@@ -214,7 +214,7 @@ public class ViewAgregarCompras extends JDialog {
 		getContentPane().add(lblTotalFactura);
 		
 		JLabel lblSubtotal = new JLabel("SubTotal");
-		lblSubtotal.setBounds(486, 418, 46, 14);
+		lblSubtotal.setBounds(486, 418, 84, 14);
 		getContentPane().add(lblSubtotal);
 		
 		txtSubtotal = new JTextField();
