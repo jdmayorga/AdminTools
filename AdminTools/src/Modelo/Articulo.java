@@ -8,24 +8,24 @@ public class Articulo {
 	private int codigo=-1;
 	private String articulo;
 	
-	private String marca;
+	//private String marca;
 	//private double impuesto;
 	private Marca mar=new Marca();
 	private Impuesto imp=new Impuesto();
 	private List<CodBarra> codigos;
-	private double precio;
+	private double precioVenta;
 	private double precioCompra;
 	public Articulo(){
 		
 	}
 	
-	public Articulo(int c, String a,String m,Impuesto i, Vector<CodBarra> cods, double p){
+	public Articulo(int c, String a,Impuesto i, Vector<CodBarra> cods, double p){
 		codigo=c;
 		articulo=a;
-		marca=m;
+		
 		imp=i;
 		codigos=cods;
-		precio=p;
+		precioVenta=p;
 	}
 	public void setPrecioCompra(double pc){
 		precioCompra=pc;
@@ -33,11 +33,11 @@ public class Articulo {
 	public double getPrecioCompra(){
 		return precioCompra;
 	}
-	public void setPrecio(double p){
-		precio=p;
+	public void setPrecioVenta(double p){
+		precioVenta=p;
 	}
-	public double getPrecio(){
-		return precio;
+	public double getPrecioVenta(){
+		return precioVenta;
 	}
 	
 	public void setCodBarra(Vector<CodBarra> cods){
@@ -82,16 +82,16 @@ public class Articulo {
 	
 	
 	
-	public void setMarca(String m){
+	/*public void setMarca(String m){
 		marca=m;
 	}
 	public String getMarca(){
 		return marca;
-	}
+	}*/
 	
 	@Override
 	public String toString(){
-		return "Id Articulo:"+codigo+", Articulo:"+articulo+", Marca["+mar.toString()+"]"+", Impueso:"+imp.getPorcentaje()+"%"+", Codigos Barra["+codigos+"]";
+		return "Id Articulo:"+codigo+", Articulo:"+articulo+", Precio Venta:"+ this.precioVenta+"Marca["+mar.toString()+"]"+", Impueso:"+imp.getPorcentaje()+"%"+", Codigos Barra["+codigos+"]";
 	}
 
 }

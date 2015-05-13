@@ -68,7 +68,7 @@ public class ArticuloDao {
 				unArticulo.getMarcaObj().setId(res.getInt("codigo_marca"));
 				unArticulo.getImpuestoObj().setPorcentaje(res.getString("impuesto"));
 				unArticulo.getImpuestoObj().setId(res.getInt("codigo_impuesto"));
-				unArticulo.setPrecio(res.getDouble("precio_articulo"));
+				unArticulo.setPrecioVenta(res.getDouble("precio_articulo"));
 				articulos.add(unArticulo);
 			 }
 					
@@ -116,7 +116,7 @@ public class ArticuloDao {
 				unArticulo.getMarcaObj().setId(res.getInt("codigo_marca"));
 				unArticulo.getImpuestoObj().setPorcentaje(res.getString("impuesto"));
 				unArticulo.getImpuestoObj().setId(res.getInt("codigo_impuesto"));
-				unArticulo.setPrecio(res.getDouble("precio_articulo"));
+				unArticulo.setPrecioVenta(res.getDouble("precio_articulo"));
 				articulos.add(unArticulo);
 			 }
 					
@@ -160,7 +160,7 @@ public class ArticuloDao {
 				unArticulo.getMarcaObj().setId(res.getInt("codigo_marca"));
 				unArticulo.getImpuestoObj().setPorcentaje(res.getString("impuesto"));
 				unArticulo.getImpuestoObj().setId(res.getInt("codigo_impuesto"));
-				unArticulo.setPrecio(res.getDouble("precio_articulo"));
+				unArticulo.setPrecioVenta(res.getDouble("precio_articulo"));
 				
 			 }
 					
@@ -216,7 +216,7 @@ public class ArticuloDao {
 			actualizarArticulo.setString(1,a.getArticulo());
 			actualizarArticulo.setInt(2, a.getMarcaObj().getId());
 			actualizarArticulo.setInt(3, a.getImpuestoObj().getId());
-			actualizarArticulo.setDouble(4, a.getPrecio());
+			actualizarArticulo.setDouble(4, a.getPrecioVenta());
 			actualizarArticulo.setInt(5, a.getId());
 			
 			resultado=actualizarArticulo.executeUpdate();
@@ -268,7 +268,7 @@ public class ArticuloDao {
 				unArticulo.getMarcaObj().setId(res.getInt("codigo_marca"));
 				unArticulo.getImpuestoObj().setPorcentaje(res.getString("impuesto"));
 				unArticulo.getImpuestoObj().setId(res.getInt("codigo_impuesto"));
-				unArticulo.setPrecio(res.getDouble("precio_articulo"));
+				unArticulo.setPrecioVenta(res.getDouble("precio_articulo"));
 				
 				
 				articulos.add(unArticulo);
@@ -319,7 +319,7 @@ public class ArticuloDao {
 			insertarNuevaArticulo.setString( 1, myArticulo.getArticulo() );
 			insertarNuevaArticulo.setInt( 2, myArticulo.getMarcaObj().getId() );
 			insertarNuevaArticulo.setDouble( 3, myArticulo.getImpuestoObj().getId());
-			insertarNuevaArticulo.setDouble(4, myArticulo.getPrecio());
+			insertarNuevaArticulo.setDouble(4, myArticulo.getPrecioVenta());
 			
 			resultado=insertarNuevaArticulo.executeUpdate();
 			

@@ -17,9 +17,9 @@ public class InventarioDao {
 		conexion=conn;
 		
 		try {
-			buscarArticulo=conexion.getConnection().prepareStatement("SELECT * FROM v_existenacia where codigo_articulo=? ;");
-			actualizarInventario=conexion.getConnection().prepareStatement("UPDATE articulo_bodega SET existencia = ?, Precio = ? WHERE codigo_articulo = ?");
-			insertarNuevaInventario=conexion.getConnection().prepareStatement( "INSERT INTO articulo_bodega(codigo_bodega,codigo_articulo,existencia,precio_articulo) VALUES (?,?,?,?)");
+			buscarArticulo=conexion.getConnection().prepareStatement("SELECT * FROM v_existencia where codigo_articulo=? ;");
+			actualizarInventario=conexion.getConnection().prepareStatement("UPDATE articulo_bodega SET existencia = ? WHERE codigo_articulo = ? and codigo_bodega=?");
+			insertarNuevaInventario=conexion.getConnection().prepareStatement( "INSERT INTO articulo_bodega(codigo_bodega,codigo_articulo,existencia) VALUES (?,?,?)");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -30,11 +30,10 @@ public class InventarioDao {
 	public boolean agregarInventario(Inventario inv){
 		boolean resultado=false;
 		try{
-			//para implementar varias bodegas hay que cambiar el codigo de la bodega
-			insertarNuevaInventario.setInt(1,1);
+			
+			insertarNuevaInventario.setInt(1,inv.getBodega().getId());
 			insertarNuevaInventario.setInt(2, inv.getArticulo().getId());
 			insertarNuevaInventario.setDouble(3,inv.getExistencia());
-			insertarNuevaInventario.setDouble(4,inv.getPrecioVenta());
 			insertarNuevaInventario.executeUpdate();
 			
 			resultado=true;
@@ -46,14 +45,14 @@ public class InventarioDao {
 		return resultado;
 	}
 	
-	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para Actualizar los Inventario>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para Actualizar los Inventario>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 	public boolean actualizarInventario(Inventario inv){
 		int resultado;
 		try {
 			
 			actualizarInventario.setDouble(1,inv.getExistencia());
-			actualizarInventario.setDouble(2,inv.getPrecioVenta());
-			actualizarInventario.setInt(3, inv.getArticulo().getId());
+			actualizarInventario.setInt(2, inv.getArticulo().getId());
+			actualizarInventario.setInt(3,inv.getBodega().getId());
 			
 			resultado=actualizarInventario.executeUpdate();
 			//JOptionPane.showMessageDialog(null, a+","+resultado );
@@ -81,11 +80,12 @@ public class InventarioDao {
 				existe=true;
 				
 				unArticulo.setExistencia(res.getDouble("existencia"));
-				unArticulo.setPrecioVenta(res.getDouble("Precio"));
+				//unArticulo.setPrecioVenta(res.getDouble("Precio"));
 				unArticulo.getBodega().setId(res.getInt("codigo_bodega"));
 				unArticulo.getBodega().setDescripcion(res.getString("descripcion_bodega"));
 				unArticulo.getArticulo().setId(res.getInt("codigo_articulo"));
 				unArticulo.getArticulo().setArticulo(res.getString("articulo"));
+				unArticulo.getArticulo().setPrecioVenta(res.getDouble("precio_articulo"));
 				
 				
 			 }

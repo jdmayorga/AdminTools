@@ -13,11 +13,19 @@ public class FacturaCompra {
 	private double totalImpuesto=0.0;
 	private double total=0.0;
 	private double subTotal=0.0;
-	
+	private String fechaVencimento=null;
 	
 	public FacturaCompra(){
 		
 	}
+	
+	public String getFechaVencimento(){
+		return fechaVencimento;
+	}
+	public void setFechaVencimento(String f){
+			fechaVencimento=f;
+	}
+	
 	public void setProveedor(Proveedor p){
 		proveedor=p;
 	}

@@ -16,7 +16,7 @@ public class TableModeloArticulo extends AbstractTableModel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1222;
-	private String []columnNames={"Id","Nombre","Marca","Impuesto","Precio"};
+	private String []columnNames={"Id","Nombre","Marca","Impuesto","Precio Venta"};
 	private List<Articulo> articulos = new ArrayList<Articulo>();
 	
 	
@@ -75,7 +75,7 @@ public class TableModeloArticulo extends AbstractTableModel {
             
             return articulos.get(rowIndex).getImpuestoObj().getPorcentaje();
         case 4:
-        	 return articulos.get(rowIndex).getPrecio();
+        	 return articulos.get(rowIndex).getPrecioVenta();
         default:
             return null;
 		}
@@ -96,7 +96,7 @@ public class TableModeloArticulo extends AbstractTableModel {
 	            case 3:
 	            	articulo.getImpuestoObj().setPorcentaje((String) value);
 	            case 4:
-	            	articulo.setPrecio((Double)value);
+	            	articulo.setPrecioVenta((Double)value);
 	            	//articulo.setImpuesto((Double) value);
 	   ///º	º	º	1º	º	º	º	1	q1	1	Q	11 codigo de mi  niño jajajaj
 	        }

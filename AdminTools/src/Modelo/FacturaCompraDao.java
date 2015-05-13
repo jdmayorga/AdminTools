@@ -16,7 +16,7 @@ public class FacturaCompraDao {
 		conexion=conn;
 		detallesDao=new DetalleFacturaProveedorDao(conexion);
 		try {
-			agregarFactura=conexion.getConnection().prepareStatement( "INSERT INTO encabezado_factura_compra(fecha,subtotal,impuesto,total,codigo_cliente,no_factura_compra,tipo_factura,fecha_ingreso) VALUES (?,?,?,?,?,?,?,now())");
+			agregarFactura=conexion.getConnection().prepareStatement( "INSERT INTO encabezado_factura_compra(fecha,subtotal,impuesto,total,codigo_cliente,no_factura_compra,tipo_factura,fecha_vencimiento,fecha_ingreso) VALUES (?,?,?,?,?,?,?,?,now())");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -40,6 +40,7 @@ public class FacturaCompraDao {
 			agregarFactura.setInt(5, fac.getProveedor().getId());
 			agregarFactura.setString(6, fac.getIdFactura());
 			agregarFactura.setInt(7, fac.getTipoFactura());
+			agregarFactura.setString(8, fac.getFechaVencimento());
 			
 			agregarFactura.executeUpdate();
 			rs=agregarFactura.getGeneratedKeys(); //obtengo las ultimas llaves generadas

@@ -181,7 +181,7 @@ public class CtlArticulo extends MouseAdapter implements ActionListener,KeyListe
 		myArticulo.setCodBarras(this.view.getModeloCodBarra().getCodsBarras());
 		
 		//se establece el precion de articulo
-		myArticulo.setPrecio(Double.parseDouble(this.view.getTxtPrecio().getText()));
+		myArticulo.setPrecioVenta(Double.parseDouble(this.view.getTxtPrecio().getText()));
 	}
 	
 	
@@ -218,7 +218,7 @@ public class CtlArticulo extends MouseAdapter implements ActionListener,KeyListe
 		myArticulo=a;
 		
 		//se estable el precio del articulo en la view
-		this.view.getTxtPrecio().setText(""+a.getPrecio());
+		this.view.getTxtPrecio().setText(""+a.getPrecioVenta());
 				
 		// se hace visible la ventana modal
 		this.view.setVisible(true);

@@ -1,14 +1,12 @@
 package Modelo;
 
 public class Inventario {
-	private Bodega bodega;
-	private Articulo articulo;
-	private double existencia;
-	private double precioVenta;
+	private Bodega bodega=new Bodega();;
+	private Articulo articulo=new Articulo();;
+	private double existencia=0.0;
+	//private double precioVenta=0.0;
 	
 	public Inventario(){
-		bodega=new Bodega();
-		articulo=new Articulo();
 	}
 	
 	public void setBodega(Bodega b){
@@ -25,12 +23,12 @@ public class Inventario {
 		return existencia;
 	}
 	
-	public void setPrecioVenta(double p){
+	/*public void setPrecioVenta(double p){
 		precioVenta=p;
 	}
 	public double getPrecioVenta(){
 		return precioVenta;
-	}
+	}*/
 	public Articulo getArticulo(){
 		return articulo;
 	}
@@ -46,6 +44,6 @@ public class Inventario {
 	
 	@Override
 	public String toString(){
-		return "Articulo["+articulo+"], Bodega["+bodega+"], Existencia:"+existencia+", Precio Venta:"+precioVenta;
+		return "Articulo["+articulo+"], Bodega["+bodega+"], Existencia:"+existencia;
 	}
 }

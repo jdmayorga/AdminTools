@@ -85,9 +85,19 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 					//JOptionPane.showMessageDialog(null,date);
 				}else{
 					JOptionPane.showMessageDialog(view,"Ingrese la fecha de la compra");
+					break;
 				}
+				
+				//se obtine el numero de factura de compra para incoorporarla al modelo
 				myFactura.setIdFactura(this.view.getTxtNofactura().getText());
-				JOptionPane.showMessageDialog(view, myFactura);
+				
+				//si la factura el al credito se completa la fecha de vencimiento de la factura 
+				if(myFactura.getTipoFactura()==2){
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					String date = sdf.format(this.view.getDateVencFactura().getDate());
+					myFactura.setFechaVencimento(date);
+				}
+				//JOptionPane.showMessageDialog(view, myFactura);
 				boolean result=this.myFacturaDao.registrarFactura(myFactura);
 				if(result){
 					JOptionPane.showMessageDialog(view,"Se guarda la factura");

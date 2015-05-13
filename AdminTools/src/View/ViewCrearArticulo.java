@@ -157,9 +157,9 @@ public class ViewCrearArticulo extends JDialog {
 		getContentPane().add(txtCodigo);
 		txtCodigo.setColumns(10);
 		
-		JLabel lblPrecio = new JLabel("Precio");
+		JLabel lblPrecio = new JLabel("Precio Venta");
 		lblPrecio.setFont(myFont);
-		lblPrecio.setBounds(32, 270, 46, 14);
+		lblPrecio.setBounds(32, 270, 89, 14);
 		getContentPane().add(lblPrecio);
 		
 		txtPrecio = new JTextField();
