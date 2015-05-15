@@ -21,7 +21,7 @@ public class Conexion {
    static String bd = "texaco";
    static String login = "root";
    static String password = "jdmm123";
-   static String url = "jdbc:mysql://localhost/"+bd;
+   static String url = "jdbc:mysql://192.168.0.103/"+bd;
    static String driver="com.mysql.jdbc.Driver";
 
    Connection conn = null;
@@ -34,7 +34,7 @@ public class Conexion {
 	   basicDataSource.setUsername(login);
 	   basicDataSource.setPassword(password);
 	   basicDataSource.setUrl(url);
-	   basicDataSource.setMaxActive(50);
+	   basicDataSource.setMaxActive(300);
 	  
 	   
 	  // basicDataSource.setValidationQuery("select 1");

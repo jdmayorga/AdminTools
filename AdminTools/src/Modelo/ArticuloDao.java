@@ -1,11 +1,13 @@
 package Modelo;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
 import javax.swing.JOptionPane;
 
 public class ArticuloDao {
@@ -26,7 +28,7 @@ public class ArticuloDao {
 		myCodBarraDao=new CodBarraDao(conexion);
 		try{
 			
-			seleccionarTodasLosArticulos = conexion.getConnection().prepareStatement("SELECT * FROM v_articulos;");
+			//seleccionarTodasLosArticulos = conexion.getConnection().prepareStatement("SELECT * FROM v_articulos;");
 			insertarNuevaArticulo=conexion.getConnection().prepareStatement( "INSERT INTO articulo(articulo,codigo_marca,codigo_impuesto,precio_articulo) VALUES (?,?,?,?)");
 			eliminarArticulo=conexion.getConnection().prepareStatement("DELETE FROM articulo WHERE codigo_articulo = ?");
 			actualizarArticulo=conexion.getConnection().prepareStatement("UPDATE articulo SET articulo = ?, codigo_marca = ? ,codigo_impuesto = ?, precio_articulo=? WHERE codigo_articulo = ?");
@@ -252,12 +254,23 @@ public class ArticuloDao {
 
 	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para seleccionar todos los articulos>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 	public List<Articulo> todoArticulos(){
-		List<Articulo> articulos=new ArrayList<Articulo>();
+		
+		//se crear un referencia al pool de conexiones
+		DataSource ds = DBCPDataSourceFactory.getDataSource("mysql");
+       
+        Connection con = null;
+        
+        
+        //Statement stmt = null;
+       	List<Articulo> articulos=new ArrayList<Articulo>();
 		
 		ResultSet res=null;
 		
 		boolean existe=false;
 		try {
+			con = ds.getConnection();
+			
+			seleccionarTodasLosArticulos = con.prepareStatement("SELECT * FROM v_articulos;");
 			
 			res = seleccionarTodasLosArticulos.executeQuery();
 			while(res.next()){
@@ -282,7 +295,12 @@ public class ArticuloDao {
 		finally
 		{
 			try{
-				res.close();
+				
+				if(res != null) res.close();
+                if(seleccionarTodasLosArticulos != null)seleccionarTodasLosArticulos.close();
+                if(con != null) con.close();
+                
+				
 				} // fin de try
 				catch ( SQLException excepcionSql )
 				{

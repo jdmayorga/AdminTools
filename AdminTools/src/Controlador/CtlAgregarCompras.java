@@ -288,7 +288,6 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 	public void windowClosing(WindowEvent e) {
 		// TODO Auto-generated method stub
 		
-		this.conexion.desconectar();
 		this.view.setVisible(false);
 	}
 
