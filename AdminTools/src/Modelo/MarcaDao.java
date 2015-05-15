@@ -29,7 +29,7 @@ public class MarcaDao {
 		try{
 			
 			//conexion= new Conexion();
-			seleccionarTodasLasMarcas = conexion.getConnection().prepareStatement("SELECT * FROM marcas");
+			seleccionarTodasLasMarcas = conexion.getDataSource().getConnection().prepareStatement("SELECT * FROM marcas");
 			insertarNuevaMarca=conexion.getConnection().prepareStatement( "INSERT INTO marcas(descripcion,observacion) VALUES (?,?)");
 			actualizarMarca=conexion.getConnection().prepareStatement("UPDATE marcas SET descripcion = ?, observacion = ? WHERE codigo_marca = ?");
 			eliminarMarca=conexion.getConnection().prepareStatement("DELETE FROM marcas WHERE codigo_marca = ?");
@@ -119,11 +119,12 @@ public class MarcaDao {
 		{
 			try{
 				res.close();
+				seleccionarTodasLasMarcas.close();
 				} // fin de try
 				catch ( SQLException excepcionSql )
 				{
 					excepcionSql.printStackTrace();
-					conexion.desconectar();
+					//conexion.desconectar();
 				} // fin de catch
 		} // fin de finally
 		
@@ -164,7 +165,7 @@ public class MarcaDao {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			conexion.desconectar();
+			//conexion.desconectar();
             return false;
 		}
 		finally
@@ -258,7 +259,7 @@ public class MarcaDao {
 				catch ( SQLException excepcionSql )
 				{
 					excepcionSql.printStackTrace();
-					conexion.desconectar();
+					//conexion.desconectar();
 				} // fin de catch
 			} // fin de finally
 		
@@ -303,7 +304,7 @@ public class MarcaDao {
 				catch ( SQLException excepcionSql )
 				{
 					excepcionSql.printStackTrace();
-					conexion.desconectar();
+					//conexion.desconectar();
 				} // fin de catch
 			} // fin de finally
 		

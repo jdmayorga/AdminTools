@@ -184,6 +184,13 @@ public class ViewAgregarCompras extends JDialog {
 		tablaArticulos=new JTable();
 		modelo = new DmtFacturaProveedores();//se crea el modelo de los datos de la tabla
 		tablaArticulos.setModel(modelo);
+		tablaArticulos.getColumnModel().getColumn(0).setPreferredWidth(140);     //Tamaño de las columnas de las tablas
+		tablaArticulos.getColumnModel().getColumn(1).setPreferredWidth(200);	//
+		tablaArticulos.getColumnModel().getColumn(2).setPreferredWidth(90);	//
+		tablaArticulos.getColumnModel().getColumn(3).setPreferredWidth(90);	//
+		tablaArticulos.getColumnModel().getColumn(4).setPreferredWidth(90);	//
+		tablaArticulos.getColumnModel().getColumn(5).setPreferredWidth(90);	//
+		//tablaArticulos.getColumnModel().getColumn(6).setPreferredWidth(100);	//
 		//Estitlo para la tabla		
 		//TablaRenderizadorProveedor renderizador = new TablaRenderizadorProveedor();
 		//tablaArticulos.setDefaultRenderer(String.class, renderizador);

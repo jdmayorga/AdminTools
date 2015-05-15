@@ -77,7 +77,7 @@ public class FacturaCompraDao {
 			catch ( SQLException excepcionSql )
 			{
 				excepcionSql.printStackTrace();
-				conexion.desconectar();
+				//conexion.desconectar();
 			} // fin de catch
 		} // fin de finally
 		

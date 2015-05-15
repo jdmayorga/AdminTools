@@ -1,6 +1,7 @@
 package View;
 
 import java.awt.Color;
+import java.awt.Image;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JDialog;
@@ -51,40 +52,52 @@ public class ViewFacturar extends JDialog {
 	private JLabel lblContado;
 	private JLabel lblCredito;
 	
+	private BotonGuardar btnGuardar;
+	private BotonCancelar btnCerrar;
+	private BotonBuscar1 btnBuscar;
+	private BotonBuscarClientes btnCliente;
+	private BotonCobrar btnCobrar;
+	
 	public ViewFacturar() {
 		
 		panelAcciones=new JPanel();
 		panelAcciones.setBorder(new TitledBorder(new LineBorder(new Color(130, 135, 144)), "Opciones", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelAcciones.setBounds(20, 0, 754, 60);
+		panelAcciones.setBounds(20, 0, 754, 70);
 		panelAcciones.setLayout(null);
 		
 		this.setTitle("Facturar");
 		getContentPane().add(panelAcciones);
 		
-		JButton btnBuscar = new JButton("F1 Buscar");
-		btnBuscar.setBounds(26, 26, 132, 23);
+		btnBuscar = new BotonBuscar1();
+		btnBuscar.setHorizontalAlignment(SwingConstants.LEFT);
+		btnBuscar.setBounds(10, 18,132, 38);
 		panelAcciones.add(btnBuscar);
 		
-		JButton btnCliente = new JButton("F2 Cliente");
-		btnCliente.setBounds(186, 26, 132, 23);
+		btnCliente = new BotonBuscarClientes();
+		btnCliente.setBounds(152, 18, 132, 38);
 		panelAcciones.add(btnCliente);
 		
-		JButton btnCobrar = new JButton("F3 Cobrar");
-		btnCobrar.setBounds(328, 26, 132, 23);
+		btnCobrar = new BotonCobrar();
+		btnCobrar.setBounds(294, 18, 167, 38);
 		panelAcciones.add(btnCobrar);
 		
-		JButton btnGuardar = new JButton("F4 Guardar");
-		btnGuardar.setBounds(470, 26, 132, 23);
+		btnGuardar = new BotonGuardar();
+		btnGuardar.setHorizontalAlignment(SwingConstants.LEFT);
+		btnGuardar.setText("F4 Guardar");
+		btnGuardar.setBounds(471, 18, 137, 38);
 		panelAcciones.add(btnGuardar);
 		
-		JButton btnCerrar = new JButton("F5 Cerrar");
-		btnCerrar.setBounds(612, 26, 132, 23);
+		btnCerrar = new BotonCancelar();
+		btnCerrar.setHorizontalAlignment(SwingConstants.LEFT);
+		btnCerrar.setText("F5 Cerrar");
+		btnCerrar.setBounds(618, 18, 126, 38);
 		panelAcciones.add(btnCerrar);
 		
 		
 		panelDatosFactura=new JPanel();
+		panelDatosFactura.setBackground(SystemColor.inactiveCaption);
 		panelDatosFactura.setBorder(new TitledBorder(new LineBorder(new Color(130, 135, 144)), "Datos Generales", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelDatosFactura.setBounds(20, 71, 754, 84);
+		panelDatosFactura.setBounds(20, 84, 754, 84);
 		panelDatosFactura.setLayout(null);
 		
 		

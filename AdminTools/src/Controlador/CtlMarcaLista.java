@@ -216,13 +216,7 @@ public class CtlMarcaLista implements ActionListener, MouseListener,WindowListen
 	@Override
 	public void windowClosing(WindowEvent e) {
 		// TODO Auto-generated method stub
-		JOptionPane.showMessageDialog(view, "Se esta cerrando la ventana");
-		try {
-			this.conexion.getConnection().close();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		};
+		
 		this.view.setVisible(false);
 		
 	}

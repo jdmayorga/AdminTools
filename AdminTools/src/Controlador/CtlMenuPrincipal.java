@@ -31,8 +31,8 @@ public class CtlMenuPrincipal implements ActionListener {
 		
 		String comando=e.getActionCommand();
 		
-		JDialog.setDefaultLookAndFeelDecorated(true);
-		JFrame.setDefaultLookAndFeelDecorated(true);
+		//JDialog.setDefaultLookAndFeelDecorated(true);
+		//JFrame.setDefaultLookAndFeelDecorated(true);
 		switch(comando){
 			case "PROVEEDORES":
 				ViewListaProveedor viewListaProveedor=new ViewListaProveedor();
@@ -53,6 +53,7 @@ public class CtlMenuPrincipal implements ActionListener {
 				break;
 			case "FACTURAR":
 				ViewFacturar vistaFacturar=new ViewFacturar();
+				@SuppressWarnings("unused")
 				CtlFacturar ctlFacturar=new CtlFacturar(vistaFacturar);
 				break;
 			case "MARCAS":
