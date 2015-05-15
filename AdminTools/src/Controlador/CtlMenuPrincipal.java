@@ -3,10 +3,13 @@ package Controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import Modelo.Conexion;
 import View.ViewAgregarCompras;
+import View.ViewFacturar;
 import View.ViewListaArticulo;
 import View.ViewListaMarca;
 import View.ViewListaProveedor;
@@ -28,6 +31,8 @@ public class CtlMenuPrincipal implements ActionListener {
 		
 		String comando=e.getActionCommand();
 		
+		JDialog.setDefaultLookAndFeelDecorated(true);
+		JFrame.setDefaultLookAndFeelDecorated(true);
 		switch(comando){
 			case "PROVEEDORES":
 				ViewListaProveedor viewListaProveedor=new ViewListaProveedor();
@@ -45,6 +50,10 @@ public class CtlMenuPrincipal implements ActionListener {
 			case "AGREGARCOMPRAS":
 				ViewAgregarCompras viewAgregarCompras= new ViewAgregarCompras(this.view);
 				CtlAgregarCompras ctl=new CtlAgregarCompras(viewAgregarCompras,conexion);
+				break;
+			case "FACTURAR":
+				ViewFacturar vistaFacturar=new ViewFacturar();
+				CtlFacturar ctlFacturar=new CtlFacturar(vistaFacturar);
 				break;
 			case "MARCAS":
 				//se crea la lista de marcas

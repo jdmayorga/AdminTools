@@ -28,6 +28,7 @@ public class ViewMenuPrincipal extends JFrame {
 	private JMenuItem mntmArticulos;
 	private JMenuItem mntmMarcas;
 	private JMenuItem mntmAgregarCompras;
+	private JMenuItem mntmFacturar;
 	public ViewMenuPrincipal() {
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -51,7 +52,7 @@ public class ViewMenuPrincipal extends JFrame {
 		JMenu mnFacturacion = new JMenu("Facturacion");
 		menuBar.add(mnFacturacion);
 		
-		JMenuItem mntmFacturar = new JMenuItem("Facturar");
+		mntmFacturar = new JMenuItem("Facturar");
 		mnFacturacion.add(mntmFacturar);
 		
 		mntmCerrarFacturacion = new JMenuItem("Cerrar Facturacion");
@@ -109,6 +110,9 @@ public class ViewMenuPrincipal extends JFrame {
 		
 		mntmAgregarCompras.addActionListener(c);
 		mntmAgregarCompras.setActionCommand("AGREGARCOMPRAS");
+		
+		mntmFacturar.addActionListener(c);
+		mntmFacturar.setActionCommand("FACTURAR");
 		
 	}
 

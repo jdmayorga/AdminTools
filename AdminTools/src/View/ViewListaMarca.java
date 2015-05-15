@@ -147,15 +147,6 @@ public class ViewListaMarca extends JDialog {
 		
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
-		
-		
-		
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				setVisible(false);
-			}
-		});
 	
 	}
 public JButton getBtnAgregar(){
@@ -225,6 +216,7 @@ public void conectarControlador(CtlMarcaLista c){
 		 
 		 tablaMarca.addMouseListener(c);
 		 tablaMarca.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		 this.addWindowListener(c);
 	}
 
 public void conectarControladorBusqueda(CtlMarcaBuscar c){

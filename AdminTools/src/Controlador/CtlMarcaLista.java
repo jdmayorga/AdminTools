@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -79,7 +80,7 @@ public class CtlMarcaLista implements ActionListener, MouseListener,WindowListen
 			break;
 		case "ELIMINAR":
 			if(myMarcaDao.eliminarMarca(myMarca.getId())){//llamamos al metodo para agregar 
-				JOptionPane.showMessageDialog(null, "Se elimino exitosamente","Información",JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(this.view, "Se elimino exitosamente","Información",JOptionPane.INFORMATION_MESSAGE);
 				this.view.getModelo().eliminarMarca(filaPulsada);
 				this.view.getBtnEliminar().setEnabled(false);
 				
@@ -215,8 +216,13 @@ public class CtlMarcaLista implements ActionListener, MouseListener,WindowListen
 	@Override
 	public void windowClosing(WindowEvent e) {
 		// TODO Auto-generated method stub
-		
-		this.conexion.desconectar();
+		JOptionPane.showMessageDialog(view, "Se esta cerrando la ventana");
+		try {
+			this.conexion.getConnection().close();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		};
 		this.view.setVisible(false);
 		
 	}

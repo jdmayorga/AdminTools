@@ -6,6 +6,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 
@@ -23,7 +25,7 @@ import Modelo.Proveedor;
 import Modelo.ProveedorDao;
 import View.ViewAgregarCompras;
 
-public class CtlAgregarCompras implements ActionListener,MouseListener,TableModelListener {
+public class CtlAgregarCompras implements ActionListener,MouseListener,TableModelListener, WindowListener {
 	public ViewAgregarCompras view;
 	private Conexion conexion=null;
 	private ArticuloDao myArticuloDao;
@@ -97,7 +99,7 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 					String date = sdf.format(this.view.getDateVencFactura().getDate());
 					myFactura.setFechaVencimento(date);
 				}
-				//JOptionPane.showMessageDialog(view, myFactura);
+				
 				boolean result=this.myFacturaDao.registrarFactura(myFactura);
 				if(result){
 					JOptionPane.showMessageDialog(view,"Se guarda la factura");
@@ -117,6 +119,10 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 				myFactura.setTipoFactura(1);
 				//this.view.getDateCompra().cleanup();
 				break;
+			case "CANCELAR":
+				this.conexion.desconectar();
+				this.view.setVisible(false);
+			break;
 		}
 	}
 
@@ -270,6 +276,50 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 			
 			//this.view.getModelo().fireTableDataChanged();
 		}
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+		this.conexion.desconectar();
+		this.view.setVisible(false);
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

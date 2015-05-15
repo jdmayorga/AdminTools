@@ -233,18 +233,6 @@ public class ViewAgregarCompras extends JDialog {
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 		
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				setVisible(false);
-			}
-		});
-		
-		btnCancelar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
-			}
-		});
 	
 		
 
@@ -303,6 +291,10 @@ public class ViewAgregarCompras extends JDialog {
 		this.rdbtnCredito.addActionListener(c);
 		this.rdbtnCredito.setActionCommand("CREDITO");
 		
+		this.btnCancelar.addActionListener(c);
+		this.btnCancelar.setActionCommand("CANCELAR");
+		
+		this.addWindowListener(c);
 	
 		/*rdbtnTodos.addItemListener(c);
 		

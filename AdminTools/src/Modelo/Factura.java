@@ -3,7 +3,8 @@ package Modelo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FacturaCompra {
+public class Factura {
+	
 	private String fechaCompra;
 	private String idFactura;
 	private Integer tipoFactura=1;
@@ -14,10 +15,6 @@ public class FacturaCompra {
 	private double subTotal=0.0;
 	private String fechaVencimento=null;
 	private int estado=1;
-	
-	public FacturaCompra(){
-		
-	}
 	
 	public int getEstado(){
 		return estado;

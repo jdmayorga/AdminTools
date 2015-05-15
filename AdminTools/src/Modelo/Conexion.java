@@ -16,12 +16,12 @@ public class Conexion {
 	
 	
 	
-	
-   public DataSource dataSource;
+	private  BasicDataSource basicDataSource;
+   private DataSource dataSource;
    static String bd = "texaco";
    static String login = "root";
    static String password = "jdmm123";
-   static String url = "jdbc:mysql://192.168.0.103/"+bd;
+   static String url = "jdbc:mysql://localhost/"+bd;
    static String driver="com.mysql.jdbc.Driver";
 
    Connection conn = null;
@@ -94,16 +94,27 @@ public class Conexion {
       }*/
 	  // conn.p
    }
+   
+   public DataSource getDataSource(){
+	   return dataSource;
+   }
    /**Permite retornar la conexión*/
    public Connection getConnection(){
-	   
-      return conn;
+	   Connection conexion=null;
+	   try {
+		conexion=dataSource.getConnection();
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+      return conexion;
    }
 
    public void desconectar(){
       //conn = null;
       try {
 		conn.close();
+		
 	} catch (SQLException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
