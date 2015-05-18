@@ -62,64 +62,55 @@ public class DmtFacturaProveedores extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		// TODO Auto-generated method stub
-		switch (columnIndex) {
-        case 0:
-        	if(detallesFactura.get(rowIndex).getArticulo().getId()!=-1){
-        		return detallesFactura.get(rowIndex).getArticulo().getId();
-        	}
-        	else{
-        		return null;
-        	}
-        case 1:
-        	if(detallesFactura.get(rowIndex).getArticulo().getId()!=-1){
-        		return detallesFactura.get(rowIndex).getArticulo().getArticulo();
-        	}else{
-        		return null;
-        	}
-        case 2:
-        	if(detallesFactura.get(rowIndex).getArticulo().getId()!=-1){
-        		if(detallesFactura.get(rowIndex).getCantidad()!=0)
-        			return detallesFactura.get(rowIndex).getCantidad();
-        		else
-        			return null;
-        	}else{
-        		return null;
-        	}
-        case 3:
-        	if(detallesFactura.get(rowIndex).getArticulo().getId()!=-1){
-        		if(detallesFactura.get(rowIndex).getPrecioCompra()!=0){
-        			return detallesFactura.get(rowIndex).getPrecioCompra();
-        			
-        			
-        		}
-        		else
-        			return null;
-        	}else{
-        		return null;
-        	}
-        case 4:
-        	if(detallesFactura.get(rowIndex).getArticulo().getId()!=-1){
-        		if(detallesFactura.get(rowIndex).getPrecioCompra()!=0){
-        			return detallesFactura.get(rowIndex).getImpuesto();
-        		}
-        		else
-        			return null;
-        	}else{
-        		return null;
-        	}
-        case 5:
-        	if(detallesFactura.get(rowIndex).getArticulo().getId()!=-1){
-        		if(detallesFactura.get(rowIndex).getPrecioCompra()!=0){
-        			return detallesFactura.get(rowIndex).getTotal();
-        		}
-        		else
-        			return null;
-        	}else{
-        		return null;
-        	}
-        default:
-            return null;
+		
+		if(detallesFactura.get(rowIndex).getArticulo().getId()==-1){
+			return null;
 		}
+		else{
+				switch (columnIndex) {
+		        case 0:
+		        	
+		        		return detallesFactura.get(rowIndex).getArticulo().getId();
+		        	
+		        case 1:
+		        		return detallesFactura.get(rowIndex).getArticulo().getArticulo();
+		        case 2:
+		        	
+		        		if(detallesFactura.get(rowIndex).getCantidad()!=0)
+		        			return detallesFactura.get(rowIndex).getCantidad();
+		        		else
+		        			return null;
+		        	
+		        case 3:
+		        	
+		        		if(detallesFactura.get(rowIndex).getPrecioCompra()!=0){
+		        			return detallesFactura.get(rowIndex).getPrecioCompra();
+		        			
+		        			
+		        		}
+		        		else
+		        			return null;
+		        
+		        case 4:
+		        	
+		        		if(detallesFactura.get(rowIndex).getPrecioCompra()!=0){
+		        			return detallesFactura.get(rowIndex).getImpuesto();
+		        		}
+		        		else
+		        			return null;
+		        	
+		        case 5:
+		        	
+		        		if(detallesFactura.get(rowIndex).getPrecioCompra()!=0){
+		        			return detallesFactura.get(rowIndex).getTotal();
+		        		}
+		        		else
+		        			return null;
+		        	
+		        default:
+		            return null;
+				}
+	}
 	}
 	public DetalleFacturaProveedor getDetalle(int row){
 		return detallesFactura.get(row);

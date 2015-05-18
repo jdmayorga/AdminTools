@@ -20,9 +20,11 @@ public class CtlMenuPrincipal implements ActionListener {
 	public ViewMenuPrincipal view;
 	public Conexion conexion=null;
 	
+	
 	public CtlMenuPrincipal(ViewMenuPrincipal view, Conexion conn){
 		conexion=conn;
 		this.view=view;
+		
 	}
 
 	@Override
@@ -31,8 +33,8 @@ public class CtlMenuPrincipal implements ActionListener {
 		
 		String comando=e.getActionCommand();
 		
-		//JDialog.setDefaultLookAndFeelDecorated(true);
-		//JFrame.setDefaultLookAndFeelDecorated(true);
+		JDialog.setDefaultLookAndFeelDecorated(true);
+		JFrame.setDefaultLookAndFeelDecorated(true);
 		switch(comando){
 			case "PROVEEDORES":
 				ViewListaProveedor viewListaProveedor=new ViewListaProveedor();
@@ -52,9 +54,13 @@ public class CtlMenuPrincipal implements ActionListener {
 				CtlAgregarCompras ctl=new CtlAgregarCompras(viewAgregarCompras,conexion);
 				break;
 			case "FACTURAR":
-				ViewFacturar vistaFacturar=new ViewFacturar();
-				@SuppressWarnings("unused")
+				
+			
+				ViewFacturar vistaFacturar=new ViewFacturar(this.view);
+				
 				CtlFacturar ctlFacturar=new CtlFacturar(vistaFacturar);
+		
+				
 				break;
 			case "MARCAS":
 				//se crea la lista de marcas

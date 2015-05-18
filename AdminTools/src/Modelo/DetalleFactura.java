@@ -5,8 +5,22 @@ public class DetalleFactura {
 	private double cantidad;
 	private double impuesto;
 	private double total;
+	private double subTotal;
+	private int descuento;
 	private int idFactura;
 	
+	public double getSubTotal(){
+		return subTotal;
+	}
+	public void setSubTotal(Double s){
+		subTotal=s;
+	}
+	public void setDescuento(int d){
+		descuento=d;
+	}
+	public int getDescuento(){
+		return descuento;
+	}
 	public void setIdFactura(int id){
 		idFactura=id;
 	}

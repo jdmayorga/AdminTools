@@ -257,7 +257,8 @@ public class ArticuloDao {
 		
 		//se crear un referencia al pool de conexiones
 		DataSource ds = DBCPDataSourceFactory.getDataSource("mysql");
-       
+		
+		
         Connection con = null;
         
         

@@ -21,7 +21,7 @@ public class Conexion {
    static String bd = "texaco";
    static String login = "root";
    static String password = "jdmm123";
-   static String url = "jdbc:mysql://192.168.0.103/"+bd;
+   static String url = "jdbc:mysql://localhost/"+bd;
    static String driver="com.mysql.jdbc.Driver";
 
    Connection conn = null;
@@ -34,7 +34,7 @@ public class Conexion {
 	   basicDataSource.setUsername(login);
 	   basicDataSource.setPassword(password);
 	   basicDataSource.setUrl(url);
-	   basicDataSource.setMaxActive(300);
+	   basicDataSource.setMaxActive(50);
 	  
 	   
 	  // basicDataSource.setValidationQuery("select 1");
@@ -100,14 +100,8 @@ public class Conexion {
    }
    /**Permite retornar la conexión*/
    public Connection getConnection(){
-	   Connection conexion=null;
-	   try {
-		conexion=dataSource.getConnection();
-	} catch (SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-      return conexion;
+	  
+      return conn;
    }
 
    public void desconectar(){

@@ -1,15 +1,21 @@
 package View;
 
 import java.awt.Color;
+import java.awt.Dialog;
+import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.KeyboardFocusManager;
+import java.awt.Toolkit;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.JLabel;
@@ -27,6 +33,8 @@ import javax.swing.SwingConstants;
 import Controlador.CtlFacturar;
 
 import java.awt.Font;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class ViewFacturar extends JDialog {
 	private JTable tableDetalle;
@@ -58,8 +66,9 @@ public class ViewFacturar extends JDialog {
 	private BotonBuscarClientes btnCliente;
 	private BotonCobrar btnCobrar;
 	
-	public ViewFacturar() {
+	public ViewFacturar(JFrame view) {
 		
+		super(view,"Facturar",Dialog.ModalityType.DOCUMENT_MODAL);
 		panelAcciones=new JPanel();
 		panelAcciones.setBorder(new TitledBorder(new LineBorder(new Color(130, 135, 144)), "Opciones", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelAcciones.setBounds(20, 0, 754, 70);
@@ -72,6 +81,7 @@ public class ViewFacturar extends JDialog {
 		btnBuscar.setHorizontalAlignment(SwingConstants.LEFT);
 		btnBuscar.setBounds(10, 18,132, 38);
 		panelAcciones.add(btnBuscar);
+		//btnBuscar.getInputMap().put(KeyStroke.getKeyStroke("F1"), sumar());
 		
 		btnCliente = new BotonBuscarClientes();
 		btnCliente.setBounds(152, 18, 132, 38);
@@ -100,7 +110,7 @@ public class ViewFacturar extends JDialog {
 		panelDatosFactura.setBounds(20, 84, 754, 84);
 		panelDatosFactura.setLayout(null);
 		
-		
+		//getContentPane().geti
 		getContentPane().add(panelDatosFactura);
 		
 		lblFecha = new JLabel("Fecha");
@@ -210,14 +220,34 @@ public class ViewFacturar extends JDialog {
 		lblTotal = new JLabel("Total");
 		lblTotal.setBounds(610, 460, 46, 14);
 		getContentPane().add(lblTotal);
+		//centrar la ventana en la pantalla
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+		
+		
+	}
+	public TablaModeloFactura getModeloTabla(){
+		return modeloTabla;
+	}
+	public JTable geTableDetalle(){
+		return tableDetalle;
+	}
+	public JTextField getTxtFechafactura(){
+		return txtFechafactura;
 	}
 	public void conectarContralador(CtlFacturar c){
 		
+		//KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+		//manager.addKeyEventDispatcher( c);
+		//this.addWindowListener(c);
+		//this.addw
 	}
-	public static void main(String arg[]){
+public static void main(String arg[]){
 		 JDialog.setDefaultLookAndFeelDecorated(true);
-		ViewFacturar vista=new ViewFacturar();
-		vista.setVisible(true);
+		ViewFacturar vista=new ViewFacturar(null);
+		CtlFacturar ctl =new CtlFacturar(vista);
+		
 		vista.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		vista.setVisible(true);
 	}
 }
