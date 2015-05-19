@@ -29,13 +29,13 @@ public class MarcaDao {
 		try{
 			
 			//conexion= new Conexion();
-			seleccionarTodasLasMarcas = conexion.getDataSource().getConnection().prepareStatement("SELECT * FROM marcas");
-			insertarNuevaMarca=conexion.getConnection().prepareStatement( "INSERT INTO marcas(descripcion,observacion) VALUES (?,?)");
-			actualizarMarca=conexion.getConnection().prepareStatement("UPDATE marcas SET descripcion = ?, observacion = ? WHERE codigo_marca = ?");
-			eliminarMarca=conexion.getConnection().prepareStatement("DELETE FROM marcas WHERE codigo_marca = ?");
-			buscarMarca=conexion.getConnection().prepareStatement("SELECT codigo_marca,descripcion,observacion FROM marcas where codigo_marca =  ?");
-			buscarMarcaObseracion=conexion.getConnection().prepareStatement("SELECT codigo_marca,descripcion,observacion FROM marcas where observacion LIKE ? ;");
-			buscarMarcaNombre=conexion.getConnection().prepareStatement("SELECT codigo_marca,descripcion,observacion FROM marcas where descripcion LIKE ? ;");
+			seleccionarTodasLasMarcas = conexion.getPoolConexion().getConnection().prepareStatement("SELECT * FROM marcas");
+			insertarNuevaMarca=conexion.getPoolConexion().getConnection().prepareStatement( "INSERT INTO marcas(descripcion,observacion) VALUES (?,?)");
+			actualizarMarca=conexion.getPoolConexion().getConnection().prepareStatement("UPDATE marcas SET descripcion = ?, observacion = ? WHERE codigo_marca = ?");
+			eliminarMarca=conexion.getPoolConexion().getConnection().prepareStatement("DELETE FROM marcas WHERE codigo_marca = ?");
+			buscarMarca=conexion.getPoolConexion().getConnection().prepareStatement("SELECT codigo_marca,descripcion,observacion FROM marcas where codigo_marca =  ?");
+			buscarMarcaObseracion=conexion.getPoolConexion().getConnection().prepareStatement("SELECT codigo_marca,descripcion,observacion FROM marcas where observacion LIKE ? ;");
+			buscarMarcaNombre=conexion.getPoolConexion().getConnection().prepareStatement("SELECT codigo_marca,descripcion,observacion FROM marcas where descripcion LIKE ? ;");
 		}
 		catch ( SQLException excepcionSql )
 		{
@@ -319,7 +319,22 @@ public class MarcaDao {
 	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<cierra la conexión a la base de datos>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 	public void close()
 		{
-			conexion.desconectar();
+			if(seleccionarTodasLasMarcas!=null)
+				try {
+					seleccionarTodasLasMarcas.close();
+					if(insertarNuevaMarca!=null)insertarNuevaMarca.close();
+					if(actualizarMarca!=null)actualizarMarca.close();
+					if(eliminarMarca!=null)eliminarMarca.close();
+					if(buscarMarca!=null)buscarMarca.close();
+					if(buscarMarcaObseracion!=null)buscarMarcaObseracion.close();
+					if(buscarMarcaNombre!=null)buscarMarcaNombre.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
+			
+			//conexion.desconectar();
 		} //// fin del método close
 	
 

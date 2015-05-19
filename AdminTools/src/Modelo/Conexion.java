@@ -1,6 +1,9 @@
 package Modelo;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.*;
+import java.util.Properties;
 
 import javax.sql.DataSource;
 import javax.swing.JOptionPane;
@@ -21,13 +24,20 @@ public class Conexion {
    static String bd = "texaco";
    static String login = "root";
    static String password = "jdmm123";
-   static String url = "jdbc:mysql://localhost/"+bd;
+   static String url = "jdbc:mysql://192.168.0.103/"+bd;
    static String driver="com.mysql.jdbc.Driver";
 
    Connection conn = null;
+   
+   private static DataSource poolConexiones=null;
+   
+   
 
    /** Constructor de DbConnection */
    public Conexion() {
+	   
+	   poolConexiones=this.setDataSource("mysql");
+	   
 	   BasicDataSource basicDataSource = new BasicDataSource();
 	   
 	   basicDataSource.setDriverClassName(driver);
@@ -95,9 +105,7 @@ public class Conexion {
 	  // conn.p
    }
    
-   public DataSource getDataSource(){
-	   return dataSource;
-   }
+  
    /**Permite retornar la conexión*/
    public Connection getConnection(){
 	  
@@ -113,6 +121,40 @@ public class Conexion {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
+   }
+   
+   public static DataSource getPoolConexion(){
+	   return poolConexiones;
+   }
+   
+   public static DataSource setDataSource(String dbType){
+       Properties props = new Properties();
+       FileInputStream fis = null;
+       BasicDataSource ds = new BasicDataSource();
+        
+       try {
+           fis = new FileInputStream("db.config");
+           props.load(fis);
+       }catch(IOException e){
+           e.printStackTrace();
+           return null;
+       }
+       if("mysql".equals(dbType)){
+           ds.setDriverClassName(props.getProperty("MYSQL_DB_DRIVER_CLASS"));
+           ds.setUrl(props.getProperty("MYSQL_DB_URL"));
+           ds.setUsername(props.getProperty("MYSQL_DB_USERNAME"));
+           ds.setPassword(props.getProperty("MYSQL_DB_PASSWORD"));
+           ds.setMinIdle(20);
+       }else if("oracle".equals(dbType)){
+           ds.setDriverClassName(props.getProperty("ORACLE_DB_DRIVER_CLASS"));
+           ds.setUrl(props.getProperty("ORACLE_DB_URL"));
+           ds.setUsername(props.getProperty("ORACLE_DB_USERNAME"));
+           ds.setPassword(props.getProperty("ORACLE_DB_PASSWORD"));
+       }else{
+           return null;
+       }
+        
+       return ds;
    }
 
 }

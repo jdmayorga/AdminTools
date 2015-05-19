@@ -26,16 +26,18 @@ public class ArticuloDao {
 	
 	public ArticuloDao(Conexion conn){
 		conexion=conn;
+		
 		myCodBarraDao=new CodBarraDao(conexion);
 		try{
+			conexionBD=conn.getPoolConexion().getConnection();
 			
 			//seleccionarTodasLosArticulos = conexion.getConnection().prepareStatement("SELECT * FROM v_articulos;");
-			insertarNuevaArticulo=conexion.getConnection().prepareStatement( "INSERT INTO articulo(articulo,codigo_marca,codigo_impuesto,precio_articulo) VALUES (?,?,?,?)");
-			eliminarArticulo=conexion.getConnection().prepareStatement("DELETE FROM articulo WHERE codigo_articulo = ?");
-			actualizarArticulo=conexion.getConnection().prepareStatement("UPDATE articulo SET articulo = ?, codigo_marca = ? ,codigo_impuesto = ?, precio_articulo=? WHERE codigo_articulo = ?");
-			buscarArticulo=conexion.getConnection().prepareStatement("SELECT * FROM v_articulos where codigo_articulo =  ?");
-			buscarArticuloNombre=conexion.getConnection().prepareStatement("SELECT * FROM v_articulos where marca LIKE ? ;");
-			buscarArticuloMarca=conexion.getConnection().prepareStatement("SELECT * FROM v_articulos where marca LIKE ? ;");
+			insertarNuevaArticulo=conexionBD.prepareStatement( "INSERT INTO articulo(articulo,codigo_marca,codigo_impuesto,precio_articulo) VALUES (?,?,?,?)");
+			eliminarArticulo=conexionBD.prepareStatement("DELETE FROM articulo WHERE codigo_articulo = ?");
+			actualizarArticulo=conexionBD.prepareStatement("UPDATE articulo SET articulo = ?, codigo_marca = ? ,codigo_impuesto = ?, precio_articulo=? WHERE codigo_articulo = ?");
+			buscarArticulo=conexionBD.prepareStatement("SELECT * FROM v_articulos where codigo_articulo =  ?");
+			buscarArticuloNombre=conexionBD.prepareStatement("SELECT * FROM v_articulos where marca LIKE ? ;");
+			buscarArticuloMarca=conexionBD.prepareStatement("SELECT * FROM v_articulos where marca LIKE ? ;");
 			
 			/*
 			buscarMarca=conexion.getConnection().prepareStatement("SELECT codigo_marca,descripcion,observacion FROM marcas where codigo_marca =  ?");
