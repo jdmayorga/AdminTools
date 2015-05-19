@@ -5,11 +5,11 @@ import java.util.List;
 
 public class Factura {
 	
-	private String fechaCompra;
+	private String fecha;
 	private String idFactura;
 	private Integer tipoFactura=1;
-	private Proveedor proveedor;
-	private List<DetalleFacturaProveedor> detalles=new ArrayList<DetalleFacturaProveedor>();
+	private Cliente cliente;
+	private List<DetalleFactura> detalles=new ArrayList<DetalleFactura>();
 	private double totalImpuesto=0.0;
 	private double total=0.0;
 	private double subTotal=0.0;
@@ -29,18 +29,18 @@ public class Factura {
 			fechaVencimento=f;
 	}
 	
-	public void setProveedor(Proveedor p){
-		proveedor=p;
+	public void setCliente(Cliente c){
+		cliente=c;
 	}
-	public Proveedor getProveedor(){
-		return proveedor;
+	public Cliente getCliente(){
+		return cliente;
 	}
 	
-	public void setFechaCompra(String f){
-		fechaCompra=f;
+	public void setFecha(String f){
+		fecha=f;
 	}
-	public String getFechaCompra(){
-		return fechaCompra;
+	public String getFecha(){
+		return fecha;
 	}
 	
 	public void setIdFactura(String idF){
@@ -57,10 +57,10 @@ public class Factura {
 		return tipoFactura;
 	}
 	
-	public void setDetalles(List<DetalleFacturaProveedor> d){
+	public void setDetalles(List<DetalleFactura> d){
 		detalles=d;
 	}
-	public List<DetalleFacturaProveedor> getDetalles(){
+	public List<DetalleFactura> getDetalles(){
 		return detalles;
 	}
 	

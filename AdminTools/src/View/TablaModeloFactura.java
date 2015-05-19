@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import Modelo.Articulo;
 import Modelo.DetalleFactura;
 import Modelo.DetalleFacturaProveedor;
 
@@ -28,6 +29,12 @@ public class TablaModeloFactura extends AbstractTableModel {
 	        return columnNames[columnIndex];
 	        
 	  }
+	public DetalleFactura getDetalle(int row){
+		return detallesFactura.get(row);
+	}
+	public void setArticulo(Articulo a, int row){
+		detallesFactura.get(row).setListArticulos(a);
+	}
 
 	@Override
 	public int getRowCount() {

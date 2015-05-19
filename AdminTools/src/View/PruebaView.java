@@ -12,8 +12,8 @@ public class PruebaView {
 		
 		Conexion conexion= new Conexion();
 		ViewMenuPrincipal principal=new ViewMenuPrincipal();
-		CtlMenuPrincipal ctl=new CtlMenuPrincipal(principal,conexion);
-		principal.conectarControlador(ctl);
+		//CtlMenuPrincipal ctl=new CtlMenuPrincipal(principal,conexion);
+		//principal.conectarControlador(ctl);
 		
 		/*ViewAgregarCompras view= new ViewAgregarCompras();
 		view.setVisible(true);*/

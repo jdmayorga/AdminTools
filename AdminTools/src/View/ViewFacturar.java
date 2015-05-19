@@ -16,6 +16,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.JLabel;
@@ -140,14 +141,14 @@ public class ViewFacturar extends JDialog {
 		
 		grupoOpciones = new ButtonGroup();
 		rdbtnCredito = new JRadioButton("");
-		rdbtnCredito.setBounds(669, 50, 31, 23);
+		rdbtnCredito.setBounds(674, 44, 21, 23);
 		grupoOpciones.add(rdbtnCredito);
 		panelDatosFactura.add(rdbtnCredito);
 		
 		rdbtnContado = new JRadioButton("");
 		rdbtnContado.setVerticalAlignment(SwingConstants.TOP);
 		rdbtnContado.setSelected(true);
-		rdbtnContado.setBounds(573, 50, 46, 23);
+		rdbtnContado.setBounds(573, 44, 21, 23);
 		grupoOpciones.add(rdbtnContado);
 		panelDatosFactura.add(rdbtnContado);
 		
@@ -165,13 +166,14 @@ public class ViewFacturar extends JDialog {
 		
 		modeloTabla=new TablaModeloFactura();
 		tableDetalle = new JTable(modeloTabla);
-		tableDetalle.getColumnModel().getColumn(0).setPreferredWidth(140);     //Tamaño de las columnas de las tablas
+		tableDetalle.getColumnModel().getColumn(0).setPreferredWidth(100);     //Tamaño de las columnas de las tablas
 		tableDetalle.getColumnModel().getColumn(1).setPreferredWidth(200);	//
-		tableDetalle.getColumnModel().getColumn(2).setPreferredWidth(90);	//
-		tableDetalle.getColumnModel().getColumn(3).setPreferredWidth(90);	//
-		tableDetalle.getColumnModel().getColumn(4).setPreferredWidth(90);	//
-		tableDetalle.getColumnModel().getColumn(5).setPreferredWidth(90);	//
-		tableDetalle.getColumnModel().getColumn(6).setPreferredWidth(100);	//
+		tableDetalle.getColumnModel().getColumn(2).setPreferredWidth(80);	//
+		tableDetalle.getColumnModel().getColumn(3).setPreferredWidth(80);	//
+		tableDetalle.getColumnModel().getColumn(4).setPreferredWidth(80);	//
+		tableDetalle.getColumnModel().getColumn(5).setPreferredWidth(80);	//
+		tableDetalle.getColumnModel().getColumn(6).setPreferredWidth(80);	//
+		tableDetalle.getColumnModel().getColumn(7).setPreferredWidth(100);	//
 		
 		JScrollPane scrollPane = new JScrollPane(tableDetalle);
 		scrollPane.setBounds(20, 179, 754, 270);
@@ -226,6 +228,21 @@ public class ViewFacturar extends JDialog {
 		
 		
 	}
+	public JTextField getTxtSubtotal(){
+		return txtSubtotal;
+	}
+	public JTextField getTxtImpuesto(){
+		return txtImpuesto;
+	}
+	public JTextField getTxtTotal(){
+		return txtTotal;
+	}
+	public JTextField getTxtNombrecliente(){
+		return txtNombrecliente;
+	}
+	public JTextField getTxtIdcliente(){
+		return txtIdcliente;
+	}
 	public TablaModeloFactura getModeloTabla(){
 		return modeloTabla;
 	}
@@ -237,6 +254,15 @@ public class ViewFacturar extends JDialog {
 	}
 	public void conectarContralador(CtlFacturar c){
 		
+		txtIdcliente.addActionListener(c);
+		txtIdcliente.setActionCommand("BUSCARCLIENTE");
+		tableDetalle.addMouseListener(c);
+		modeloTabla.addTableModelListener(c);
+		 //tablaArticulos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tableDetalle.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		tableDetalle.setColumnSelectionAllowed(true);
+		tableDetalle.setRowSelectionAllowed(true);
+		
 		//KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 		//manager.addKeyEventDispatcher( c);
 		//this.addWindowListener(c);
@@ -245,7 +271,7 @@ public class ViewFacturar extends JDialog {
 public static void main(String arg[]){
 		 JDialog.setDefaultLookAndFeelDecorated(true);
 		ViewFacturar vista=new ViewFacturar(null);
-		CtlFacturar ctl =new CtlFacturar(vista);
+		CtlFacturar ctl =new CtlFacturar(vista, null);
 		
 		vista.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		vista.setVisible(true);

@@ -3,6 +3,7 @@ package Controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.sql.DataSource;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -19,11 +20,13 @@ public class CtlMenuPrincipal implements ActionListener {
 	
 	public ViewMenuPrincipal view;
 	public Conexion conexion=null;
+	private DataSource poolConexion;
 	
 	
-	public CtlMenuPrincipal(ViewMenuPrincipal view, Conexion conn){
+	public CtlMenuPrincipal(ViewMenuPrincipal view, Conexion conn,DataSource pool){
 		conexion=conn;
 		this.view=view;
+		poolConexion=pool;
 		
 	}
 
@@ -58,7 +61,8 @@ public class CtlMenuPrincipal implements ActionListener {
 			
 				ViewFacturar vistaFacturar=new ViewFacturar(this.view);
 				
-				CtlFacturar ctlFacturar=new CtlFacturar(vistaFacturar);
+				CtlFacturar ctlFacturar=new CtlFacturar(vistaFacturar,poolConexion );
+				vistaFacturar.setVisible(true);
 		
 				
 				break;

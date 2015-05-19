@@ -22,6 +22,7 @@ public class ArticuloDao {
 	private PreparedStatement buscarArticuloMarca=null;
 	private PreparedStatement buscarArticuloNombre=null;
 	private CodBarraDao myCodBarraDao=null;
+	private Connection conexionBD=null;
 	
 	public ArticuloDao(Conexion conn){
 		conexion=conn;
@@ -49,6 +50,16 @@ public class ArticuloDao {
 		
 	}
 	
+	public ArticuloDao(DataSource poolConexion) {
+		// TODO Auto-generated constructor stub
+		try {
+			conexionBD=poolConexion.getConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para busca los marcas por observacion>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 	public List<Articulo> buscarArticuloMarca(String busqueda){
 		List<Articulo> articulos=new ArrayList<Articulo>();
@@ -143,6 +154,57 @@ public class ArticuloDao {
 				return articulos;
 			}
 			else return null;
+		
+	}
+	
+	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para buscar articulo por por ID pool>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+	public Articulo buscarArticuloId(int i){
+		Articulo unArticulo=new Articulo();
+		ResultSet res=null;
+		PreparedStatement buscarArt=null;
+		boolean existe=false;
+		
+		try {
+			buscarArt=conexionBD.prepareStatement("SELECT * FROM v_articulos where codigo_articulo =  ?");
+			buscarArt.setInt(1, i);
+			res = buscarArt.executeQuery();
+			while(res.next()){
+				existe=true;
+				unArticulo.setId(Integer.parseInt(res.getString("codigo_articulo")));
+				unArticulo.setArticulo(res.getString("articulo"));
+				unArticulo.getMarcaObj().setMarca(res.getString("marca"));
+				unArticulo.getMarcaObj().setId(res.getInt("codigo_marca"));
+				unArticulo.getImpuestoObj().setPorcentaje(res.getString("impuesto"));
+				unArticulo.getImpuestoObj().setId(res.getInt("codigo_impuesto"));
+				unArticulo.setPrecioVenta(res.getDouble("precio_articulo"));
+				
+			 }
+					
+					
+			} catch (SQLException e) {
+					JOptionPane.showMessageDialog(null, "Error, no se conecto");
+					System.out.println(e);
+			}
+			finally
+			{
+				try{
+					if(res != null) res.close();
+	                if(buscarArt != null)buscarArt.close();
+	                if(conexionBD != null) conexionBD.close();
+				} // fin de try
+				catch ( SQLException excepcionSql )
+				{
+				excepcionSql.printStackTrace();
+				conexion.desconectar();
+				} // fin de catch
+			} // fin de finally
+		
+			if (existe) {
+				return unArticulo;
+			}
+			else return null;
+		
+		
 		
 	}
 	
