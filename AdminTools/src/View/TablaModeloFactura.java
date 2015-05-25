@@ -25,6 +25,9 @@ public class TablaModeloFactura extends AbstractTableModel {
 		DetalleFactura uno =new DetalleFactura();
 		detallesFactura.add(uno);
 	}
+	public List<DetalleFactura> getDetalles(){
+		return detallesFactura;
+	}
 	@Override
 	public String getColumnName(int columnIndex) {
 	        return columnNames[columnIndex];

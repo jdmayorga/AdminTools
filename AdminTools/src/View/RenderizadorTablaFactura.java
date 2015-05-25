@@ -35,7 +35,13 @@ public class RenderizadorTablaFactura implements TableCellRenderer{
 		   }
 		   if(column==3)
 			   editor.setHorizontalAlignment(SwingConstants.CENTER);
-		   else
+		   if(column==4)
+			   editor.setHorizontalAlignment(SwingConstants.RIGHT);
+		   if(column==5)
+			   editor.setHorizontalAlignment(SwingConstants.RIGHT);
+		   if(column==6)
+			   editor.setHorizontalAlignment(SwingConstants.RIGHT);
+		   if(column==7)
 			   editor.setHorizontalAlignment(SwingConstants.RIGHT);
 		 
 		    if (isSelected) {

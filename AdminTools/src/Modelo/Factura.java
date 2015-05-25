@@ -14,6 +14,7 @@ public class Factura {
 	private BigDecimal totalImpuesto=new BigDecimal(0.0);
 	private BigDecimal total=new BigDecimal(0.0);
 	private BigDecimal subTotal=new BigDecimal(0.0);
+	private BigDecimal totalDescuento=new BigDecimal(0.0);
 	private String fechaVencimento=null;
 	private int estado=1;
 	
@@ -78,11 +79,26 @@ public class Factura {
 	public BigDecimal getTotal(){
 		return total;
 	}
+	
 	public void setSubTotal(BigDecimal s){
 		subTotal=subTotal.add(s);
 	}
 	public BigDecimal getSubTotal(){
 		return subTotal;
+	}
+	
+	public void setTotalDescuento(BigDecimal s){
+		totalDescuento=totalDescuento.add(s);
+	}
+	public BigDecimal getTotalDescuento(){
+		return totalDescuento;
+	}
+	
+	public void resetTotales(){
+		totalImpuesto=BigDecimal.ZERO;
+		total=BigDecimal.ZERO;
+		subTotal=BigDecimal.ZERO;
+		totalDescuento=BigDecimal.ZERO;
 	}
 
 }

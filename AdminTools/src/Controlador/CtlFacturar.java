@@ -1,9 +1,9 @@
 package Controlador;
 
-import java.awt.KeyEventDispatcher;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -12,7 +12,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.math.BigDecimal;
 
-import javax.sql.DataSource;
+
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -23,9 +23,9 @@ import Modelo.Cliente;
 import Modelo.ClienteDao;
 import Modelo.Conexion;
 import Modelo.DetalleFactura;
-import Modelo.DetalleFacturaProveedor;
+
 import Modelo.Factura;
-import Modelo.FacturaCompra;
+
 import Modelo.FacturaDao;
 import View.ViewFacturar;
 
@@ -198,6 +198,69 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 		
 	}
 	
+	
+public void calcularTotales(){
+	
+	for(int x=0; x<this.view.getModeloTabla().getDetalles().size();x++){
+		
+		if(detalle.getCantidad().doubleValue()!=0 && detalle.getArticulo().getPrecioVenta()!=0){
+			
+			//se obtien la cantidad y el precio de compra por unidad
+			BigDecimal cantidad=detalle.getCantidad();
+			BigDecimal precioVenta= new BigDecimal(detalle.getArticulo().getPrecioVenta());
+			
+			
+			
+			//se obtiene el impuesto del articulo 
+			BigDecimal porcentaImpuesto =new BigDecimal(detalle.getArticulo().getImpuestoObj().getPorcentaje());
+			BigDecimal porImpuesto=new BigDecimal(0);
+			porImpuesto=porcentaImpuesto.divide(new BigDecimal(100));
+			porImpuesto=porImpuesto.add(new BigDecimal(1));
+					//new BigDecimal(((Double.parseDouble(detalle.getArticulo().getImpuestoObj().getPorcentaje())  )/100)+1);
+			
+			//se calcula el total del item
+			BigDecimal totalItem=cantidad.multiply(precioVenta);
+			
+			//se calcula el total sin  el impuesto;
+			BigDecimal totalsiniva= new BigDecimal("0.0");
+			totalsiniva=totalItem.divide(porImpuesto,2,BigDecimal.ROUND_HALF_EVEN);//.divide(porImpuesto);// (totalItem)/(porcentaImpuesto);
+		
+			
+			//se calcula el total de impuesto del item
+			BigDecimal impuestoItem=totalItem.subtract(totalsiniva);//-totalsiniva;
+			
+			
+			
+			//se estable el total y impuesto en el modelo
+			myFactura.setTotal(totalItem);
+			myFactura.setTotalImpuesto(impuestoItem);
+			myFactura.setSubTotal(totalsiniva);
+			myFactura.getDetalles().add(detalle);
+			
+			detalle.setSubTotal(totalsiniva.setScale(2, BigDecimal.ROUND_HALF_EVEN));
+			detalle.setImpuesto(impuestoItem.setScale(2, BigDecimal.ROUND_HALF_EVEN));
+			//myFactura.getDetalles()
+			
+			//se establece en la y el impuesto en el item de la vista
+			//detalle.setImpuesto(impuesto2.setScale(2, BigDecimal.ROUND_HALF_EVEN));
+			detalle.setTotal(totalItem.setScale(2, BigDecimal.ROUND_HALF_EVEN));
+			
+			//se establece el total e impuesto en el vista
+			this.view.getTxtTotal().setText(""+myFactura.getTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN));
+			this.view.getTxtImpuesto().setText(""+myFactura.getTotalImpuesto().setScale(2, BigDecimal.ROUND_HALF_EVEN));
+			this.view.getTxtSubtotal().setText(""+myFactura.getSubTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN));
+			
+			
+			
+			
+		
+			
+			//this.view.getModelo().fireTableDataChanged();
+		}//fin del if
+		
+	}//fin del for
+	}
+	
 public void calcularTotal(DetalleFactura detalle){
 		
 		if(detalle.getCantidad().doubleValue()!=0 && detalle.getArticulo().getPrecioVenta()!=0){
@@ -205,6 +268,8 @@ public void calcularTotal(DetalleFactura detalle){
 			//se obtien la cantidad y el precio de compra por unidad
 			BigDecimal cantidad=detalle.getCantidad();
 			BigDecimal precioVenta= new BigDecimal(detalle.getArticulo().getPrecioVenta());
+			
+			
 			
 			//se obtiene el impuesto del articulo 
 			BigDecimal porcentaImpuesto =new BigDecimal(detalle.getArticulo().getImpuestoObj().getPorcentaje());
