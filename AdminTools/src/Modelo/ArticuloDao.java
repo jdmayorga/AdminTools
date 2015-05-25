@@ -52,7 +52,7 @@ public class ArticuloDao {
 		
 	}
 	
-	public ArticuloDao(DataSource poolConexion) {
+	/*public ArticuloDao(DataSource poolConexion) {
 		// TODO Auto-generated constructor stub
 		try {
 			conexionBD=poolConexion.getConnection();
@@ -60,7 +60,7 @@ public class ArticuloDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para busca los marcas por observacion>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 	public List<Articulo> buscarArticuloMarca(String busqueda){
@@ -239,7 +239,7 @@ public class ArticuloDao {
 			finally
 			{
 				try{
-					res.close();
+					if(res!=null)res.close();
 				} // fin de try
 				catch ( SQLException excepcionSql )
 				{

@@ -11,9 +11,8 @@ public class principal {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Conexion conexion= new Conexion();
-		DataSource poolConexion=DBCPDataSourceFactory.getDataSource("mysql");
 		ViewMenuPrincipal principal=new ViewMenuPrincipal();
-		CtlMenuPrincipal ctl=new CtlMenuPrincipal(principal,conexion,poolConexion);
+		CtlMenuPrincipal ctl=new CtlMenuPrincipal(principal,conexion);
 		principal.conectarControlador(ctl);
 		
 		

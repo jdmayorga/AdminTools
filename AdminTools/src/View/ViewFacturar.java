@@ -7,7 +7,9 @@ import java.awt.Image;
 import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
 
+import javax.swing.AbstractAction;
 import javax.swing.ButtonGroup;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -34,6 +36,7 @@ import javax.swing.SwingConstants;
 import Controlador.CtlFacturar;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -66,6 +69,9 @@ public class ViewFacturar extends JDialog {
 	private BotonBuscar1 btnBuscar;
 	private BotonBuscarClientes btnCliente;
 	private BotonCobrar btnCobrar;
+	private JTextField txtDescuento;
+	
+	private static final KeyStroke ENTER_KEY =KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
 	
 	public ViewFacturar(JFrame view) {
 		
@@ -164,8 +170,15 @@ public class ViewFacturar extends JDialog {
 		lblCredito.setBounds(664, 23, 46, 14);
 		panelDatosFactura.add(lblCredito);
 		
+		
+		tableDetalle = new JTable();
 		modeloTabla=new TablaModeloFactura();
-		tableDetalle = new JTable(modeloTabla);
+		tableDetalle.setModel(modeloTabla);
+		
+		RenderizadorTablaFactura renderizador = new RenderizadorTablaFactura();
+		tableDetalle.setDefaultRenderer(String.class, renderizador);
+		//tableDetalle.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
 		tableDetalle.getColumnModel().getColumn(0).setPreferredWidth(100);     //Tamaño de las columnas de las tablas
 		tableDetalle.getColumnModel().getColumn(1).setPreferredWidth(200);	//
 		tableDetalle.getColumnModel().getColumn(2).setPreferredWidth(80);	//
@@ -174,6 +187,7 @@ public class ViewFacturar extends JDialog {
 		tableDetalle.getColumnModel().getColumn(5).setPreferredWidth(80);	//
 		tableDetalle.getColumnModel().getColumn(6).setPreferredWidth(80);	//
 		tableDetalle.getColumnModel().getColumn(7).setPreferredWidth(100);	//
+		//registerEnterKey( );
 		
 		JScrollPane scrollPane = new JScrollPane(tableDetalle);
 		scrollPane.setBounds(20, 179, 754, 270);
@@ -182,19 +196,19 @@ public class ViewFacturar extends JDialog {
 		this.setSize(800, 600);
 		getContentPane().setLayout(null);
 		
-		Font myFont=new Font("OCR A Extended", Font.PLAIN, 45);
+		Font myFont=new Font("OCR A Extended", Font.PLAIN, 35);
 		txtSubtotal = new JTextField();
 		txtSubtotal.setFont(myFont);
 		txtSubtotal.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtSubtotal.setText("00");
 		
 		txtSubtotal.setEditable(false);
-		txtSubtotal.setBounds(224, 485, 164, 44);
+		txtSubtotal.setBounds(20, 485, 175, 44);
 		getContentPane().add(txtSubtotal);
 		txtSubtotal.setColumns(10);
 		
 		lblSubtotal = new JLabel("SubTotal");
-		lblSubtotal.setBounds(224, 460, 59, 14);
+		lblSubtotal.setBounds(20, 460, 59, 14);
 		getContentPane().add(lblSubtotal);
 		
 		txtImpuesto = new JTextField();
@@ -202,12 +216,12 @@ public class ViewFacturar extends JDialog {
 		txtImpuesto.setFont(myFont);
 		txtImpuesto.setText("00");
 		txtImpuesto.setEditable(false);
-		txtImpuesto.setBounds(421, 485, 164, 44);
+		txtImpuesto.setBounds(205, 485, 175, 44);
 		getContentPane().add(txtImpuesto);
 		txtImpuesto.setColumns(10);
 		
 		lblImpuesto = new JLabel("Impuesto");
-		lblImpuesto.setBounds(421, 460, 59, 14);
+		lblImpuesto.setBounds(205, 460, 59, 14);
 		getContentPane().add(lblImpuesto);
 		
 		txtTotal = new JTextField();
@@ -215,19 +229,48 @@ public class ViewFacturar extends JDialog {
 		txtTotal.setFont(myFont);
 		txtTotal.setText("00");
 		txtTotal.setEditable(false);
-		txtTotal.setBounds(610, 485, 164, 44);
+		txtTotal.setBounds(572, 485, 202, 44);
 		getContentPane().add(txtTotal);
 		txtTotal.setColumns(10);
 		
 		lblTotal = new JLabel("Total");
-		lblTotal.setBounds(610, 460, 46, 14);
+		lblTotal.setBounds(572, 460, 46, 14);
 		getContentPane().add(lblTotal);
+		
+		txtDescuento = new JTextField();
+		txtDescuento.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtDescuento.setEditable(false);
+		txtDescuento.setText("00");
+		txtDescuento.setFont(myFont);
+		txtDescuento.setBounds(390, 485, 175, 44);
+		getContentPane().add(txtDescuento);
+		txtDescuento.setColumns(10);
+		
+		JLabel lblDescuento = new JLabel("Descuento");
+		lblDescuento.setBounds(394, 460, 92, 14);
+		getContentPane().add(lblDescuento);
 		//centrar la ventana en la pantalla
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 		
 		
 	}
+	
+	public void registerEnterKey( ){
+		int i = JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT;
+		tableDetalle.getInputMap(i).put(ENTER_KEY, "Enter -P");
+		tableDetalle.getActionMap().put("Enter - P", new EnterAction());
+		}
+	
+	private class EnterAction extends AbstractAction {
+		public void actionPerformed(ActionEvent ae) {
+		/**
+		* Put code to add a new row beneath the
+		* current row here.
+		*/
+			
+		}
+		}
 	public JTextField getTxtSubtotal(){
 		return txtSubtotal;
 	}
@@ -256,13 +299,45 @@ public class ViewFacturar extends JDialog {
 		
 		txtIdcliente.addActionListener(c);
 		txtIdcliente.setActionCommand("BUSCARCLIENTE");
+		
+		tableDetalle.addKeyListener(c);
 		tableDetalle.addMouseListener(c);
 		modeloTabla.addTableModelListener(c);
-		 //tablaArticulos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		//tableDetalle.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableDetalle.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		tableDetalle.setColumnSelectionAllowed(true);
 		tableDetalle.setRowSelectionAllowed(true);
 		
+		txtIdcliente.addKeyListener(c);
+		txtNombrecliente.addKeyListener(c);
+		txtFechafactura.addKeyListener(c);
+		
+		this.btnBuscar.addKeyListener(c);
+		this.btnBuscar.addActionListener(c);
+		this.btnBuscar.setActionCommand("BUSCARARTICULO");
+		
+		this.btnCerrar.addKeyListener(c);
+		this.btnCerrar.addActionListener(c);
+		this.btnCerrar.setActionCommand("CERRAR");
+		
+		this.btnCliente.addKeyListener(c);
+		this.btnCliente.addActionListener(c);
+		this.btnCliente.setActionCommand("BUSCARCLIENTES");
+		
+		this.btnCobrar.addKeyListener(c);
+		this.btnCobrar.addActionListener(c);
+		this.btnCobrar.setActionCommand("COBRAR");
+		
+		this.btnGuardar.addKeyListener(c);
+		this.btnGuardar.addActionListener(c);
+		this.btnGuardar.setActionCommand("GUARDAR");
+		
+		this.rdbtnContado.addKeyListener(c);
+		this.rdbtnCredito.addKeyListener(c);
+		this.txtDescuento.addKeyListener(c);
+		this.txtImpuesto.addKeyListener(c);
+		this.txtSubtotal.addKeyListener(c);
+		this.txtTotal.addKeyListener(c);
 		//KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 		//manager.addKeyEventDispatcher( c);
 		//this.addWindowListener(c);

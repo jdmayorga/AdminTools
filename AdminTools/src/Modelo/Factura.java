@@ -1,5 +1,6 @@
 package Modelo;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,9 +11,9 @@ public class Factura {
 	private Integer tipoFactura=1;
 	private Cliente cliente;
 	private List<DetalleFactura> detalles=new ArrayList<DetalleFactura>();
-	private double totalImpuesto=0.0;
-	private double total=0.0;
-	private double subTotal=0.0;
+	private BigDecimal totalImpuesto=new BigDecimal(0.0);
+	private BigDecimal total=new BigDecimal(0.0);
+	private BigDecimal subTotal=new BigDecimal(0.0);
 	private String fechaVencimento=null;
 	private int estado=1;
 	
@@ -64,23 +65,23 @@ public class Factura {
 		return detalles;
 	}
 	
-	public void setTotalImpuesto(double tImp){
-		totalImpuesto=totalImpuesto+tImp;
+	public void setTotalImpuesto(BigDecimal tImp){
+		totalImpuesto=totalImpuesto.add(tImp);
 	}
-	public double getTotalImpuesto(){
+	public BigDecimal getTotalImpuesto(){
 		return totalImpuesto;
 	}
 	
-	public void setTotal(double t){
-		total=total+t;
+	public void setTotal(BigDecimal t){
+		total=total.add(t);
 	}
-	public double getTotal(){
+	public BigDecimal getTotal(){
 		return total;
 	}
-	public void setSubTotal(double s){
-		subTotal+=s;
+	public void setSubTotal(BigDecimal s){
+		subTotal=subTotal.add(s);
 	}
-	public double getSubTotal(){
+	public BigDecimal getSubTotal(){
 		return subTotal;
 	}
 

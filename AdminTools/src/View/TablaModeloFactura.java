@@ -1,5 +1,6 @@
 package View;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import Modelo.DetalleFacturaProveedor;
 
 public class TablaModeloFactura extends AbstractTableModel {
 	final private String []columnNames= {
-			"Id Articulo", "Articulo", "Precio Unidad", "Cantidad","Descuento","SubTotal","Impuesto", "Total"
+			"Id Articulo", "Articulo", "Precio Unidad", "Cantidad","SubTotal","Impuesto","Descuento", "Total"
 		};
 	private List<DetalleFactura> detallesFactura=new ArrayList<DetalleFactura>();
 	
@@ -47,10 +48,12 @@ public class TablaModeloFactura extends AbstractTableModel {
 		// TODO Auto-generated method stub
 		return columnNames.length;
 	}
-
+	
+	
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		// TODO Auto-generated method stub
+		double salida=00;
 		if(detallesFactura.get(rowIndex).getArticulo().getId()==-1){
 			return null;
 		}
@@ -64,15 +67,25 @@ public class TablaModeloFactura extends AbstractTableModel {
 		case 2:
 		 return detallesFactura.get(rowIndex).getArticulo().getPrecioVenta();
 		case 3:
-			return detallesFactura.get(rowIndex).getCantidad();
+			if(detallesFactura.get(rowIndex).getCantidad().doubleValue()!=0){
+				return detallesFactura.get(rowIndex).getCantidad().setScale(2, BigDecimal.ROUND_HALF_EVEN);
+			}else
+				return null;
+		
 		case 4:
-			return detallesFactura.get(rowIndex).getDescuento();
+			//salida=detallesFactura.get(rowIndex).getSubTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+			return  detallesFactura.get(rowIndex).getSubTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
 		case 5:
-			return  detallesFactura.get(rowIndex).getSubTotal();
+			//salida=detallesFactura.get(rowIndex).getImpuesto().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+			return  detallesFactura.get(rowIndex).getImpuesto().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
 		case 6:
-			return  detallesFactura.get(rowIndex).getDescuento();
+			if(detallesFactura.get(rowIndex).getDescuentoItem().doubleValue()!=0)
+				return detallesFactura.get(rowIndex).getDescuentoItem().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+			else
+				return null;
 		case 7:
-			return  detallesFactura.get(rowIndex).getTotal();
+			//salida=detallesFactura.get(rowIndex).getTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+			return  detallesFactura.get(rowIndex).getTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
 		 default:
 	            return null;
 		}
@@ -94,17 +107,23 @@ public class TablaModeloFactura extends AbstractTableModel {
 				break;
 		case 3:
 			
-			detallesFactura.get(rowIndex).setCantidad(Double.parseDouble(v));
+			detallesFactura.get(rowIndex).setCantidad(new BigDecimal(v));// Double.parseDouble(v));
 			fireTableCellUpdated(rowIndex, columnIndex);
 				//fireTableDataChanged();
 			break;
-		case 4:
+		case 6:
 			detallesFactura.get(rowIndex).setDescuento(Integer.parseInt(v));
 			fireTableCellUpdated(rowIndex, columnIndex);
 			
 			break;
 	}
 	}
+	
+	@Override
+    public Class getColumnClass(int columnIndex) {
+		//        return getValueAt(0, columnIndex).getClass();
+        return String.class;
+    }
 	
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -114,7 +133,7 @@ public class TablaModeloFactura extends AbstractTableModel {
 		
 		if(columnIndex==3)
 			resul=true;
-		if(columnIndex==4)
+		if(columnIndex==6)
 			resul=true;
 	
 		

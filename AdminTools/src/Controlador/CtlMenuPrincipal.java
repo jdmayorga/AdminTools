@@ -20,13 +20,13 @@ public class CtlMenuPrincipal implements ActionListener {
 	
 	public ViewMenuPrincipal view;
 	public Conexion conexion=null;
-	private DataSource poolConexion;
 	
 	
-	public CtlMenuPrincipal(ViewMenuPrincipal view, Conexion conn,DataSource pool){
+	
+	public CtlMenuPrincipal(ViewMenuPrincipal view, Conexion conn){
 		conexion=conn;
 		this.view=view;
-		poolConexion=pool;
+		
 		
 	}
 
@@ -61,7 +61,7 @@ public class CtlMenuPrincipal implements ActionListener {
 			
 				ViewFacturar vistaFacturar=new ViewFacturar(this.view);
 				
-				CtlFacturar ctlFacturar=new CtlFacturar(vistaFacturar,poolConexion );
+				CtlFacturar ctlFacturar=new CtlFacturar(vistaFacturar,conexion );
 				vistaFacturar.setVisible(true);
 		
 				
