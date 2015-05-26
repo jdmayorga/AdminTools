@@ -29,25 +29,38 @@ import View.ViewFacturar;
 import View.ViewListaArticulo;
 
 public class CtlFacturar  implements ActionListener, MouseListener, TableModelListener, WindowListener, KeyListener  {
+	
 	private ViewFacturar view;
 	private Factura myFactura=new Factura();
-	private FacturaDao facturaDao=new FacturaDao();
-	private ClienteDao clienteDao=new ClienteDao();
+	private FacturaDao facturaDao=null;//=new FacturaDao();
+	private ClienteDao clienteDao=null;//=new ClienteDao();
 	private Articulo myArticulo=null;
 	private ArticuloDao myArticuloDao=null;
 	private Cliente myCliente=null;
 	private Conexion conexion=null;
+	private ViewListaArticulo viewListaArticulo=null;
+	private CtlArticuloBuscar ctlArticulo=null;
 	
 	public CtlFacturar(ViewFacturar v,Conexion conn){
 		view=v;
 		view.conectarContralador(this);
 		conexion=conn;		
-		//conseguir la fecha la facturaa
-		view.getTxtFechafactura().setText(facturaDao.getFechaSistema());
+		
+		
 		view.getModeloTabla().agregarDetalle();
 		myFactura=new Factura();
 		myArticuloDao=new ArticuloDao(conexion);
+		clienteDao=new ClienteDao(conexion);
+		facturaDao=new FacturaDao(conexion);
+		
+		//conseguir la fecha la facturaa
+		view.getTxtFechafactura().setText(facturaDao.getFechaSistema());
 		//view.setVisible(true);
+		
+		//la ventana buscar articulo y su controlador
+		viewListaArticulo=new ViewListaArticulo();
+		ctlArticulo =new CtlArticuloBuscar(viewListaArticulo,conexion);
+		viewListaArticulo.conectarControladorBuscar(ctlArticulo);
 	
 		
 	}
@@ -431,6 +444,9 @@ public void calcularTotal(DetalleFactura detalle){
 	}
 	
 	private void salir(){
+		//facturaDao.desconectarBD();
+		//this.clienteDao.desconectarBD();
+		this.myArticuloDao.desconectarBD();
 		this.view.setVisible(false);
 		
 	}
@@ -442,12 +458,11 @@ public void calcularTotal(DetalleFactura detalle){
 	}
 	private void buscarArticulo(){
 		
-		ViewListaArticulo viewListaArticulo=new ViewListaArticulo();
-		CtlArticuloBuscar ctlArticulo =new CtlArticuloBuscar(viewListaArticulo,conexion);
-		viewListaArticulo.conectarControladorBuscar(ctlArticulo);
+		
+		
 		
 		//se llama el metodo que mostrar la ventana para buscar el articulo
-		Articulo myArticulo=ctlArticulo.buscarArticulo(view);
+		Articulo myArticulo=ctlArticulo.buscarArticulo(view, conexion);
 		
 		//se comprueba si le regreso un articulo valido
 		if(myArticulo.getArticulo()!=null && myArticulo.getId()!=-1){
@@ -480,6 +495,10 @@ public void calcularTotal(DetalleFactura detalle){
 	@Override
 	public void windowClosing(WindowEvent e) {
 		// TODO Auto-generated method stub
+		//facturaDao.desconectarBD();
+		//this.clienteDao.desconectarBD();
+		this.myArticuloDao.desconectarBD();
+		this.view.setVisible(false);
 	}
 
 	@Override

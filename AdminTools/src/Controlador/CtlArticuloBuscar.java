@@ -22,7 +22,7 @@ import View.ViewListaArticulo;
 public class CtlArticuloBuscar implements ActionListener,MouseListener, WindowListener {
 	
 	public ViewListaArticulo view;
-	public ViewCrearArticulo viewArticulo;
+	//public ViewCrearArticulo viewArticulo;
 	
 	
 	private Articulo myArticulo;
@@ -61,7 +61,8 @@ public class CtlArticuloBuscar implements ActionListener,MouseListener, WindowLi
 	@Override
 	public void windowClosing(WindowEvent e) {
 		// TODO Auto-generated method stub
-		
+		myArticuloDao.desconectarBD();
+		this.view.setVisible(false);
 	}
 
 	@Override
@@ -101,6 +102,7 @@ public class CtlArticuloBuscar implements ActionListener,MouseListener, WindowLi
         filaPulsada = this.view.getTablaArticulos().getSelectedRow();
 		if (e.getClickCount() == 2){
 			myArticulo=this.view.getModelo().getArticulo(filaPulsada);
+			myArticuloDao.desconectarBD();
 			this.view.setVisible(false);
 			//JOptionPane.showMessageDialog(null,myMarca);
 			this.view.dispose();
@@ -174,7 +176,10 @@ public class CtlArticuloBuscar implements ActionListener,MouseListener, WindowLi
 					}
 	}
 	
-	public Articulo buscarArticulo(ViewFacturar v){
+	public Articulo buscarArticulo(ViewFacturar v, Conexion conn){
+		
+		this.myArticuloDao.cargarInstrucciones();
+		cargarTabla(myArticuloDao.todoArticulos());
 		this.view.getBtnEliminar().setEnabled(false);
 		this.view.getBtnAgregar().setEnabled(false);
 		this.view.setLocationRelativeTo(v);

@@ -11,12 +11,24 @@ import javax.sql.DataSource;
 
 public class ClienteDao {
 	
+	
 	private PreparedStatement buscarClienteID=null;
+	private Connection conexionBD=null;
+	private Conexion conexion;
+	
+	
+	public ClienteDao(Conexion conn){
+		conexion=conn;
+		
+	}
+	
+	
 	
 	public Cliente buscarCliente(int id){
 		Cliente myCliente=new Cliente();
 		//se crear un referencia al pool de conexiones
-		DataSource ds = DBCPDataSourceFactory.getDataSource("mysql");
+		
+		//DataSource ds = DBCPDataSourceFactory.getDataSource("mysql");
 		
 		
         Connection con = null;
@@ -29,8 +41,11 @@ public class ClienteDao {
 		
 		
 		try {
-			con = ds.getConnection();
-			buscarClienteID=con.prepareStatement("SELECT * FROM cliente where codigo_cliente="+id);
+			con = conexion.getPoolConexion().getConnection();
+			
+			buscarClienteID=conexionBD.prepareStatement("SELECT * FROM cliente where codigo_cliente=?");
+			
+			buscarClienteID.setInt(1, id);
 			res=buscarClienteID.executeQuery();
 			while(res.next()){
 				myCliente.setId(res.getInt("codigo_cliente"));
@@ -55,12 +70,7 @@ public class ClienteDao {
 			catch ( SQLException excepcionSql )
 			{
 				excepcionSql.printStackTrace();
-				try {
-					con.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+
 			} // fin de catch
 		
 		if(existe){
@@ -71,5 +81,15 @@ public class ClienteDao {
 		
 	
 		
+	}
+	
+	public void desconectarBD(){
+		 try {
+			 if(buscarClienteID != null)buscarClienteID.close();
+			 if(conexionBD != null) conexionBD.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

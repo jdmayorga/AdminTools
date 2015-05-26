@@ -29,9 +29,9 @@ public class ArticuloDao {
 		
 		myCodBarraDao=new CodBarraDao(conexion);
 		try{
-			conexionBD=conn.getPoolConexion().getConnection();
+			conexionBD=conexion.getPoolConexion().getConnection();
 			
-			//seleccionarTodasLosArticulos = conexion.getConnection().prepareStatement("SELECT * FROM v_articulos;");
+			seleccionarTodasLosArticulos = conexionBD.prepareStatement("SELECT * FROM v_articulos;");
 			insertarNuevaArticulo=conexionBD.prepareStatement( "INSERT INTO articulo(articulo,codigo_marca,codigo_impuesto,precio_articulo) VALUES (?,?,?,?)");
 			eliminarArticulo=conexionBD.prepareStatement("DELETE FROM articulo WHERE codigo_articulo = ?");
 			actualizarArticulo=conexionBD.prepareStatement("UPDATE articulo SET articulo = ?, codigo_marca = ? ,codigo_impuesto = ?, precio_articulo=? WHERE codigo_articulo = ?");
@@ -51,6 +51,38 @@ public class ArticuloDao {
 		} // fin de catch
 		
 	}
+	public void cargarInstrucciones(){
+		try {
+			seleccionarTodasLosArticulos = conexionBD.prepareStatement("SELECT * FROM v_articulos;");
+			insertarNuevaArticulo=conexionBD.prepareStatement( "INSERT INTO articulo(articulo,codigo_marca,codigo_impuesto,precio_articulo) VALUES (?,?,?,?)");
+			eliminarArticulo=conexionBD.prepareStatement("DELETE FROM articulo WHERE codigo_articulo = ?");
+			actualizarArticulo=conexionBD.prepareStatement("UPDATE articulo SET articulo = ?, codigo_marca = ? ,codigo_impuesto = ?, precio_articulo=? WHERE codigo_articulo = ?");
+			buscarArticulo=conexionBD.prepareStatement("SELECT * FROM v_articulos where codigo_articulo =  ?");
+			buscarArticuloNombre=conexionBD.prepareStatement("SELECT * FROM v_articulos where marca LIKE ? ;");
+			//buscarArticuloMarca=conexionBD.prepareStatement("SELECT * FROM v_articulos where marca LIKE ? ;");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	public void desconectarBD(){
+		try {
+			if(seleccionarTodasLosArticulos!=null)seleccionarTodasLosArticulos.close();
+			if(insertarNuevaArticulo!=null)insertarNuevaArticulo.close();
+			if(eliminarArticulo!=null)eliminarArticulo.close();
+			if(actualizarArticulo!=null)actualizarArticulo.close();
+			if(buscarArticulo!=null)buscarArticulo.close();
+			if(buscarArticuloNombre!=null)buscarArticuloNombre.close();
+			if(buscarArticuloMarca!=null)buscarArticuloMarca.close();
+			if(conexionBD!=null)conexionBD.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	/*public ArticuloDao(DataSource poolConexion) {
 		// TODO Auto-generated constructor stub
@@ -65,10 +97,17 @@ public class ArticuloDao {
 	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para busca los marcas por observacion>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 	public List<Articulo> buscarArticuloMarca(String busqueda){
 		List<Articulo> articulos=new ArrayList<Articulo>();
+		
 		ResultSet res=null;
-		 
+		
+		Connection conn=null;
+		
 		boolean existe=false;
+		
 		try {
+			
+			conn=conexion.getPoolConexion().getConnection();
+			buscarArticuloMarca=conn.prepareStatement("SELECT * FROM v_articulos where marca LIKE ? ;");
 			
 		
 			buscarArticuloMarca.setString(1, "%" + busqueda + "%");
@@ -95,7 +134,9 @@ public class ArticuloDao {
 			}finally
 			{
 				try{
-					res.close();
+					if(res!=null)res.close();
+					if(buscarArticuloMarca!=null)buscarArticuloMarca.close();
+					if(conn!=null)conn.close();
 				} // fin de try
 				catch ( SQLException excepcionSql )
 				{
@@ -114,11 +155,13 @@ public class ArticuloDao {
 	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para busca los marcas por observacion>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 	public List<Articulo> buscarArticulo(String busqueda){
 		List<Articulo> articulos=new ArrayList<Articulo>();
+		
 		ResultSet res=null;
-		 
+		Connection conn=null;
 		boolean existe=false;
 		try {
-			
+			conn=conexion.getPoolConexion().getConnection();
+			buscarArticuloNombre=conn.prepareStatement("SELECT * FROM v_articulos where marca LIKE ? ;");
 		
 			buscarArticuloNombre.setString(1, "%" + busqueda + "%");
 			res = buscarArticuloNombre.executeQuery();
@@ -143,7 +186,9 @@ public class ArticuloDao {
 			}finally
 			{
 				try{
-					res.close();
+					if(res!=null)res.close();
+					if(conn!=null)conn.close();
+					if(buscarArticuloNombre!=null)buscarArticuloNombre.close();
 				} // fin de try
 				catch ( SQLException excepcionSql )
 				{
@@ -164,10 +209,12 @@ public class ArticuloDao {
 		Articulo unArticulo=new Articulo();
 		ResultSet res=null;
 		PreparedStatement buscarArt=null;
+		Connection conn=null;
 		boolean existe=false;
 		
 		try {
-			buscarArt=conexionBD.prepareStatement("SELECT * FROM v_articulos where codigo_articulo =  ?");
+			conn=conexion.getPoolConexion().getConnection();
+			buscarArt=conn.prepareStatement("SELECT * FROM v_articulos where codigo_articulo =  ?");
 			buscarArt.setInt(1, i);
 			res = buscarArt.executeQuery();
 			while(res.next()){
@@ -192,7 +239,7 @@ public class ArticuloDao {
 				try{
 					if(res != null) res.close();
 	                if(buscarArt != null)buscarArt.close();
-	                if(conexionBD != null) conexionBD.close();
+	                if(conn != null) conn.close();
 				} // fin de try
 				catch ( SQLException excepcionSql )
 				{
@@ -214,9 +261,11 @@ public class ArticuloDao {
 	public Articulo buscarArticulo(int i){
 		Articulo unArticulo=new Articulo();
 		ResultSet res=null;
+		Connection conn=null;
 		boolean existe=false;
 		try {
-			
+			conn=conexion.getPoolConexion().getConnection();
+			buscarArticulo=conn.prepareStatement("SELECT * FROM v_articulos where codigo_articulo =  ?");
 			buscarArticulo.setInt(1, i);
 			res = buscarArticulo.executeQuery();
 			while(res.next()){
@@ -240,6 +289,8 @@ public class ArticuloDao {
 			{
 				try{
 					if(res!=null)res.close();
+					if(buscarArticulo != null)buscarArticulo.close();
+	                if(conn != null) conn.close();
 				} // fin de try
 				catch ( SQLException excepcionSql )
 				{
@@ -260,9 +311,13 @@ public class ArticuloDao {
 	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para eliminar un articulo>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 	public boolean eliminarArticulo(int id){
 		int resultado=0;
+		Connection conn=null;
 		
 		try {
-			
+				conn=conexion.getPoolConexion().getConnection();
+				
+				eliminarArticulo=conn.prepareStatement("DELETE FROM articulo WHERE codigo_articulo = ?");
+				
 				eliminarArticulo.setInt( 1, id );
 				resultado=eliminarArticulo.executeUpdate();
 				myCodBarraDao.eliminarCodigo(id);
@@ -272,14 +327,30 @@ public class ArticuloDao {
 				System.out.println(e.getMessage());
 				return false;
 			}
+		finally
+		{
+			try{
+				if(eliminarArticulo != null)eliminarArticulo.close();
+                if(conn != null) conn.close();
+			} // fin de try
+			catch ( SQLException excepcionSql )
+			{
+			excepcionSql.printStackTrace();
+			conexion.desconectar();
+			} // fin de catch
+		} // fin de finally
 	}
 	
 	
 	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para Actualizar los articulo>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 	public boolean actualizarArticulo(Articulo a, List<CodBarra> codsElimniar){
 		int resultado;
+		
+		Connection conn=null;
+		
 		try {
-			
+			conn=conexion.getPoolConexion().getConnection();
+			actualizarArticulo=conn.prepareStatement("UPDATE articulo SET articulo = ?, codigo_marca = ? ,codigo_impuesto = ?, precio_articulo=? WHERE codigo_articulo = ?");
 			actualizarArticulo.setString(1,a.getArticulo());
 			actualizarArticulo.setInt(2, a.getMarcaObj().getId());
 			actualizarArticulo.setInt(3, a.getImpuestoObj().getId());
@@ -311,6 +382,19 @@ public class ArticuloDao {
 			System.out.println(e.getMessage());
 			return false;
         }
+		finally
+		{
+			try{
+				
+				if(actualizarArticulo != null)actualizarArticulo.close();
+                if(conn != null) conn.close();
+			} // fin de try
+			catch ( SQLException excepcionSql )
+			{
+			excepcionSql.printStackTrace();
+			conexion.desconectar();
+			} // fin de catch
+		} // fin de finally
 	}
 	
 	
@@ -320,7 +404,7 @@ public class ArticuloDao {
 	public List<Articulo> todoArticulos(){
 		
 		//se crear un referencia al pool de conexiones
-		DataSource ds = DBCPDataSourceFactory.getDataSource("mysql");
+		//DataSource ds = DBCPDataSourceFactory.getDataSource("mysql");
 		
 		
         Connection con = null;
@@ -333,7 +417,7 @@ public class ArticuloDao {
 		
 		boolean existe=false;
 		try {
-			con = ds.getConnection();
+			con = conexion.getPoolConexion().getConnection();
 			
 			seleccionarTodasLosArticulos = con.prepareStatement("SELECT * FROM v_articulos;");
 			
@@ -397,9 +481,14 @@ public class ArticuloDao {
 		
 		int resultado=0;
 		ResultSet rs=null;
+		Connection con = null;
 		
 		try 
 		{
+			con = conexion.getPoolConexion().getConnection();
+			
+			insertarNuevaArticulo=con.prepareStatement( "INSERT INTO articulo(articulo,codigo_marca,codigo_impuesto,precio_articulo) VALUES (?,?,?,?)");
+			
 			insertarNuevaArticulo.setString( 1, myArticulo.getArticulo() );
 			insertarNuevaArticulo.setInt( 2, myArticulo.getMarcaObj().getId() );
 			insertarNuevaArticulo.setDouble( 3, myArticulo.getImpuestoObj().getId());
@@ -429,7 +518,9 @@ public class ArticuloDao {
 		finally
 		{
 			try{
-				rs.close();
+				if(rs!=null)rs.close();
+				 if(insertarNuevaArticulo != null)insertarNuevaArticulo.close();
+	              if(con != null) con.close();
 			} // fin de try
 			catch ( SQLException excepcionSql )
 			{
