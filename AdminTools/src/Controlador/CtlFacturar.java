@@ -3,7 +3,6 @@ package Controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -11,6 +10,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.math.BigDecimal;
+
 
 
 import javax.swing.JOptionPane;
@@ -23,11 +23,10 @@ import Modelo.Cliente;
 import Modelo.ClienteDao;
 import Modelo.Conexion;
 import Modelo.DetalleFactura;
-
 import Modelo.Factura;
-
 import Modelo.FacturaDao;
 import View.ViewFacturar;
+import View.ViewListaArticulo;
 
 public class CtlFacturar  implements ActionListener, MouseListener, TableModelListener, WindowListener, KeyListener  {
 	private ViewFacturar view;
@@ -58,7 +57,7 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		String comando=e.getActionCommand();
-		JOptionPane.showMessageDialog(view, "paso de celdas");
+		//JOptionPane.showMessageDialog(view, "paso de celdas");
 		switch(comando){
 		
 		case "BUSCARCLIENTE":
@@ -132,7 +131,7 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 		int colum=e.getColumn();
 		int row=e.getFirstRow();
 		
-		JOptionPane.showMessageDialog(view, "paso de celdas");
+		//JOptionPane.showMessageDialog(view, "paso de celdas");
 		switch(e.getType()){
 		
 		case TableModelEvent.HEADER_ROW:
@@ -147,26 +146,35 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 			        int identificador= (int)this.view.getModeloTabla().getValueAt(row, 0);
 					this.myArticulo=this.myArticuloDao.buscarArticulo(identificador);
 					//JOptionPane.showMessageDialog(view, myArticulo);
+					
 					if(myArticulo!=null){
 						this.view.getModeloTabla().setArticulo(myArticulo, row);
 						//this.view.getModelo().getDetalle(row).setCantidad(1);
+						
+						//calcularTotal(this.view.getModeloTabla().getDetalle(row));
+						calcularTotales();
+						this.view.getModeloTabla().agregarDetalle();
+						
+						
 						boolean toggle = false;
 						boolean extend = false;
 						this.view.geTableDetalle().requestFocus();
 							
 						this.view.geTableDetalle().changeSelection(row,colum+3, toggle, extend);
 							
-						calcularTotal(this.view.getModeloTabla().getDetalle(row));
-						this.view.getModeloTabla().agregarDetalle();
+						
 					}else{
 						JOptionPane.showMessageDialog(view, "No se encuentra el articulo");
 						this.view.getModeloTabla().getDetalle(row).getArticulo().setId(-1);
+						this.view.getModeloTabla().agregarDetalle();
+						calcularTotales();
 					}
 					
 					
 				}
 				if(colum==3){
-					calcularTotal(this.view.getModeloTabla().getDetalle(row));
+					//calcularTotal(this.view.getModeloTabla().getDetalle(row));
+					calcularTotales();
 					boolean toggle = false;
 					boolean extend = false;
 					this.view.geTableDetalle().requestFocus();
@@ -181,7 +189,8 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 					this.view.geTableDetalle().changeSelection(row,colum+3, false, false);
 				}
 				if(colum==6){
-					JOptionPane.showMessageDialog(view, "Modifico el Descuento "+this.view.getModeloTabla().getDetalle(row).getDescuento());
+					calcularTotales();
+					//JOptionPane.showMessageDialog(view, "Modifico el Descuento "+this.view.getModeloTabla().getDetalle(row).getDescuentoItem().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue());
 				}
 				/*if(colum==3){
 					calcularTotal(this.view.getModelo().getDetalle(row));
@@ -201,62 +210,121 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 	
 public void calcularTotales(){
 	
+	//se establecen los totales en cero
+	this.myFactura.resetTotales();
+	
 	for(int x=0; x<this.view.getModeloTabla().getDetalles().size();x++){
 		
-		if(detalle.getCantidad().doubleValue()!=0 && detalle.getArticulo().getPrecioVenta()!=0){
-			
-			//se obtien la cantidad y el precio de compra por unidad
-			BigDecimal cantidad=detalle.getCantidad();
-			BigDecimal precioVenta= new BigDecimal(detalle.getArticulo().getPrecioVenta());
-			
-			
-			
-			//se obtiene el impuesto del articulo 
-			BigDecimal porcentaImpuesto =new BigDecimal(detalle.getArticulo().getImpuestoObj().getPorcentaje());
-			BigDecimal porImpuesto=new BigDecimal(0);
-			porImpuesto=porcentaImpuesto.divide(new BigDecimal(100));
-			porImpuesto=porImpuesto.add(new BigDecimal(1));
-					//new BigDecimal(((Double.parseDouble(detalle.getArticulo().getImpuestoObj().getPorcentaje())  )/100)+1);
-			
-			//se calcula el total del item
-			BigDecimal totalItem=cantidad.multiply(precioVenta);
-			
-			//se calcula el total sin  el impuesto;
-			BigDecimal totalsiniva= new BigDecimal("0.0");
-			totalsiniva=totalItem.divide(porImpuesto,2,BigDecimal.ROUND_HALF_EVEN);//.divide(porImpuesto);// (totalItem)/(porcentaImpuesto);
+		DetalleFactura detalle=this.view.getModeloTabla().getDetalle(x);
 		
-			
-			//se calcula el total de impuesto del item
-			BigDecimal impuestoItem=totalItem.subtract(totalsiniva);//-totalsiniva;
-			
-			
-			
-			//se estable el total y impuesto en el modelo
-			myFactura.setTotal(totalItem);
-			myFactura.setTotalImpuesto(impuestoItem);
-			myFactura.setSubTotal(totalsiniva);
-			myFactura.getDetalles().add(detalle);
-			
-			detalle.setSubTotal(totalsiniva.setScale(2, BigDecimal.ROUND_HALF_EVEN));
-			detalle.setImpuesto(impuestoItem.setScale(2, BigDecimal.ROUND_HALF_EVEN));
-			//myFactura.getDetalles()
-			
-			//se establece en la y el impuesto en el item de la vista
-			//detalle.setImpuesto(impuesto2.setScale(2, BigDecimal.ROUND_HALF_EVEN));
-			detalle.setTotal(totalItem.setScale(2, BigDecimal.ROUND_HALF_EVEN));
-			
-			//se establece el total e impuesto en el vista
-			this.view.getTxtTotal().setText(""+myFactura.getTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN));
-			this.view.getTxtImpuesto().setText(""+myFactura.getTotalImpuesto().setScale(2, BigDecimal.ROUND_HALF_EVEN));
-			this.view.getTxtSubtotal().setText(""+myFactura.getSubTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN));
-			
-			
-			
-			
 		
+		if(detalle.getArticulo().getId()!=-1)
+			if(detalle.getCantidad().doubleValue()!=0 && detalle.getArticulo().getPrecioVenta()!=0){
+				
+				
+				
+				//se obtien la cantidad y el precio de compra por unidad
+				BigDecimal cantidad=detalle.getCantidad();
+				BigDecimal precioVenta= new BigDecimal(detalle.getArticulo().getPrecioVenta());
+				
+				//se calcula el total del item
+				BigDecimal totalItem=cantidad.multiply(precioVenta);
+				
+				int desc=detalle.getDescuento();
 			
-			//this.view.getModelo().fireTableDataChanged();
-		}//fin del if
+				if(desc==1)
+				{
+					BigDecimal des=totalItem.multiply(new BigDecimal(0.05));
+					detalle.setDescuentoItem(des);
+					totalItem=totalItem.subtract(des);
+					
+				}else if(desc==2){
+					BigDecimal des=totalItem.multiply(new BigDecimal(0.10));
+					detalle.setDescuentoItem(des);
+					totalItem=totalItem.subtract(des);	
+				}else if(desc==3){
+					BigDecimal des=totalItem.multiply(new BigDecimal(0.15));
+					detalle.setDescuentoItem(des);
+					totalItem=totalItem.subtract(des);	
+				}else if(desc==4){
+					BigDecimal des=totalItem.multiply(new BigDecimal(0.20));
+					detalle.setDescuentoItem(des);
+					totalItem=totalItem.subtract(des);	
+				}else if(desc==5){
+					BigDecimal des=totalItem.multiply(new BigDecimal(0.25));
+					detalle.setDescuentoItem(des);
+					totalItem=totalItem.subtract(des);	
+				}else if(desc==6){
+					BigDecimal des=totalItem.multiply(new BigDecimal(0.30));
+					detalle.setDescuentoItem(des);
+					totalItem=totalItem.subtract(des);	
+				}else if(desc==7){
+					BigDecimal des=totalItem.multiply(new BigDecimal(0.35));
+					detalle.setDescuentoItem(des);
+					totalItem=totalItem.subtract(des);	
+				}else if(desc==8){
+					BigDecimal des=totalItem.multiply(new BigDecimal(0.40));
+					detalle.setDescuentoItem(des);
+					totalItem=totalItem.subtract(des);	
+				}else if(desc==9){
+					BigDecimal des=totalItem.multiply(new BigDecimal(0.45));
+					detalle.setDescuentoItem(des);
+					totalItem=totalItem.subtract(des);	
+				}else if(desc==10){
+					BigDecimal des=totalItem.multiply(new BigDecimal(0.50));
+					detalle.setDescuentoItem(des);
+					totalItem=totalItem.subtract(des);	
+				}
+				
+				
+				
+				//se obtiene el impuesto del articulo 
+				BigDecimal porcentaImpuesto =new BigDecimal(detalle.getArticulo().getImpuestoObj().getPorcentaje());
+				BigDecimal porImpuesto=new BigDecimal(0);
+				porImpuesto=porcentaImpuesto.divide(new BigDecimal(100));
+				porImpuesto=porImpuesto.add(new BigDecimal(1));
+						//new BigDecimal(((Double.parseDouble(detalle.getArticulo().getImpuestoObj().getPorcentaje())  )/100)+1);
+				
+				
+				
+				//se calcula el total sin  el impuesto;
+				BigDecimal totalsiniva= new BigDecimal("0.0");
+				totalsiniva=totalItem.divide(porImpuesto,2,BigDecimal.ROUND_HALF_EVEN);//.divide(porImpuesto);// (totalItem)/(porcentaImpuesto);
+			
+				
+				//se calcula el total de impuesto del item
+				BigDecimal impuestoItem=totalItem.subtract(totalsiniva);//-totalsiniva;
+				
+				
+				
+				//se estable el total y impuesto en el modelo
+				myFactura.setTotal(totalItem);
+				myFactura.setTotalImpuesto(impuestoItem);
+				myFactura.setSubTotal(totalsiniva);
+				myFactura.getDetalles().add(detalle);
+				myFactura.setTotalDescuento(detalle.getDescuentoItem());
+				
+				detalle.setSubTotal(totalsiniva.setScale(2, BigDecimal.ROUND_HALF_EVEN));
+				detalle.setImpuesto(impuestoItem.setScale(2, BigDecimal.ROUND_HALF_EVEN));
+				//myFactura.getDetalles()
+				
+				//se establece en la y el impuesto en el item de la vista
+				//detalle.setImpuesto(impuesto2.setScale(2, BigDecimal.ROUND_HALF_EVEN));
+				detalle.setTotal(totalItem.setScale(2, BigDecimal.ROUND_HALF_EVEN));
+				
+				//se establece el total e impuesto en el vista
+				this.view.getTxtTotal().setText(""+myFactura.getTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN));
+				this.view.getTxtImpuesto().setText(""+myFactura.getTotalImpuesto().setScale(2, BigDecimal.ROUND_HALF_EVEN));
+				this.view.getTxtSubtotal().setText(""+myFactura.getSubTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN));
+				this.view.getTxtDescuento().setText(""+myFactura.getTotalDescuento().setScale(2, BigDecimal.ROUND_HALF_EVEN));
+				
+				
+				
+				
+			
+				
+				//this.view.getModelo().fireTableDataChanged();
+			}//fin del if
 		
 	}//fin del for
 	}
@@ -351,6 +419,15 @@ public void calcularTotal(DetalleFactura detalle){
 		if(e.getKeyCode()==KeyEvent.VK_F5){
 			salir();
 		}
+		if(e.getKeyCode()==KeyEvent.VK_DELETE){
+			 //Recoger qué fila se ha pulsadao en la tabla
+			int filaPulsada = this.view.geTableDetalle().getSelectedRow();
+			 if(filaPulsada>=0){
+				 this.view.getModeloTabla().eliminarDetalle(filaPulsada);
+				 this.calcularTotales();
+			 }
+			
+		}
 	}
 	
 	private void salir(){
@@ -364,6 +441,23 @@ public void calcularTotal(DetalleFactura detalle){
 		
 	}
 	private void buscarArticulo(){
+		
+		ViewListaArticulo viewListaArticulo=new ViewListaArticulo();
+		CtlArticuloBuscar ctlArticulo =new CtlArticuloBuscar(viewListaArticulo,conexion);
+		viewListaArticulo.conectarControladorBuscar(ctlArticulo);
+		
+		//se llama el metodo que mostrar la ventana para buscar el articulo
+		Articulo myArticulo=ctlArticulo.buscarArticulo(view);
+		
+		//se comprueba si le regreso un articulo valido
+		if(myArticulo.getArticulo()!=null && myArticulo.getId()!=-1){
+			this.view.getModeloTabla().setArticulo(myArticulo);
+			//this.view.getModelo().getDetalle(row).setCantidad(1);
+			
+			//calcularTotal(this.view.getModeloTabla().getDetalle(row));
+			calcularTotales();
+			this.view.getModeloTabla().agregarDetalle();
+		}
 		
 	}
 	

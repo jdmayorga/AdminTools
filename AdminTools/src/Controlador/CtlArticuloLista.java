@@ -46,6 +46,7 @@ public class CtlArticuloLista implements ActionListener,MouseListener, WindowLis
 		myArticulo=new Articulo();
 		myArticuloDao=new ArticuloDao(conexion);
 		cargarTabla(myArticuloDao.todoArticulos());
+		this.view.setVisible(true);
 		
 	}
 

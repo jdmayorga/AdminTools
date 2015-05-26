@@ -11,6 +11,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -23,9 +24,10 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.JPopupMenu;
 
+import Controlador.CtlArticuloBuscar;
 import Controlador.CtlArticuloLista;
 
-public class ViewListaArticulo extends JFrame {
+public class ViewListaArticulo extends JDialog {
 	
 	
 	protected BorderLayout miEsquema;
@@ -57,8 +59,9 @@ public class ViewListaArticulo extends JFrame {
 	
 	
 	public ViewListaArticulo(){
-		super("Articulos");
+		//super("Articulos");
 		miEsquema=new BorderLayout();
+		this.setTitle("Articulos");
 		getContentPane().setLayout(miEsquema);
 		
 		
@@ -135,7 +138,7 @@ public class ViewListaArticulo extends JFrame {
 		setSize(710,600);
 		
 		//se hace visible
-		setVisible(true);
+		//setVisible(true);
 		
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
@@ -203,5 +206,41 @@ public class ViewListaArticulo extends JFrame {
 		return rdbtnTodos;
 		
 	}
+	public BotonAgregar getBtnAgregar(){
+		return btnAgregar;
+	}
+	
+public void conectarControladorBuscar(CtlArticuloBuscar c){
+		
+		
+		rdbtnId.addActionListener(c);
+		//rdbtnId.getActionCommand();
+		rdbtnId.setActionCommand("ID");
+		
+		rdbtnArticulo.addActionListener(c);
+		rdbtnArticulo.setActionCommand("ARTICULO");
+		
+		rdbtnMarca.addActionListener(c);
+		rdbtnMarca.setActionCommand("MARCA");
+		
+		btnBuscar.addActionListener(c);
+		btnBuscar.setActionCommand("BUSCAR");
+		
+		 btnAgregar.addActionListener(c);
+		 btnAgregar.setActionCommand("INSERTAR");
+		 
+		 btnEliminar.addActionListener(c);
+		 btnEliminar.setActionCommand("ELIMINAR");
+		 
+		 btnLimpiar.addActionListener(c);
+		 btnLimpiar.setActionCommand("LIMPIAR");
+		 
+		 txtBuscar.addActionListener(c);
+		 txtBuscar.setActionCommand("BUSCAR");
+		 
+		 tablaArticulos.addMouseListener(c);
+		 tablaArticulos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	}
+	
 
 }

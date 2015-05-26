@@ -78,7 +78,7 @@ public class ViewFacturar extends JDialog {
 		super(view,"Facturar",Dialog.ModalityType.DOCUMENT_MODAL);
 		panelAcciones=new JPanel();
 		panelAcciones.setBorder(new TitledBorder(new LineBorder(new Color(130, 135, 144)), "Opciones", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelAcciones.setBounds(20, 0, 754, 70);
+		panelAcciones.setBounds(20, 11, 175, 407);
 		panelAcciones.setLayout(null);
 		
 		this.setTitle("Facturar");
@@ -86,35 +86,35 @@ public class ViewFacturar extends JDialog {
 		
 		btnBuscar = new BotonBuscar1();
 		btnBuscar.setHorizontalAlignment(SwingConstants.LEFT);
-		btnBuscar.setBounds(10, 18,132, 38);
+		btnBuscar.setBounds(10, 35,144, 38);
 		panelAcciones.add(btnBuscar);
 		//btnBuscar.getInputMap().put(KeyStroke.getKeyStroke("F1"), sumar());
 		
 		btnCliente = new BotonBuscarClientes();
-		btnCliente.setBounds(152, 18, 132, 38);
+		btnCliente.setBounds(10, 105, 144, 38);
 		panelAcciones.add(btnCliente);
 		
 		btnCobrar = new BotonCobrar();
-		btnCobrar.setBounds(294, 18, 167, 38);
+		btnCobrar.setBounds(10, 180, 144, 38);
 		panelAcciones.add(btnCobrar);
 		
 		btnGuardar = new BotonGuardar();
 		btnGuardar.setHorizontalAlignment(SwingConstants.LEFT);
 		btnGuardar.setText("F4 Guardar");
-		btnGuardar.setBounds(471, 18, 137, 38);
+		btnGuardar.setBounds(10, 255, 144, 38);
 		panelAcciones.add(btnGuardar);
 		
 		btnCerrar = new BotonCancelar();
 		btnCerrar.setHorizontalAlignment(SwingConstants.LEFT);
 		btnCerrar.setText("F5 Cerrar");
-		btnCerrar.setBounds(618, 18, 126, 38);
+		btnCerrar.setBounds(10, 330, 144, 38);
 		panelAcciones.add(btnCerrar);
 		
 		
 		panelDatosFactura=new JPanel();
 		panelDatosFactura.setBackground(SystemColor.inactiveCaption);
 		panelDatosFactura.setBorder(new TitledBorder(new LineBorder(new Color(130, 135, 144)), "Datos Generales", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelDatosFactura.setBounds(20, 84, 754, 84);
+		panelDatosFactura.setBounds(244, 11, 754, 84);
 		panelDatosFactura.setLayout(null);
 		
 		//getContentPane().geti
@@ -190,25 +190,25 @@ public class ViewFacturar extends JDialog {
 		//registerEnterKey( );
 		
 		JScrollPane scrollPane = new JScrollPane(tableDetalle);
-		scrollPane.setBounds(20, 179, 754, 270);
+		scrollPane.setBounds(244, 118, 754, 300);
 		getContentPane().add(scrollPane);
 		
-		this.setSize(800, 600);
+		this.setSize(1024, 600);
 		getContentPane().setLayout(null);
 		
-		Font myFont=new Font("OCR A Extended", Font.PLAIN, 35);
+		Font myFont=new Font("OCR A Extended", Font.PLAIN, 45);
 		txtSubtotal = new JTextField();
 		txtSubtotal.setFont(myFont);
 		txtSubtotal.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtSubtotal.setText("00");
 		
 		txtSubtotal.setEditable(false);
-		txtSubtotal.setBounds(20, 485, 175, 44);
+		txtSubtotal.setBounds(88, 485, 220, 44);
 		getContentPane().add(txtSubtotal);
 		txtSubtotal.setColumns(10);
 		
 		lblSubtotal = new JLabel("SubTotal");
-		lblSubtotal.setBounds(20, 460, 59, 14);
+		lblSubtotal.setBounds(88, 460, 59, 14);
 		getContentPane().add(lblSubtotal);
 		
 		txtImpuesto = new JTextField();
@@ -216,25 +216,26 @@ public class ViewFacturar extends JDialog {
 		txtImpuesto.setFont(myFont);
 		txtImpuesto.setText("00");
 		txtImpuesto.setEditable(false);
-		txtImpuesto.setBounds(205, 485, 175, 44);
+		txtImpuesto.setBounds(318, 485, 220, 44);
 		getContentPane().add(txtImpuesto);
 		txtImpuesto.setColumns(10);
 		
 		lblImpuesto = new JLabel("Impuesto");
-		lblImpuesto.setBounds(205, 460, 59, 14);
+		lblImpuesto.setBounds(318, 460, 59, 14);
 		getContentPane().add(lblImpuesto);
 		
 		txtTotal = new JTextField();
+		txtTotal.setForeground(Color.RED);
 		txtTotal.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtTotal.setFont(myFont);
 		txtTotal.setText("00");
 		txtTotal.setEditable(false);
-		txtTotal.setBounds(572, 485, 202, 44);
+		txtTotal.setBounds(778, 485, 220, 44);
 		getContentPane().add(txtTotal);
 		txtTotal.setColumns(10);
 		
 		lblTotal = new JLabel("Total");
-		lblTotal.setBounds(572, 460, 46, 14);
+		lblTotal.setBounds(780, 460, 46, 14);
 		getContentPane().add(lblTotal);
 		
 		txtDescuento = new JTextField();
@@ -242,12 +243,12 @@ public class ViewFacturar extends JDialog {
 		txtDescuento.setEditable(false);
 		txtDescuento.setText("00");
 		txtDescuento.setFont(myFont);
-		txtDescuento.setBounds(390, 485, 175, 44);
+		txtDescuento.setBounds(548, 485, 220, 44);
 		getContentPane().add(txtDescuento);
 		txtDescuento.setColumns(10);
 		
 		JLabel lblDescuento = new JLabel("Descuento");
-		lblDescuento.setBounds(394, 460, 92, 14);
+		lblDescuento.setBounds(548, 460, 92, 14);
 		getContentPane().add(lblDescuento);
 		//centrar la ventana en la pantalla
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -271,6 +272,9 @@ public class ViewFacturar extends JDialog {
 			
 		}
 		}
+	public JTextField getTxtDescuento(){
+		return txtDescuento;		
+	}
 	public JTextField getTxtSubtotal(){
 		return txtSubtotal;
 	}

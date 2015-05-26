@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 import Modelo.Articulo;
@@ -17,13 +18,20 @@ public class TablaModeloFactura extends AbstractTableModel {
 	private List<DetalleFactura> detallesFactura=new ArrayList<DetalleFactura>();
 	
 	public void agregarDetalle(){
+		//JOptionPane.showMessageDialog(null,detallesFactura.size() );
 		for(int x=0;x<detallesFactura.size();x++){
-			if(detallesFactura.get(x).getArticulo().getId()==-1){
+			
+			//JOptionPane.showMessageDialog(null,detallesFactura.get(x).getArticulo() );
+			if(detallesFactura.get(x).getArticulo().getId()<0){
+				//JOptionPane.showMessageDialog(null,detallesFactura.get(x).getArticulo()+ "..Eliminando");
 				detallesFactura.remove(x);
+				
 			}
 		}
 		DetalleFactura uno =new DetalleFactura();
 		detallesFactura.add(uno);
+		fireTableDataChanged();
+		//JOptionPane.showMessageDialog(null,detallesFactura.size() );
 	}
 	public List<DetalleFactura> getDetalles(){
 		return detallesFactura;
@@ -39,6 +47,17 @@ public class TablaModeloFactura extends AbstractTableModel {
 	public void setArticulo(Articulo a, int row){
 		detallesFactura.get(row).setListArticulos(a);
 	}
+	
+	public void setArticulo(Articulo a){
+		
+		for(int x=0;x<detallesFactura.size();x++){
+			if(detallesFactura.get(x).getArticulo().getId()==-1){
+				detallesFactura.get(x).setListArticulos(a);
+				break;
+			}
+		}
+		
+	}
 
 	@Override
 	public int getRowCount() {
@@ -52,7 +71,11 @@ public class TablaModeloFactura extends AbstractTableModel {
 		return columnNames.length;
 	}
 	
-	
+	public void eliminarDetalle(int index){
+		detallesFactura.remove(index);
+		fireTableDataChanged();
+		
+	}
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		// TODO Auto-generated method stub
