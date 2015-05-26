@@ -28,7 +28,7 @@ public class ArticuloDao {
 		conexion=conn;
 		
 		myCodBarraDao=new CodBarraDao(conexion);
-		try{
+		/*try{
 			conexionBD=conexion.getPoolConexion().getConnection();
 			
 			seleccionarTodasLosArticulos = conexionBD.prepareStatement("SELECT * FROM v_articulos;");
@@ -43,12 +43,12 @@ public class ArticuloDao {
 			buscarMarca=conexion.getConnection().prepareStatement("SELECT codigo_marca,descripcion,observacion FROM marcas where codigo_marca =  ?");
 			buscarMarcaObseracion=conexion.getConnection().prepareStatement("SELECT codigo_marca,descripcion,observacion FROM marcas where observacion LIKE ? ;");
 			buscarMarcaNombre=conexion.getConnection().prepareStatement("SELECT codigo_marca,descripcion,observacion FROM marcas where descripcion LIKE ? ;");*/
-		}
+		/*}
 		catch ( SQLException excepcionSql )
 		{
 			excepcionSql.printStackTrace();
 			System.exit( 1 );
-		} // fin de catch
+		} // fin de catch*/
 		
 	}
 	public void cargarInstrucciones(){
