@@ -21,6 +21,8 @@ public class TablaRenderizadorProveedor implements TableCellRenderer {
             etiqueta.setBackground(Color.white);
         }
         
+        
+        
        if (column == 1) {
             String nombre = (String) value;
             etiqueta.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);

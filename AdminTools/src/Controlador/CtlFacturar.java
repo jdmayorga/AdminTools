@@ -462,7 +462,7 @@ public void calcularTotal(DetalleFactura detalle){
 		
 		
 		//se llama el metodo que mostrar la ventana para buscar el articulo
-		Articulo myArticulo=ctlArticulo.buscarArticulo(view, conexion);
+		Articulo myArticulo=ctlArticulo.buscarArticulo(view);
 		
 		//se comprueba si le regreso un articulo valido
 		if(myArticulo.getArticulo()!=null && myArticulo.getId()!=-1){

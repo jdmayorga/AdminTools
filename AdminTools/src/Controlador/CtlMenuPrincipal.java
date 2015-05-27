@@ -12,6 +12,7 @@ import Modelo.Conexion;
 import View.ViewAgregarCompras;
 import View.ViewFacturar;
 import View.ViewListaArticulo;
+import View.ViewListaClientes;
 import View.ViewListaMarca;
 import View.ViewListaProveedor;
 import View.ViewMenuPrincipal;
@@ -78,6 +79,10 @@ public class CtlMenuPrincipal implements ActionListener {
 				
 				//hacer visible la view lista de marcas
 				viewMarcas.setVisible(true);
+				break;
+			case "CLIENTES":
+				ViewListaClientes viewClientes=new ViewListaClientes();
+				CtlClienteLista  ctlClientes=new CtlClienteLista(viewClientes,conexion);
 				break;
 		}
 		
