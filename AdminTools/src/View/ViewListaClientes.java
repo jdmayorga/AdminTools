@@ -15,9 +15,11 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import Controlador.CtlClienteBuscar;
 import Controlador.CtlClienteLista;
 
 public class ViewListaClientes extends JDialog {
@@ -36,8 +38,8 @@ public class ViewListaClientes extends JDialog {
 	
 	
 	private JRadioButton rdbtnId;
-	private JRadioButton rdbtnArticulo;
-	private JRadioButton rdbtnMarca;
+	private JRadioButton rdbtnNombre;
+	private JRadioButton rdbtnRtn;
 	private ButtonGroup grupoOpciones; // grupo de botones que contiene los botones de opción
 	private JRadioButton rdbtnTodos;
 	protected BotonBuscar btnBuscar;
@@ -88,13 +90,13 @@ public class ViewListaClientes extends JDialog {
 		panelBusqueda.add(rdbtnId);
 		grupoOpciones.add(rdbtnId);
 		
-		rdbtnArticulo = new JRadioButton("Articulo",false);
-		panelBusqueda.add(rdbtnArticulo);
-		grupoOpciones.add(rdbtnArticulo);
+		rdbtnNombre = new JRadioButton("Nombre",false);
+		panelBusqueda.add(rdbtnNombre);
+		grupoOpciones.add(rdbtnNombre);
 		
-		rdbtnMarca = new JRadioButton("Marca",false);
-		panelBusqueda.add(rdbtnMarca);
-		grupoOpciones.add(rdbtnMarca);
+		rdbtnRtn = new JRadioButton("RTN",false);
+		panelBusqueda.add(rdbtnRtn);
+		grupoOpciones.add(rdbtnRtn);
 		
 		//elementos del panel buscar
 		txtBuscar=new JTextField(10);
@@ -135,11 +137,69 @@ public class ViewListaClientes extends JDialog {
 	public JTable getTablaClientes(){
 		return tablaClientes;
 	}
+	public JRadioButton getRdbtnId(){
+		return rdbtnId;
+	}
+	public JTextField getTxtBuscar(){
+		return txtBuscar;
+	}
+	public JRadioButton getRdbtnNombre(){
+		return rdbtnNombre;
+	}
+	public JRadioButton getRdbtnRtn(){
+		return  rdbtnRtn;
+		
+	}
+	public JRadioButton getRdbtnTodos(){
+		return rdbtnTodos;
+		
+	}
 	
-	
+	public void conectarControladorBuscar(CtlClienteBuscar c){
+		btnAgregar.addActionListener(c);
+		btnAgregar.setActionCommand("NUEVO");
+		
+		rdbtnId.addActionListener(c);
+		//rdbtnId.getActionCommand();
+		rdbtnId.setActionCommand("ID");
+		
+		rdbtnNombre.addActionListener(c);
+		rdbtnNombre.setActionCommand("ARTICULO");
+		
+		rdbtnRtn.addActionListener(c);
+		rdbtnRtn.setActionCommand("MARCA");
+		
+		btnBuscar.addActionListener(c);
+		btnBuscar.setActionCommand("BUSCAR");
+		
+		txtBuscar.addActionListener(c);
+		txtBuscar.setActionCommand("BUSCAR");
+		
+		tablaClientes.addMouseListener(c);
+		tablaClientes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	}
 	public void conectarControlador(CtlClienteLista c){
 		btnAgregar.addActionListener(c);
 		btnAgregar.setActionCommand("NUEVO");
+		
+		rdbtnId.addActionListener(c);
+		//rdbtnId.getActionCommand();
+		rdbtnId.setActionCommand("ID");
+		
+		rdbtnNombre.addActionListener(c);
+		rdbtnNombre.setActionCommand("ARTICULO");
+		
+		rdbtnRtn.addActionListener(c);
+		rdbtnRtn.setActionCommand("MARCA");
+		
+		btnBuscar.addActionListener(c);
+		btnBuscar.setActionCommand("BUSCAR");
+		
+		txtBuscar.addActionListener(c);
+		txtBuscar.setActionCommand("BUSCAR");
+		
+		tablaClientes.addMouseListener(c);
+		tablaClientes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
 
 }

@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 
 
 
+
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -27,6 +28,7 @@ import Modelo.Factura;
 import Modelo.FacturaDao;
 import View.ViewFacturar;
 import View.ViewListaArticulo;
+import View.ViewListaClientes;
 
 public class CtlFacturar  implements ActionListener, MouseListener, TableModelListener, WindowListener, KeyListener  {
 	
@@ -56,7 +58,8 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 		//conseguir la fecha la facturaa
 		view.getTxtFechafactura().setText(facturaDao.getFechaSistema());
 		//view.setVisible(true);
-		
+		this.view.getTxtIdcliente().setText("1");;
+		this.view.getTxtNombrecliente().setText("Cliente Normal");
 		//la ventana buscar articulo y su controlador
 		viewListaArticulo=new ViewListaArticulo();
 		ctlArticulo =new CtlArticuloBuscar(viewListaArticulo,conexion);
@@ -104,6 +107,11 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 			break;
 		
 		}
+		
+	}
+	private void setFactura(){
+		myFactura.setCliente(myCliente);
+		myFactura.setDetalles(this.view.getModeloTabla().getDetalles());
 		
 	}
 
@@ -477,7 +485,22 @@ public void calcularTotal(DetalleFactura detalle){
 	}
 	
 	private void buscarCliente(){
+		//se crea la vista para buscar los cliente
+		ViewListaClientes viewListaCliente=new ViewListaClientes ();
 		
+		CtlClienteBuscar ctlBuscarCliente=new CtlClienteBuscar(viewListaCliente,conexion);
+		
+		myCliente=ctlBuscarCliente.buscarCliente(view);
+		//se comprueba si le regreso un articulo valido
+		if(myCliente.getNombre()!=null && myCliente.getId()!=-1){
+			this.view.getTxtIdcliente().setText(""+myCliente.getId());;
+			this.view.getTxtNombrecliente().setText(myCliente.getNombre());
+		
+		}else{
+			JOptionPane.showMessageDialog(view, "No se encontro el cliente");
+			this.view.getTxtIdcliente().setText("1");;
+			this.view.getTxtNombrecliente().setText("Cliente Normal");
+		}
 	}
 
 	@Override

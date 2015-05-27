@@ -94,7 +94,7 @@ public class ArticuloDao {
 		}
 	}*/
 
-	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para busca los marcas por observacion>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para busca los articulos por marcas>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 	public List<Articulo> buscarArticuloMarca(String busqueda){
 		List<Articulo> articulos=new ArrayList<Articulo>();
 		
@@ -152,7 +152,7 @@ public class ArticuloDao {
 		
 	}
 	
-	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para busca los marcas por observacion>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para busca los articulo  por nombre>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 	public List<Articulo> buscarArticulo(String busqueda){
 		List<Articulo> articulos=new ArrayList<Articulo>();
 		
@@ -161,7 +161,7 @@ public class ArticuloDao {
 		boolean existe=false;
 		try {
 			conn=conexion.getPoolConexion().getConnection();
-			buscarArticuloNombre=conn.prepareStatement("SELECT * FROM v_articulos where marca LIKE ? ;");
+			buscarArticuloNombre=conn.prepareStatement("SELECT * FROM v_articulos where articulo LIKE ? ;");
 		
 			buscarArticuloNombre.setString(1, "%" + busqueda + "%");
 			res = buscarArticuloNombre.executeQuery();

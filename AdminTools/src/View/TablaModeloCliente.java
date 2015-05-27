@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import Modelo.Articulo;
 import Modelo.Cliente;
 
 public class TablaModeloCliente extends AbstractTableModel {
@@ -50,6 +51,12 @@ public class TablaModeloCliente extends AbstractTableModel {
             return null;
 		}
 	}
+	
+	public Cliente getCliente(int index){
+		//proveedores.
+		return clientes.get(index);
+		
+	}
 	@Override
     public Class getColumnClass(int columnIndex) {
 		//        return getValueAt(0, columnIndex).getClass();
@@ -72,6 +79,12 @@ public class TablaModeloCliente extends AbstractTableModel {
 		clientes.add(cliente);
 		this.fireTableDataChanged();
 		
+	}
+
+	public void cambiarCliente(int filaPulsada, Cliente cliente) {
+		// TODO Auto-generated method stub
+		clientes.set(filaPulsada, cliente);
+		this.fireTableDataChanged();
 	}
 
 

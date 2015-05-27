@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -12,30 +14,50 @@ import javax.swing.JOptionPane;
 import Modelo.Articulo;
 import Modelo.Cliente;
 import Modelo.ClienteDao;
-import Modelo.CodBarraDao;
 import Modelo.Conexion;
 import View.TablaModeloMarca;
-import View.ViewCrearArticulo;
 import View.ViewCrearCliente;
+import View.ViewFacturar;
 import View.ViewListaClientes;
 
-public class CtlClienteLista implements ActionListener, MouseListener {
-	private ViewListaClientes view;
+public class CtlClienteBuscar implements ActionListener ,MouseListener, WindowListener{
+	
 	private Conexion conexion=null;
+	private ViewListaClientes view;
+	
 	private ClienteDao clienteDao=null;
 	private Cliente myCliente=null;
-	
 	//fila selecciona enla lista
-		private int filaPulsada;
+	private int filaPulsada;
 	
-	public CtlClienteLista(ViewListaClientes v,Conexion conn){
-		view=v;
+	public CtlClienteBuscar(ViewListaClientes v, Conexion conn){
 		conexion=conn;
-		view.conectarControlador(this);
-		
+		view=v;
+		view.conectarControladorBuscar(this);
 		clienteDao=new ClienteDao(conexion);
 		cargarTabla(clienteDao.todoClientes());
-		view.setVisible(true);
+		//view.setVisible(true);
+	}
+	
+	
+	public void cargarTabla(List<Cliente> clientes){
+		//JOptionPane.showMessageDialog(view, articulos);
+		this.view.getModelo().limpiarClientes();
+		for(int c=0;c<clientes.size();c++){
+			this.view.getModelo().agregarCliente(clientes.get(c));
+		}
+	}
+	
+public Cliente buscarCliente(ViewFacturar v){
+		
+		//this.myArticuloDao.cargarInstrucciones();
+		cargarTabla(clienteDao.todoClientes());
+		//this.view.getBtnEliminar().setEnabled(false);
+		//this.view.getBtnAgregar().setEnabled(false);
+		this.view.setLocationRelativeTo(v);
+		this.view.setModal(true);
+		this.view.setVisible(true);
+		return this.myCliente;
 	}
 
 	@Override
@@ -70,6 +92,7 @@ public class CtlClienteLista implements ActionListener, MouseListener {
 				this.view.getTxtBuscar().setText("");
 				}
 			break;
+			
 		case "NUEVO":
 			ViewCrearCliente view=new ViewCrearCliente();
 			CtlCliente ctlCliente=new CtlCliente(view,conexion);
@@ -91,13 +114,7 @@ public class CtlClienteLista implements ActionListener, MouseListener {
 			ctlCliente=null;
 			break;
 		}
-	}
-	public void cargarTabla(List<Cliente> clientes){
-		//JOptionPane.showMessageDialog(view, articulos);
-		this.view.getModelo().limpiarClientes();
-		for(int c=0;c<clientes.size();c++){
-			this.view.getModelo().agregarCliente(clientes.get(c));
-		}
+		
 	}
 
 	@Override
@@ -106,53 +123,12 @@ public class CtlClienteLista implements ActionListener, MouseListener {
 		
 		//Recoger qué fila se ha pulsadao en la tabla
         filaPulsada = this.view.getTablaClientes().getSelectedRow();
-        
-        //si seleccion una fila
-        if(filaPulsada>=0){
-        	
-        	//Se recoge el id de la fila marcada
-            int identificador= (int)this.view.getModelo().getValueAt(filaPulsada, 0);
-            
-          //se consigue el proveedore de la fila seleccionada
-            myCliente=this.view.getModelo().getCliente(filaPulsada);
-        
-            
-        	//si fue doble click mostrar modificar
-        	if (e.getClickCount() == 2) {
-        		
-        		myCliente=this.view.getModelo().getCliente(filaPulsada);
-        		//myArticulo=this.view.getModelo().getArticulo(filaPulsada);//se consigue el Marca de la fila seleccionada
-	           
-	        	//crea la ventana para ingresar un nuevo proveedor
-				ViewCrearCliente viewCliente= new ViewCrearCliente();
-				
-				//se crea el controlador de la ventana y se le pasa la view
-				CtlCliente ctlActulizarCliente=new CtlCliente(viewCliente,conexion);
-				
-				
-						
-				
-				//se llama del metodo actualizar marca para que se muestre la ventanda y procesa la modificacion
-				boolean resultado=ctlActulizarCliente.actualizarCliente(myCliente);
-				
-				//se proceso el resultado de modificar la marca
-				if(resultado){
-					this.view.getModelo().cambiarCliente(filaPulsada, ctlActulizarCliente.getClienteGuardado());//se cambia en la vista
-					this.view.getModelo().fireTableDataChanged();//se refrescan los cambios
-					this.view.getTablaClientes().getSelectionModel().setSelectionInterval(filaPulsada,filaPulsada);//se seleciona lo cambiado
-				}	
-			
-				ctlActulizarCliente=null;
-				viewCliente=null;
-				
-	        }//fin del if del doble click
-        	else{//si solo seleccion la fila se guarda el id de proveedor para accion de eliminar
-        		
-        		//this.view.getBtnEliminar().setEnabled(true);
-        		/*idProveedor=identificador;
-        		filaTabla=filaPulsada;*/
-        		
-        	}
+		if (e.getClickCount() == 2){
+			myCliente=this.view.getModelo().getCliente(filaPulsada);
+			//clienteDao.desconectarBD();
+			this.view.setVisible(false);
+			//JOptionPane.showMessageDialog(null,myMarca);
+			this.view.dispose();
 		}
 		
 	}
@@ -177,6 +153,48 @@ public class CtlClienteLista implements ActionListener, MouseListener {
 
 	@Override
 	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
 		// TODO Auto-generated method stub
 		
 	}

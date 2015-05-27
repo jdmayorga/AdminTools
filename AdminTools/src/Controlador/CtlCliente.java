@@ -2,6 +2,8 @@ package Controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JOptionPane;
 
@@ -11,7 +13,7 @@ import Modelo.ClienteDao;
 import Modelo.Conexion;
 import View.ViewCrearCliente;
 
-public class CtlCliente implements ActionListener {
+public class CtlCliente implements ActionListener,WindowListener {
 	
 	private ViewCrearCliente view;
 	private Conexion conexion=null;
@@ -71,8 +73,85 @@ public class CtlCliente implements ActionListener {
 			}
 			break;
 		case "CANCELAR":
+			this.view.setVisible(false);
+			break;
+		case "ACTUALIZAR":
+			getCliente();
+				if(myClienteDao.actualizarCliente(myCliente)){//se manda actualizar el cliente en la bd
+					JOptionPane.showMessageDialog(view, "Se Actualizo el articulo");
+					resultaOperacion=true;
+					this.view.dispose();
+				}
 			break;
 		}
+	}
+	
+	
+	public boolean actualizarCliente(Cliente cliente){
+		//se carga la configuracionde la view articulo para la actulizacion
+		this.view.configActualizar();
+		
+		
+		//se establece el nombre de articulo en la view
+		this.view.getTxtNombre().setText(cliente.getNombre());
+		
+		//se establece la marca en la view
+		this.view.getTxtDireccion().setText(cliente.getDereccion());
+		
+		this.view.getTxtTelefono().setText(cliente.getTelefono());
+		this.view.getTxtMovil().setText(cliente.getCelular());
+		this.view.getTxtRtn().setText(cliente.getRtn());
+		
+		
+		
+		
+		
+		//se establece el articulo de la clase this
+		myCliente=cliente;
+		
+		
+				
+		// se hace visible la ventana modal
+		this.view.setVisible(true);
+		
+		
+		
+		return this.resultaOperacion;
+	}
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
+		this.view.setVisible(false);
+	}
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

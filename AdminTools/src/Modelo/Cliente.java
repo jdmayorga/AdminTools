@@ -2,7 +2,7 @@ package Modelo;
 
 public class Cliente {
 	
-	private int id;
+	private int id=-1;
 	private String nombre;
 	private String direccion;
 	private String telefono;

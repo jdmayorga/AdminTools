@@ -19,6 +19,10 @@ public class ClienteDao {
 	private PreparedStatement insertarNuevaCliente=null;
 	private PreparedStatement seleccionarTodasLosClientes=null;
 	private PreparedStatement buscarClienteID=null;
+	private PreparedStatement buscarClienteNombre=null;
+	private PreparedStatement actualizarCliente=null;
+	private PreparedStatement eliminarCliente=null;
+	
 	
 	public ClienteDao(Conexion conn){
 		conexion=conn;
@@ -96,6 +100,110 @@ public class ClienteDao {
 		
 	}
 	
+	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para busca los cliente  por rtn>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+	public List<Cliente> buscarClienteRtn(String busqueda){
+		List<Cliente> clientes=new ArrayList<Cliente>();
+		
+		ResultSet res=null;
+		Connection conn=null;
+		boolean existe=false;
+		try {
+			conn=conexion.getPoolConexion().getConnection();
+			buscarClienteNombre=conn.prepareStatement("SELECT * FROM cliente where rtn LIKE ? ;");
+		
+			buscarClienteNombre.setString(1, "%" + busqueda + "%");
+			res = buscarClienteNombre.executeQuery();
+			//System.out.println(buscarProveedorNombre);
+			while(res.next()){
+				Cliente unCliente=new Cliente();
+				existe=true;
+				unCliente.setId(res.getInt("codigo_cliente"));
+				unCliente.setNombre(res.getString("nombre_cliente"));
+				unCliente.setDireccion(res.getString("direccion"));
+				unCliente.setTelefono(res.getString("telefono"));
+				unCliente.setCelular(res.getString("movil"));
+				unCliente.setRtn(res.getString("rtn"));			
+				
+				clientes.add(unCliente);
+			 }
+					
+					
+			} catch (SQLException e) {
+					JOptionPane.showMessageDialog(null, "Error, no se conecto");
+					System.out.println(e);
+			}finally
+			{
+				try{
+					if(res!=null)res.close();
+					if(conn!=null)conn.close();
+					if(buscarClienteNombre!=null)buscarClienteNombre.close();
+				} // fin de try
+				catch ( SQLException excepcionSql )
+				{
+					excepcionSql.printStackTrace();
+					conexion.desconectar();
+				} // fin de catch
+			} // fin de finally
+		
+			if (existe) {
+				return clientes;
+			}
+			else return null;
+		
+	}
+	
+	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para busca los cliente  por nombre>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+	public List<Cliente> buscarCliente(String busqueda){
+		List<Cliente> clientes=new ArrayList<Cliente>();
+		
+		ResultSet res=null;
+		Connection conn=null;
+		boolean existe=false;
+		try {
+			conn=conexion.getPoolConexion().getConnection();
+			buscarClienteNombre=conn.prepareStatement("SELECT * FROM cliente where nombre_cliente LIKE ? ;");
+		
+			buscarClienteNombre.setString(1, "%" + busqueda + "%");
+			res = buscarClienteNombre.executeQuery();
+			//System.out.println(buscarProveedorNombre);
+			while(res.next()){
+				Cliente unCliente=new Cliente();
+				existe=true;
+				unCliente.setId(res.getInt("codigo_cliente"));
+				unCliente.setNombre(res.getString("nombre_cliente"));
+				unCliente.setDireccion(res.getString("direccion"));
+				unCliente.setTelefono(res.getString("telefono"));
+				unCliente.setCelular(res.getString("movil"));
+				unCliente.setRtn(res.getString("rtn"));			
+				
+				clientes.add(unCliente);
+			 }
+					
+					
+			} catch (SQLException e) {
+					JOptionPane.showMessageDialog(null, "Error, no se conecto");
+					System.out.println(e);
+			}finally
+			{
+				try{
+					if(res!=null)res.close();
+					if(conn!=null)conn.close();
+					if(buscarClienteNombre!=null)buscarClienteNombre.close();
+				} // fin de try
+				catch ( SQLException excepcionSql )
+				{
+					excepcionSql.printStackTrace();
+					conexion.desconectar();
+				} // fin de catch
+			} // fin de finally
+		
+			if (existe) {
+				return clientes;
+			}
+			else return null;
+		
+	}
+	
 	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para buscar clientes por id>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 	public Cliente buscarCliente(int id){
 		Cliente myCliente=new Cliente();
@@ -116,7 +224,7 @@ public class ClienteDao {
 		try {
 			con = conexion.getPoolConexion().getConnection();
 			
-			buscarClienteID=conexionBD.prepareStatement("SELECT * FROM cliente where codigo_cliente=?");
+			buscarClienteID=con.prepareStatement("SELECT * FROM cliente where codigo_cliente=?");
 			
 			buscarClienteID.setInt(1, id);
 			res=buscarClienteID.executeQuery();
@@ -156,10 +264,85 @@ public class ClienteDao {
 		
 	}
 	
+	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para eliminar un cliente>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+	public boolean eliminarCliente(int id){
+		int resultado=0;
+		Connection conn=null;
+		
+		try {
+				conn=conexion.getPoolConexion().getConnection();
+				
+				eliminarCliente=conn.prepareStatement("DELETE FROM cliente WHERE codigo_cliente = ?");
+				
+				eliminarCliente.setInt( 1, id );
+				resultado=eliminarCliente.executeUpdate();
+				
+				return true;
+			
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+				return false;
+			}
+		finally
+		{
+			try{
+				if(eliminarCliente != null)eliminarCliente.close();
+                if(conn != null) conn.close();
+			} // fin de try
+			catch ( SQLException excepcionSql )
+			{
+			excepcionSql.printStackTrace();
+			conexion.desconectar();
+			} // fin de catch
+		} // fin de finally
+	}
+	
+	
+	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para Actualizar cliente>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+	public boolean actualizarCliente(Cliente cliente){
+		int resultado;
+		
+		Connection conn=null;
+		
+		try {
+			conn=conexion.getPoolConexion().getConnection();
+			actualizarCliente=conn.prepareStatement("UPDATE cliente SET nombre_cliente = ?, direccion = ? ,telefono = ?, movil=?, rtn=? WHERE codigo_cliente = ?");
+			actualizarCliente.setString(1,cliente.getNombre());
+			actualizarCliente.setString(2, cliente.getDereccion());
+			actualizarCliente.setString(3, cliente.getTelefono());
+			actualizarCliente.setString(4, cliente.getCelular());
+			actualizarCliente.setString(5,cliente.getRtn());
+			actualizarCliente.setInt(6,cliente.getId());
+			
+			resultado=actualizarCliente.executeUpdate();
+			//JOptionPane.showMessageDialog(null, a+","+resultado );
+			
+			
+			return true;
+		
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return false;
+        }
+		finally
+		{
+			try{
+				
+				if(actualizarCliente != null)actualizarCliente.close();
+                if(conn != null) conn.close();
+			} // fin de try
+			catch ( SQLException excepcionSql )
+			{
+			excepcionSql.printStackTrace();
+			conexion.desconectar();
+			} // fin de catch
+		} // fin de finally
+	}
+	
 	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para agreagar Articulo>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 	public boolean registrarCliente(Cliente myCliente)
 	{
-		JOptionPane.showConfirmDialog(null, myCliente);
+		//JOptionPane.showConfirmDialog(null, myCliente);
 		int resultado=0;
 		ResultSet rs=null;
 		Connection con = null;

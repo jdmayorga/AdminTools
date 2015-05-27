@@ -24,7 +24,7 @@ public class ViewCrearCliente extends JDialog{
 		getContentPane().setLayout(null);
 		
 		JLabel lblNombre = new JLabel("Nombre:");
-		lblNombre.setBounds(21, 11, 46, 14);
+		lblNombre.setBounds(21, 11, 60, 14);
 		getContentPane().add(lblNombre);
 		
 		txtNombre = new JTextField();
@@ -42,7 +42,7 @@ public class ViewCrearCliente extends JDialog{
 		txtDireccion.setColumns(10);
 		
 		JLabel lblTelefono = new JLabel("Telefono:");
-		lblTelefono.setBounds(21, 94, 53, 14);
+		lblTelefono.setBounds(21, 94, 60, 14);
 		getContentPane().add(lblTelefono);
 		
 		txtTelefono = new JTextField();
@@ -60,7 +60,7 @@ public class ViewCrearCliente extends JDialog{
 		txtMovil.setColumns(10);
 		
 		JLabel lblRtn = new JLabel("RTN:");
-		lblRtn.setBounds(21, 175, 46, 14);
+		lblRtn.setBounds(21, 175, 60, 14);
 		getContentPane().add(lblRtn);
 		
 		txtRtn = new JTextField();
@@ -99,6 +99,12 @@ public class ViewCrearCliente extends JDialog{
 	public JTextField getTxtRtn(){
 		return txtRtn;
 	}
+	public BotonActualizar getBtnActualizar(){
+		return btnActualizar;
+	}
+	public BotonGuardar getBtnGuardar(){
+		return btnGuardar;
+	}
 	public void conectarControlador(CtlCliente c){
 		
 		btnCancelar.addActionListener(c);
@@ -109,5 +115,11 @@ public class ViewCrearCliente extends JDialog{
 		
 		btnActualizar.addActionListener(c);
 		btnActualizar.setActionCommand("ACTUALIZAR");
+	}
+	public void configActualizar() {
+		// TODO Auto-generated method stub
+		this.btnActualizar.setVisible(true);
+		this.btnGuardar.setVisible(false);
+		
 	}
 }
