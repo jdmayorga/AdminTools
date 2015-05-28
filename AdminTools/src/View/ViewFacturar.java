@@ -272,6 +272,12 @@ public class ViewFacturar extends JDialog {
 			
 		}
 		}
+	public JRadioButton getRdbtnContado(){
+		return rdbtnContado;
+	}
+	public  JRadioButton getRdbtnCredito(){
+		return  rdbtnCredito;
+	}
 	public JTextField getTxtDescuento(){
 		return txtDescuento;		
 	}

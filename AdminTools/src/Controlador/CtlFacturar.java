@@ -110,8 +110,26 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 		
 	}
 	private void setFactura(){
+		
+		//sino se ingreso un cliente en particular que coge el cliente por defecto
+		if(myCliente==null){
+			myCliente=new Cliente();
+			myCliente.setId(Integer.parseInt(this.view.getTxtIdcliente().getText()));
+			myCliente.setNombre(this.view.getTxtNombrecliente().getText());
+			
+		}
+		
+		if(this.view.getRdbtnContado().isSelected()){
+			myFactura.setTipoFactura(1);
+		}
+		
+		if(this.view.getRdbtnCredito().isSelected()){
+			myFactura.setTipoFactura(2);
+		}
+		
 		myFactura.setCliente(myCliente);
 		myFactura.setDetalles(this.view.getModeloTabla().getDetalles());
+		//JOptionPane.showMessageDialog(view, myCliente);
 		
 	}
 
@@ -459,9 +477,11 @@ public void calcularTotal(DetalleFactura detalle){
 		
 	}
 	private void guardar(){
+		this.setFactura();
 		
 	}
 	private void cobrar(){
+		
 		
 	}
 	private void buscarArticulo(){

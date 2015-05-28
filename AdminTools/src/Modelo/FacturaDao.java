@@ -63,6 +63,15 @@ public class FacturaDao {
 		return fecha;
 	}
 	
+	public boolean saveFacturaProceso(Factura myFactura){
+		boolean resultado=false;
+		
+		
+		
+		
+		return resultado;
+	}
+	
 	public void desconectarBD(){
 		try {
 			if(getFecha != null)getFecha.close();

@@ -180,6 +180,7 @@ public class CtlArticuloBuscar implements ActionListener,MouseListener, WindowLi
 		
 		//this.myArticuloDao.cargarInstrucciones();
 		cargarTabla(myArticuloDao.todoArticulos());
+		myArticulo=null;
 		this.view.getBtnEliminar().setEnabled(false);
 		this.view.getBtnAgregar().setEnabled(false);
 		this.view.setLocationRelativeTo(v);
