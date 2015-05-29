@@ -176,6 +176,7 @@ public class ArticuloDao {
 				unArticulo.getImpuestoObj().setPorcentaje(res.getString("impuesto"));
 				unArticulo.getImpuestoObj().setId(res.getInt("codigo_impuesto"));
 				unArticulo.setPrecioVenta(res.getDouble("precio_articulo"));
+				unArticulo.setTipoArticulo(res.getInt("tipo_articulo"));
 				articulos.add(unArticulo);
 			 }
 					
@@ -226,6 +227,7 @@ public class ArticuloDao {
 				unArticulo.getImpuestoObj().setPorcentaje(res.getString("impuesto"));
 				unArticulo.getImpuestoObj().setId(res.getInt("codigo_impuesto"));
 				unArticulo.setPrecioVenta(res.getDouble("precio_articulo"));
+				unArticulo.setTipoArticulo(res.getInt("tipo_articulo"));
 				
 			 }
 					
@@ -277,6 +279,7 @@ public class ArticuloDao {
 				unArticulo.getImpuestoObj().setPorcentaje(res.getString("impuesto"));
 				unArticulo.getImpuestoObj().setId(res.getInt("codigo_impuesto"));
 				unArticulo.setPrecioVenta(res.getDouble("precio_articulo"));
+				unArticulo.setTipoArticulo(res.getInt("tipo_articulo"));
 				
 			 }
 					
@@ -432,6 +435,7 @@ public class ArticuloDao {
 				unArticulo.getImpuestoObj().setPorcentaje(res.getString("impuesto"));
 				unArticulo.getImpuestoObj().setId(res.getInt("codigo_impuesto"));
 				unArticulo.setPrecioVenta(res.getDouble("precio_articulo"));
+				unArticulo.setTipoArticulo(res.getInt("tipo_articulo"));
 				
 				
 				articulos.add(unArticulo);

@@ -133,6 +133,7 @@ public class CtlArticulo extends MouseAdapter implements ActionListener,KeyListe
 				}
 			break;
 		case "CANCELAR":
+			//cargarDatosArticuloView();
 			this.view.setVisible(false);
 			
 			break;
@@ -177,6 +178,7 @@ public class CtlArticulo extends MouseAdapter implements ActionListener,KeyListe
 		Impuesto imp= (Impuesto) this.view.getCbxImpuesto().getSelectedItem();
 		myArticulo.setImpuestoObj(imp);
 		
+		//JOptionPane.showMessageDialog(view, this.view.getCbxTipo().getSelectedItem());
 		//Se establece los codigos de barra
 		myArticulo.setCodBarras(this.view.getModeloCodBarra().getCodsBarras());
 		

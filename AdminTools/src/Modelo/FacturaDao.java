@@ -13,6 +13,9 @@ public class FacturaDao {
 	private PreparedStatement getFecha=null;
 	private Connection conexionBD=null;
 	private Conexion conexion;
+	private PreparedStatement agregarFactura=null;
+	
+	private DetalleFacturaDao detallesDao=null;
 	
 	public FacturaDao(Conexion conn){
 		//Class(Conexion);
@@ -26,6 +29,7 @@ public class FacturaDao {
 		}*/
 	}
 	
+	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para conseguir la fecha>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 	public String getFechaSistema(){
 		String fecha="";
 		//DataSource ds=DBCPDataSourceFactory.getDataSource("mysql");
@@ -63,8 +67,72 @@ public class FacturaDao {
 		return fecha;
 	}
 	
-	public boolean saveFacturaProceso(Factura myFactura){
+	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para agreagar facturas>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+	public boolean registrarFactura(Factura myFactura){
 		boolean resultado=false;
+		ResultSet rs=null;
+		
+		Connection conn=null;
+		int idFactura=0;
+		
+		String sql= "INSERT INTO encabezado_factura("
+				+ "fecha,"
+				+ "subtotal,"
+				+ "impuesto,"
+				+ "total,"
+				+ "codigo_cliente,"
+				+ "descuento,"
+				+ "estado_factura,"
+				+ "tipo_factura,"
+				+ "usuario)"
+				+ " VALUES (now(),?,?,?,?,?,?,?,?)";
+		
+		try 
+		{
+			conn=conexion.getPoolConexion().getConnection();
+			agregarFactura=conexion.getConnection().prepareStatement(sql);
+			agregarFactura.setBigDecimal(1,myFactura.getSubTotal() );
+			agregarFactura.setBigDecimal(2, myFactura.getTotalImpuesto());
+			agregarFactura.setBigDecimal(3, myFactura.getTotal());
+			agregarFactura.setInt(4, myFactura.getCliente().getId());
+			agregarFactura.setBigDecimal(5, myFactura.getTotalDescuento());
+			agregarFactura.setString(6, "ACT");
+			agregarFactura.setInt(7, myFactura.getTipoFactura());
+			agregarFactura.setString(8, "unico");
+			
+			
+			
+			agregarFactura.executeUpdate();
+			rs=agregarFactura.getGeneratedKeys(); //obtengo las ultimas llaves generadas
+			while(rs.next()){
+				idFactura=rs.getInt(1);
+			}
+			
+			//JOptionPane.showMessageDialog(null,""+idFactura);
+			for(int x=0;x<myFactura.getDetalles().size();x++){
+				detallesDao.agregarDetalle(myFactura.getDetalles().get(x), idFactura);
+			}
+			
+			resultado= true;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			//conexion.desconectar();
+			resultado= false;
+		}
+		finally
+		{
+			try{
+				if(rs != null) rs.close();
+	            if(agregarFactura != null)agregarFactura.close();
+	            if(conn != null) conn.close();
+			} // fin de try
+			catch ( SQLException excepcionSql )
+			{
+				excepcionSql.printStackTrace();
+				//conexion.desconectar();
+			} // fin de catch
+		} // fin de finally
 		
 		
 		
@@ -72,6 +140,7 @@ public class FacturaDao {
 		return resultado;
 	}
 	
+	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para desconectar las conexiones>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 	public void desconectarBD(){
 		try {
 			if(getFecha != null)getFecha.close();

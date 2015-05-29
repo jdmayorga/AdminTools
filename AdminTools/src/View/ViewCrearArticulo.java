@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import Controlador.CtlArticulo;
 import java.awt.Font;
 import javax.swing.JList;
+import javax.swing.DefaultComboBoxModel;
 
 
 public class ViewCrearArticulo extends JDialog {
@@ -34,6 +35,7 @@ public class ViewCrearArticulo extends JDialog {
 	private JButton btnBuscar;
 	private JList listCodigos;
 	private JTextField txtCodigo;
+	private JComboBox cbxTipo;
 	
 	
 	private JMenuItem mntmEliminar;
@@ -75,7 +77,7 @@ public class ViewCrearArticulo extends JDialog {
 		lblNombre=new JLabel();
 		lblNombre.setText("Nombre");
 		lblNombre.setFont(myFont);
-		lblNombre.setBounds(32, 11, 76, 23);
+		lblNombre.setBounds(20, 11, 76, 23);
 		getContentPane().add(lblNombre);
 		
 		txtNombre=new JTextField(30);
@@ -86,14 +88,14 @@ public class ViewCrearArticulo extends JDialog {
 		
 		//Marca
 		lblMarca = new JLabel("Marca");
-		lblMarca.setBounds(32, 45, 89, 23);
+		lblMarca.setBounds(20, 80, 89, 23);
 		lblMarca.setFont(myFont);
 		getContentPane().add(lblMarca);
 		
 		
 		//Impuesto
 		lblImpuesto = new JLabel("Impuesto");
-		lblImpuesto.setBounds(32, 79, 89, 23);
+		lblImpuesto.setBounds(19, 114, 89, 23);
 		lblImpuesto.setFont(myFont);
 		getContentPane().add(lblImpuesto);
 		
@@ -103,40 +105,40 @@ public class ViewCrearArticulo extends JDialog {
 		cbxImpuesto = new JComboBox();
 		modeloImpuesto=new ComboBoxImpuesto();
 		cbxImpuesto.setModel(modeloImpuesto);
-		cbxImpuesto.setBounds(118, 79, 257, 23);
+		cbxImpuesto.setBounds(118, 114, 257, 23);
 		cbxImpuesto.setFont(myFont);
 		getContentPane().add(cbxImpuesto);
 		
 		
 		//botones
 		btnGuardar = new BotonGuardar();
-		btnGuardar.setLocation(32, 322);
+		btnGuardar.setLocation(20, 353);
 		//tnCancelar.setLocation(42, 175);
 		getContentPane().add(btnGuardar);
 		
 		btnActualizar=new BotonActualizar();
-		btnActualizar.setLocation(32, 322);
+		btnActualizar.setLocation(20, 353);
 		getContentPane().add(btnActualizar);
 		btnActualizar.setVisible(false);
 		
 		btnCancelar = new BotonCancelar();
 		//btnCancelar.setBounds(212, 175, 135, 39);
-		btnCancelar.setLocation(244, 322);
+		btnCancelar.setLocation(247, 353);
 		getContentPane().add(btnCancelar);
 		
 		btnBuscar = new JButton("...");
-		btnBuscar.setBounds(357, 46, 18, 23);
+		btnBuscar.setBounds(357, 81, 18, 23);
 		getContentPane().add(btnBuscar);
 		
 		txtMarca = new JTextField();
 		txtMarca.setEditable(false);
-		txtMarca.setBounds(118, 45, 229, 23);
+		txtMarca.setBounds(118, 81, 229, 23);
 		getContentPane().add(txtMarca);
 		txtMarca.setColumns(10);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		//scrollPane.setLayout(new FloawLayout());
-		scrollPane.setBounds(118, 155, 257, 101);
+		scrollPane.setBounds(118, 179, 257, 101);
 		
 		getContentPane().add(scrollPane);
 		
@@ -149,25 +151,35 @@ public class ViewCrearArticulo extends JDialog {
 				
 		JLabel lblCodigoBarra = new JLabel("Codigo Barra");
 		lblCodigoBarra.setFont(myFont);
-		lblCodigoBarra.setBounds(32, 126, 89, 14);
+		lblCodigoBarra.setBounds(20, 150, 89, 14);
 		getContentPane().add(lblCodigoBarra);
 		
 		txtCodigo = new JTextField();
-		txtCodigo.setBounds(118, 124, 257, 20);
+		txtCodigo.setBounds(118, 148, 257, 20);
 		getContentPane().add(txtCodigo);
 		txtCodigo.setColumns(10);
 		
 		JLabel lblPrecio = new JLabel("Precio Venta");
 		lblPrecio.setFont(myFont);
-		lblPrecio.setBounds(32, 270, 89, 14);
+		lblPrecio.setBounds(20, 303, 89, 14);
 		getContentPane().add(lblPrecio);
 		
 		txtPrecio = new JTextField();
-		txtPrecio.setBounds(118, 267, 257, 20);
+		txtPrecio.setBounds(118, 303, 257, 20);
 		getContentPane().add(txtPrecio);
 		txtPrecio.setColumns(10);
 		
-		setSize(434,406);
+		JLabel lblTipo = new JLabel("Tipo");
+		lblTipo.setFont(myFont);
+		lblTipo.setBounds(20, 55, 46, 14);
+		getContentPane().add(lblTipo);
+		
+		cbxTipo = new JComboBox();
+		cbxTipo.setModel(new DefaultComboBoxModel(new String[] {"Bienes", "Servicio"}));
+		cbxTipo.setBounds(118, 50, 257, 20);
+		getContentPane().add(cbxTipo);
+		
+		setSize(434,454);
 		
 		//centrar la ventana en la pantalla
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -213,6 +225,10 @@ public class ViewCrearArticulo extends JDialog {
 	}
 	public JComboBox getCbxImpuesto(){
 		return cbxImpuesto;
+	}
+	
+	public JComboBox getCbxTipo(){
+		return cbxTipo;
 	}
 	
 	public ComboBoxImpuesto getListaCbxImpuesto(){
