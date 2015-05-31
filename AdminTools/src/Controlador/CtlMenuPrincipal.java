@@ -13,6 +13,7 @@ import View.ViewAgregarCompras;
 import View.ViewFacturar;
 import View.ViewListaArticulo;
 import View.ViewListaClientes;
+import View.ViewListaFactura;
 import View.ViewListaMarca;
 import View.ViewListaProveedor;
 import View.ViewMenuPrincipal;
@@ -59,11 +60,15 @@ public class CtlMenuPrincipal implements ActionListener {
 				break;
 			case "FACTURAR":
 				
+				ViewListaFactura vistaFacturars=new ViewListaFactura(this.view);
+				CtlFacturaLista ctlFacturas=new CtlFacturaLista(vistaFacturars,conexion );
+				
+				vistaFacturars.setVisible(true);
 			
-				ViewFacturar vistaFacturar=new ViewFacturar(this.view);
+				/*ViewFacturar vistaFacturar=new ViewFacturar(this.view);
 				
 				CtlFacturar ctlFacturar=new CtlFacturar(vistaFacturar,conexion );
-				vistaFacturar.setVisible(true);
+				vistaFacturar.setVisible(true);*/
 		
 				
 				break;

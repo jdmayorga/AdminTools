@@ -17,6 +17,14 @@ public class Factura {
 	private BigDecimal totalDescuento=new BigDecimal(0.0);
 	private String fechaVencimento=null;
 	private int estado=1;
+	private BigDecimal pago=new BigDecimal(0.0);
+	
+	public void setPago(BigDecimal p){
+		pago=p;
+	}
+	public BigDecimal getPago(){
+		return pago;
+	}
 	
 	public int getEstado(){
 		return estado;
@@ -60,6 +68,7 @@ public class Factura {
 	}
 	
 	public void setDetalles(List<DetalleFactura> d){
+		detalles.clear();
 		detalles=d;
 	}
 	public List<DetalleFactura> getDetalles(){

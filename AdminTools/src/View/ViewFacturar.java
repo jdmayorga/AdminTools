@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
+import java.awt.Window;
 
 import javax.swing.AbstractAction;
 import javax.swing.ButtonGroup;
@@ -73,7 +74,7 @@ public class ViewFacturar extends JDialog {
 	
 	private static final KeyStroke ENTER_KEY =KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
 	
-	public ViewFacturar(JFrame view) {
+	public ViewFacturar(Window view) {
 		
 		super(view,"Facturar",Dialog.ModalityType.DOCUMENT_MODAL);
 		panelAcciones=new JPanel();

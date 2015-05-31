@@ -5,8 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sql.DataSource;
+import javax.swing.JOptionPane;
 
 public class FacturaDao {
 	
@@ -14,12 +17,18 @@ public class FacturaDao {
 	private Connection conexionBD=null;
 	private Conexion conexion;
 	private PreparedStatement agregarFactura=null;
+	private PreparedStatement seleccionarFacturasPendientes=null;
 	
 	private DetalleFacturaDao detallesDao=null;
+	private ClienteDao myClienteDao=null;
+	
 	
 	public FacturaDao(Conexion conn){
 		//Class(Conexion);
 		conexion =conn;
+		detallesDao=new DetalleFacturaDao(conexion);
+		myClienteDao=new ClienteDao(conexion);
+		
 		/*try {
 			conexionBD=conn.getPoolConexion().getConnection();
 			getFecha=conexionBD.prepareStatement("SELECT DATE_FORMAT(now(), '%d/%m/%Y') as fecha;");
@@ -75,7 +84,7 @@ public class FacturaDao {
 		Connection conn=null;
 		int idFactura=0;
 		
-		String sql= "INSERT INTO encabezado_factura("
+		String sql= "INSERT INTO encabezado_factura_temp("
 				+ "fecha,"
 				+ "subtotal,"
 				+ "impuesto,"
@@ -110,7 +119,9 @@ public class FacturaDao {
 			
 			//JOptionPane.showMessageDialog(null,""+idFactura);
 			for(int x=0;x<myFactura.getDetalles().size();x++){
-				detallesDao.agregarDetalle(myFactura.getDetalles().get(x), idFactura);
+				
+				if(myFactura.getDetalles().get(x).getArticulo().getId()!=-1)
+					detallesDao.agregarDetalle(myFactura.getDetalles().get(x), idFactura);
 			}
 			
 			resultado= true;
@@ -140,6 +151,79 @@ public class FacturaDao {
 		return resultado;
 	}
 	
+	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para seleccionar todos los articulos>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+	public List<Factura> facturasEnProceso(){
+		
+		//se crear un referencia al pool de conexiones
+		//DataSource ds = DBCPDataSourceFactory.getDataSource("mysql");
+		
+		
+        Connection con = null;
+        
+        
+        //Statement stmt = null;
+       	List<Factura> facturas=new ArrayList<Factura>();
+		
+		ResultSet res=null;
+		
+		boolean existe=false;
+		try {
+			con = conexion.getPoolConexion().getConnection();
+			
+			seleccionarFacturasPendientes = con.prepareStatement("SELECT * FROM encabezado_factura_temp;");
+			
+			res = seleccionarFacturasPendientes.executeQuery();
+			while(res.next()){
+				Factura unaFactura=new Factura();
+				existe=true;
+				unaFactura.setIdFactura(res.getString("numero_factura"));
+				Cliente unCliente=myClienteDao.buscarCliente(res.getInt("codigo_cliente"));
+				
+				unaFactura.setCliente(unCliente);
+				
+				unaFactura.setFecha(res.getString("fecha"));
+				unaFactura.setSubTotal(res.getBigDecimal("subtotal"));
+				unaFactura.setTotalImpuesto(res.getBigDecimal("impuesto"));
+				unaFactura.setTotal(res.getBigDecimal("total"));
+				//unaFactura.setEstado(res.getInt("estado_factura"));
+				unaFactura.setTotalDescuento(res.getBigDecimal("descuento"));
+				unaFactura.setTipoFactura(res.getInt("tipo_factura"));
+				
+				unaFactura.setDetalles(detallesDao.detallesFacturaPendiente(res.getInt("numero_factura")));
+				
+				
+				facturas.add(unaFactura);
+			 }
+					
+			} catch (SQLException e) {
+					JOptionPane.showMessageDialog(null, "Error, no se conecto");
+					System.out.println(e);
+			}
+		finally
+		{
+			try{
+				
+				if(res != null) res.close();
+                if(seleccionarFacturasPendientes != null)seleccionarFacturasPendientes.close();
+                if(con != null) con.close();
+                
+				
+				} // fin de try
+				catch ( SQLException excepcionSql )
+				{
+					excepcionSql.printStackTrace();
+					conexion.desconectar();
+				} // fin de catch
+		} // fin de finally
+		
+		
+			if (existe) {
+				return facturas;
+			}
+			else return null;
+		
+	}
+	
 	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para desconectar las conexiones>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 	public void desconectarBD(){
 		try {
@@ -150,5 +234,7 @@ public class FacturaDao {
 			e.printStackTrace();
 		}
 	}
+
+	
 
 }
