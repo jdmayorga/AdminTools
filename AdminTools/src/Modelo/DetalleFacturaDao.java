@@ -31,11 +31,79 @@ public class DetalleFacturaDao {
 			e.printStackTrace();
 		}*/
 	}
-
-	public boolean agregarDetalle(DetalleFactura detalle, int idFactura) {
+	
+	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para agreagar detalles de facturas temp>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+	public boolean agregarDetalleTemp(DetalleFactura detalle, int idFactura) {
 		boolean resultado=false;
 		
 		String sql="INSERT INTO detalle_factura_temp("
+				+ "numero_factura,"
+				+ "codigo_articulo,"
+				+ "precio,"
+				+ "cantidad,"
+				+ "impuesto,"
+				+ "subtotal,"
+				+ "descuento,"
+				+ "total"
+				+ ") VALUES (?,?,?,?,?,?,?,?)";
+		Connection conn=null;
+		
+		try{
+			conn=conexion.getPoolConexion().getConnection();
+			agregarDetalle=conn.prepareStatement( sql);
+			
+			agregarDetalle.setInt(1, idFactura);
+			agregarDetalle.setInt(2, detalle.getArticulo().getId());
+			agregarDetalle.setDouble(3, detalle.getArticulo().getPrecioVenta());
+			agregarDetalle.setBigDecimal(4, detalle.getCantidad());
+			agregarDetalle.setBigDecimal(5, detalle.getImpuesto());
+			agregarDetalle.setBigDecimal(6, detalle.getSubTotal());
+			agregarDetalle.setBigDecimal(7, detalle.getDescuentoItem());
+			agregarDetalle.setBigDecimal(8, detalle.getTotal());
+			agregarDetalle.executeUpdate();
+			
+			
+			if(detalle.getArticulo().getTipoArticulo()!=2){
+				Inventario inventario=new Inventario();
+				
+				//se consigue el inventario del articulo
+				inventario=inventarioDao.buscarArticulo(detalle.getArticulo().getId());
+				
+				//se verifica que exite el articulo en el inventario
+				if(inventario!=null){
+					//se agrega al inventario la nueva cantidad
+					inventario.decrementarExistencia(detalle.getCantidad().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue());
+					//se actualizar el articulo del inventario
+					inventarioDao.actualizarInventario(inventario);
+				}
+				
+				
+				//se crea y guarda la nuevo movimiento del kardex
+				Kardex myKardex =new Kardex();
+				
+				myKardex.setArticulo(detalle.getArticulo());
+				myKardex.setSalida(detalle.getCantidad().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue());
+				
+				//hay que cambiar para implementar multiples bodegas
+				myKardex.getBodega().setId(1);
+				myKardex.setNoDocumento(""+idFactura);
+				
+				kardexDao.agregarEntrada(myKardex);
+			
+			}
+			resultado=true;
+		}catch (SQLException e) {
+			e.printStackTrace();
+			conexion.desconectar();
+			resultado= false;
+		}
+		return resultado;
+	}
+	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para agreagar detalles de facturas>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+	public boolean agregarDetalle(DetalleFactura detalle, int idFactura) {
+		boolean resultado=false;
+		
+		String sql="INSERT INTO detalle_factura("
 				+ "numero_factura,"
 				+ "codigo_articulo,"
 				+ "precio,"

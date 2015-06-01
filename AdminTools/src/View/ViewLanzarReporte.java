@@ -22,9 +22,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class ViewLanzarReporte extends JDialog {
 	public ViewLanzarReporte() {
+		
 		getContentPane().setLayout(null);
 		
 		JButton btnReporte = new JButton("Reporte");

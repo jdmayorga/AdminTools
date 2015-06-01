@@ -14,10 +14,14 @@ import java.math.BigDecimal;
 
 
 
+
+import java.sql.SQLException;
+
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import Modelo.AbstractJasperReports;
 import Modelo.Articulo;
 import Modelo.ArticuloDao;
 import Modelo.Cliente; 
@@ -475,20 +479,32 @@ public void calcularTotal(DetalleFactura detalle){
 		
 	}
 	private void guardar(){
-		this.setFactura();
-		
-		this.facturaDao.registrarFactura(myFactura);
+		setFactura();
+		facturaDao.registrarFacturaTemp(myFactura);
 		
 	}
 	private void cobrar(){
 		
+		//JOptionPane.showInternalInputDialog(view, "Pago con", "Cobro", JOptionPane.INFORMATION_MESSAGE);
+		setFactura();
+		boolean resul=facturaDao.registrarFactura(myFactura);
+				
+		if(resul){
+			myFactura.setIdFactura(facturaDao.getIdFacturaGuardada());
+			try {
+				AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "../AdminTools/src/Reportes/Factura_Saint_Paul.jasper",myFactura.getIdFactura() );
+				AbstractJasperReports.showViewer();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else{
+			
+		}
 		
 	}
 	private void buscarArticulo(){
-		
-		
-		
-		
+	
 		//se llama el metodo que mostrar la ventana para buscar el articulo
 		Articulo myArticulo=ctlArticulo.buscarArticulo(view);
 		
@@ -523,6 +539,8 @@ public void calcularTotal(DetalleFactura detalle){
 			this.view.getTxtIdcliente().setText("1");;
 			this.view.getTxtNombrecliente().setText("Cliente Normal");
 		}
+		viewListaCliente.dispose();
+		ctlBuscarCliente=null;
 	}
 
 	@Override

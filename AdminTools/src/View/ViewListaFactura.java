@@ -34,7 +34,7 @@ public class ViewListaFactura extends JDialog {
 	
 	protected BotonAgregar btnAgregar;
 	protected BotonEliminar btnEliminar;
-	protected BotonCobrarSmall btnLimpiar;
+	protected BotonCobrarSmall btnCobrar;
 	
 	
 	private JRadioButton rdbtnId;
@@ -75,9 +75,9 @@ public class ViewListaFactura extends JDialog {
         btnEliminar.setEnabled(false);
         panelAccion.add(btnEliminar);
         
-        btnLimpiar = new BotonCobrarSmall();
+        btnCobrar = new BotonCobrarSmall();
         //btnLimpiar.setIcon(new ImageIcon("recursos/clear.png")); // NOI18N
-        panelAccion.add(btnLimpiar);
+        panelAccion.add(btnCobrar);
         
         //configuracion del panel busqueda
         grupoOpciones = new ButtonGroup(); // crea ButtonGroup
@@ -160,8 +160,8 @@ public void conectarControlador(CtlFacturaLista c){
 		 btnEliminar.addActionListener(c);
 		 btnEliminar.setActionCommand("ELIMINAR");
 		 
-		 btnLimpiar.addActionListener(c);
-		 btnLimpiar.setActionCommand("LIMPIAR");
+		 btnCobrar.addActionListener(c);
+		 btnCobrar.setActionCommand("COBRAR");
 		 
 		 txtBuscar.addActionListener(c);
 		 txtBuscar.setActionCommand("BUSCAR");

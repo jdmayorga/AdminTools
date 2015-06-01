@@ -4,10 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import Modelo.AbstractJasperReports;
 import Modelo.Articulo;
 import Modelo.Conexion;
 import Modelo.Factura;
@@ -105,6 +107,28 @@ public class CtlFacturaLista implements ActionListener, MouseListener {
 		// TODO Auto-generated method stub
 
 	}
+	
+private void cobrar(){
+		
+		
+		boolean resul=myFacturaDao.registrarFactura(myFactura);
+				
+		if(resul){
+			myFactura.setIdFactura(myFacturaDao.getIdFacturaGuardada());
+			try {
+				AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "../AdminTools/src/Reportes/Factura_Saint_Paul.jasper",myFactura.getIdFactura() );
+				AbstractJasperReports.showViewer();
+				//AbstractJasperReports.imprimierFactura();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else{
+			
+		}
+		
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -123,6 +147,9 @@ public class CtlFacturaLista implements ActionListener, MouseListener {
 			vistaFacturar.dispose();
 			vistaFacturar=null;
 			ctlFacturar=null;
+			break;
+		case "COBRAR":
+				cobrar();
 			break;
 		}
 

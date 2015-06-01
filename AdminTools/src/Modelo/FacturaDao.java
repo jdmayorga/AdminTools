@@ -22,7 +22,7 @@ public class FacturaDao {
 	private DetalleFacturaDao detallesDao=null;
 	private ClienteDao myClienteDao=null;
 	
-	
+	private Integer idFacturaGuardada=null;
 	public FacturaDao(Conexion conn){
 		//Class(Conexion);
 		conexion =conn;
@@ -76,13 +76,13 @@ public class FacturaDao {
 		return fecha;
 	}
 	
-	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para agreagar facturas>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
-	public boolean registrarFactura(Factura myFactura){
+	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para agreagar facturas temporal>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+	public boolean registrarFacturaTemp(Factura myFactura){
 		boolean resultado=false;
 		ResultSet rs=null;
 		
 		Connection conn=null;
-		int idFactura=0;
+		//int idFactura=0;
 		
 		String sql= "INSERT INTO encabezado_factura_temp("
 				+ "fecha,"
@@ -111,17 +111,96 @@ public class FacturaDao {
 			
 			
 			
-			agregarFactura.executeUpdate();
+			agregarFactura.executeUpdate();//se guarda el encabezado de la factura
 			rs=agregarFactura.getGeneratedKeys(); //obtengo las ultimas llaves generadas
 			while(rs.next()){
-				idFactura=rs.getInt(1);
+				//idFactura=rs.getInt(1);
+				idFacturaGuardada=rs.getInt(1);
+				
 			}
 			
-			//JOptionPane.showMessageDialog(null,""+idFactura);
+			//se guardan los detalles de la fatura
 			for(int x=0;x<myFactura.getDetalles().size();x++){
 				
 				if(myFactura.getDetalles().get(x).getArticulo().getId()!=-1)
-					detallesDao.agregarDetalle(myFactura.getDetalles().get(x), idFactura);
+					detallesDao.agregarDetalleTemp(myFactura.getDetalles().get(x), idFacturaGuardada);
+			}
+			
+			resultado= true;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			//conexion.desconectar();
+			resultado= false;
+		}
+		finally
+		{
+			try{
+				if(rs != null) rs.close();
+	            if(agregarFactura != null)agregarFactura.close();
+	            if(conn != null) conn.close();
+			} // fin de try
+			catch ( SQLException excepcionSql )
+			{
+				excepcionSql.printStackTrace();
+				//conexion.desconectar();
+			} // fin de catch
+		} // fin de finally
+		
+		
+		
+		
+		return resultado;
+	}
+	
+	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para agreagar facturas>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+	public boolean registrarFactura(Factura myFactura){
+		boolean resultado=false;
+		ResultSet rs=null;
+		
+		Connection conn=null;
+		//int idFactura=0;
+		
+		String sql= "INSERT INTO encabezado_factura("
+				+ "fecha,"
+				+ "subtotal,"
+				+ "impuesto,"
+				+ "total,"
+				+ "codigo_cliente,"
+				+ "descuento,"
+				+ "estado_factura,"
+				+ "tipo_factura,"
+				+ "usuario)"
+				+ " VALUES (now(),?,?,?,?,?,?,?,?)";
+		
+		try 
+		{
+			conn=conexion.getPoolConexion().getConnection();
+			agregarFactura=conexion.getConnection().prepareStatement(sql);
+			agregarFactura.setBigDecimal(1,myFactura.getSubTotal() );
+			agregarFactura.setBigDecimal(2, myFactura.getTotalImpuesto());
+			agregarFactura.setBigDecimal(3, myFactura.getTotal());
+			agregarFactura.setInt(4, myFactura.getCliente().getId());
+			agregarFactura.setBigDecimal(5, myFactura.getTotalDescuento());
+			agregarFactura.setString(6, "ACT");
+			agregarFactura.setInt(7, myFactura.getTipoFactura());
+			agregarFactura.setString(8, "unico");
+			
+			
+			
+			agregarFactura.executeUpdate();//se guarda el encabezado de la factura
+			rs=agregarFactura.getGeneratedKeys(); //obtengo las ultimas llaves generadas
+			while(rs.next()){
+				//idFactura=rs.getInt(1);
+				idFacturaGuardada=rs.getInt(1);
+				
+			}
+			
+			//se guardan los detalles de la fatura
+			for(int x=0;x<myFactura.getDetalles().size();x++){
+				
+				if(myFactura.getDetalles().get(x).getArticulo().getId()!=-1)
+					detallesDao.agregarDetalle(myFactura.getDetalles().get(x), idFacturaGuardada);
 			}
 			
 			resultado= true;
@@ -176,7 +255,7 @@ public class FacturaDao {
 			while(res.next()){
 				Factura unaFactura=new Factura();
 				existe=true;
-				unaFactura.setIdFactura(res.getString("numero_factura"));
+				unaFactura.setIdFactura(res.getInt("numero_factura"));
 				Cliente unCliente=myClienteDao.buscarCliente(res.getInt("codigo_cliente"));
 				
 				unaFactura.setCliente(unCliente);
@@ -233,6 +312,11 @@ public class FacturaDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public Integer getIdFacturaGuardada() {
+		// TODO Auto-generated method stub
+		return idFacturaGuardada;
 	}
 
 	
