@@ -24,7 +24,7 @@ public class Conexion {
    static String bd = "texaco";
    static String login = "root";
    static String password = "jdmm123";
-   static String url = "jdbc:mysql://localhost/"+bd;
+   static String url = "jdbc:mysql://localhost:3306/"+bd;
    static String driver="com.mysql.jdbc.Driver";
 
    Connection conn = null;
