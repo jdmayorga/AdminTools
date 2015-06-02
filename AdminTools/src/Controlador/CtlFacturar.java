@@ -491,13 +491,16 @@ public void calcularTotal(DetalleFactura detalle){
 				
 		if(resul){
 			myFactura.setIdFactura(facturaDao.getIdFacturaGuardada());
-			try {
-				AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "../AdminTools/src/Reportes/Factura_Saint_Paul.jasper",myFactura.getIdFactura() );
-				AbstractJasperReports.showViewer();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
+				try {
+					AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "../AdminTools/src/Reportes/Factura_Saint_Paul.jasper",myFactura.getIdFactura() );
+					AbstractJasperReports.showViewer();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			
 		}else{
 			
 		}

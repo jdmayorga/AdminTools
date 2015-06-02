@@ -40,11 +40,14 @@ public class CtlFacturaLista implements ActionListener, MouseListener {
 	}
 	
 	public void cargarTabla(List<Factura> facturas){
-		//JOptionPane.showMessageDialog(view, articulos);
+		//JOptionPane.showMessageDialog(view, " "+facturas.size());
 		this.view.getModelo().limpiarFacturas();
-		for(int c=0;c<facturas.size();c++){
-			this.view.getModelo().agregarFactura(facturas.get(c));
-			
+		
+		if(facturas!=null){
+			for(int c=0;c<facturas.size();c++){
+				this.view.getModelo().agregarFactura(facturas.get(c));
+				
+			}
 		}
 	}
 
@@ -115,15 +118,18 @@ private void cobrar(){
 				
 		if(resul){
 			myFactura.setIdFactura(myFacturaDao.getIdFacturaGuardada());
-			try {
-				AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "../AdminTools/src/Reportes/Factura_Saint_Paul.jasper",myFactura.getIdFactura() );
-				AbstractJasperReports.showViewer();
+			
+				try {
+					AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "../AdminTools/src/Reportes/Factura_Saint_Paul.jasper",myFactura.getIdFactura() );
+					AbstractJasperReports.showViewer();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				//AbstractJasperReports.showViewer();
 				//AbstractJasperReports.imprimierFactura();
 				
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
 		}else{
 			
 		}

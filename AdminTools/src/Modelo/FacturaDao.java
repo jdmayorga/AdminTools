@@ -175,7 +175,7 @@ public class FacturaDao {
 		
 		try 
 		{
-			conn=conexion.getPoolConexion().getConnection();
+			conn=Conexion.getPoolConexion().getConnection();
 			agregarFactura=conexion.getConnection().prepareStatement(sql);
 			agregarFactura.setBigDecimal(1,myFactura.getSubTotal() );
 			agregarFactura.setBigDecimal(2, myFactura.getTotalImpuesto());
@@ -247,7 +247,7 @@ public class FacturaDao {
 		
 		boolean existe=false;
 		try {
-			con = conexion.getPoolConexion().getConnection();
+			con = Conexion.getPoolConexion().getConnection();
 			
 			seleccionarFacturasPendientes = con.prepareStatement("SELECT * FROM encabezado_factura_temp;");
 			

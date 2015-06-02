@@ -61,42 +61,29 @@ public class DetalleFacturaDao {
 			agregarDetalle.setBigDecimal(7, detalle.getDescuentoItem());
 			agregarDetalle.setBigDecimal(8, detalle.getTotal());
 			agregarDetalle.executeUpdate();
-			
-			
-			if(detalle.getArticulo().getTipoArticulo()!=2){
-				Inventario inventario=new Inventario();
 				
-				//se consigue el inventario del articulo
-				inventario=inventarioDao.buscarArticulo(detalle.getArticulo().getId());
-				
-				//se verifica que exite el articulo en el inventario
-				if(inventario!=null){
-					//se agrega al inventario la nueva cantidad
-					inventario.decrementarExistencia(detalle.getCantidad().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue());
-					//se actualizar el articulo del inventario
-					inventarioDao.actualizarInventario(inventario);
-				}
-				
-				
-				//se crea y guarda la nuevo movimiento del kardex
-				Kardex myKardex =new Kardex();
-				
-				myKardex.setArticulo(detalle.getArticulo());
-				myKardex.setSalida(detalle.getCantidad().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue());
-				
-				//hay que cambiar para implementar multiples bodegas
-				myKardex.getBodega().setId(1);
-				myKardex.setNoDocumento(""+idFactura);
-				
-				kardexDao.agregarEntrada(myKardex);
-			
-			}
 			resultado=true;
 		}catch (SQLException e) {
 			e.printStackTrace();
 			conexion.desconectar();
 			resultado= false;
 		}
+		finally
+		{
+			try{
+				
+				//if(res != null) res.close();
+                if(agregarDetalle != null)agregarDetalle.close();
+                if(conn != null) conn.close();
+                
+				
+				} // fin de try
+				catch ( SQLException excepcionSql )
+				{
+					excepcionSql.printStackTrace();
+					conexion.desconectar();
+				} // fin de catch
+		} // fin de finally
 		return resultado;
 	}
 	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para agreagar detalles de facturas>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
@@ -164,6 +151,22 @@ public class DetalleFacturaDao {
 			conexion.desconectar();
 			resultado= false;
 		}
+		finally
+		{
+			try{
+				
+				//if(res != null) res.close();
+                if(agregarDetalle != null)agregarDetalle.close();
+                if(conn != null) conn.close();
+                
+				
+				} // fin de try
+				catch ( SQLException excepcionSql )
+				{
+					excepcionSql.printStackTrace();
+					conexion.desconectar();
+				} // fin de catch
+		} // fin de finally
 		return resultado;
 	}
 

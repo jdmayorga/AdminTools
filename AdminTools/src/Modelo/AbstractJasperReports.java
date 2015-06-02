@@ -3,6 +3,7 @@ package Modelo;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,14 +30,30 @@ public abstract class AbstractJasperReports
 	{
 		 Map parametros = new HashMap();
 		 parametros.put("numero_factura",idFactura);
+		// Connection conn=null;
+		 
+		/* try {
+			conn=conexion.getPoolConexion().getConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
 		 
 		try {
 			report = (JasperReport) JRLoader.loadObjectFromFile( path );
 			reportFilled = JasperFillManager.fillReport( report, parametros, conn );
+			
 		}
 		catch( JRException ex ) {
 			ex.printStackTrace();
 		}
+		try {
+				conn.close();
+			} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+			}
+		
 	}
 	public static void imprimierFactura(){
 		try {
@@ -50,16 +67,17 @@ public abstract class AbstractJasperReports
 	public static void showViewer()
 	{
 		viewer = new JasperViewer( reportFilled ,false);
-		//viewer.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		viewer.addWindowListener(new WindowAdapter() {
+		viewer.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		/*viewer.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				viewer.setVisible(false);
 				//viewer.dispose();
 			}
-		});
-		viewer.setVisible( true );
+		});*/
 		viewer.setTitle("Factura");
+		viewer.setVisible( true );
+		
 		
 	}
 

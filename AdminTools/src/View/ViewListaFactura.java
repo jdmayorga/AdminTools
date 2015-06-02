@@ -54,6 +54,8 @@ public class ViewListaFactura extends JDialog {
 		
 		miEsquema=new BorderLayout();
 		this.setTitle("Creando Facturas");
+		this.setLocationRelativeTo(view);
+		this.setModal(true);
 		getContentPane().setLayout(miEsquema);
 		
 		

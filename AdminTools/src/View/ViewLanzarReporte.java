@@ -31,11 +31,12 @@ public class ViewLanzarReporte extends JDialog {
 		getContentPane().setLayout(null);
 		
 		JButton btnReporte = new JButton("Reporte");
+		final Conexion conexion=new Conexion();
 		btnReporte.setIcon(new ImageIcon(ViewLanzarReporte.class.getResource("/Reportes/membrete2.png")));
 		btnReporte.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				Conexion conexion=new Conexion();
+				
 				Connection conn=null;
 				
 				try {
@@ -58,7 +59,7 @@ public class ViewLanzarReporte extends JDialog {
 					jr= (JasperReport) JRLoader.loadObjectFromFile("../AdminTools/src/Reportes/Factura_Saint_Paul.jasper");
 					
 					JasperPrint jp=JasperFillManager.fillReport(jr, parametros,conn);
-					JasperViewer jv=new JasperViewer(jp);
+					JasperViewer jv=new JasperViewer(jp, false);
 					
 					jv.setVisible(true);
 					
