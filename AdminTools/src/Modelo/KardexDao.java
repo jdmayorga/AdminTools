@@ -1,5 +1,6 @@
 package Modelo;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,18 +13,21 @@ public class KardexDao {
 	public KardexDao(Conexion conn){
 		conexion=conn;
 		
-		try {
-			buscarArticulo=conexion.getConnection().prepareStatement("SELECT * FROM kardex where codigo_articulo=? and codigo_bodega=? LIMIT 1,1");
-			insertarNuevoMovimiento=conexion.getConnection().prepareStatement( "INSERT INTO kardex(no_documento,codigo_articulo,codigo_bodega,entrada,fecha) VALUES (?,?,?,?,now())");
+		/*try {
+			//buscarArticulo=conexion.getConnection().prepareStatement("SELECT * FROM kardex where codigo_articulo=? and codigo_bodega=? LIMIT 1,1");
+			//insertarNuevoMovimiento=conexion.getConnection().prepareStatement( "INSERT INTO kardex(no_documento,codigo_articulo,codigo_bodega,entrada,fecha) VALUES (?,?,?,?,now())");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	public boolean agregarEntrada(Kardex kar){
 		boolean resultado=false;
+		Connection conn=null;
 		try {
+			conn=conexion.getPoolConexion().getConnection();
+			insertarNuevoMovimiento=conn.prepareStatement( "INSERT INTO kardex(no_documento,codigo_articulo,codigo_bodega,entrada,fecha) VALUES (?,?,?,?,now())");
 			insertarNuevoMovimiento.setString(1, kar.getNoDocumento());
 			insertarNuevoMovimiento.setInt(2, kar.getArticulo().getId());
 			insertarNuevoMovimiento.setInt(3, kar.getBodega().getId());
@@ -34,6 +38,22 @@ public class KardexDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		finally
+		{
+			try{
+				
+				//if(res != null) res.close();
+                if(insertarNuevoMovimiento != null)insertarNuevoMovimiento.close();
+                if(conn != null) conn.close();
+                
+				
+				} // fin de try
+				catch ( SQLException excepcionSql )
+				{
+					excepcionSql.printStackTrace();
+					//Sconexion.desconectar();
+				} // fin de catch
+		} // fin de finally
 		return resultado;
 	}
 	
@@ -41,11 +61,14 @@ public class KardexDao {
 	public Kardex buscarKardex(int idArticulo,int idBodega){
 		Kardex myKardex=new Kardex();
 		boolean existe=false;
+		Connection conn=null;
 		ResultSet res=null;
 		ArticuloDao articuloDao=new ArticuloDao(conexion);
 		BodegaDao bodegaDao=new BodegaDao(conexion);
 		
 		try {
+			conn=conexion.getPoolConexion().getConnection();
+			buscarArticulo=conn.prepareStatement("SELECT * FROM kardex where codigo_articulo=? and codigo_bodega=? LIMIT 1,1");
 			buscarArticulo.setInt(1, idArticulo);
 			buscarArticulo.setInt(2, idBodega);
 			res=buscarArticulo.executeQuery();
@@ -66,6 +89,22 @@ public class KardexDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		finally
+		{
+			try{
+				
+				if(res != null) res.close();
+                if(buscarArticulo != null)buscarArticulo.close();
+                if(conn != null) conn.close();
+                
+				
+				} // fin de try
+				catch ( SQLException excepcionSql )
+				{
+					excepcionSql.printStackTrace();
+					//Sconexion.desconectar();
+				} // fin de catch
+		} // fin de finally
 		
 		if(existe){
 			return myKardex;

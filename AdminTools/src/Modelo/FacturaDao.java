@@ -58,19 +58,20 @@ public class FacturaDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		try{
-			
-			if(res != null) res.close();
-            if(getFecha != null)getFecha.close();
-            if(conn != null) conn.close();
-            
-			
-			} // fin de try
-			catch ( SQLException excepcionSql )
-			{
-				excepcionSql.printStackTrace();
-			} // fin de catch
-		
+		finally{
+			try{
+				
+				if(res != null) res.close();
+	            if(getFecha != null)getFecha.close();
+	            if(conn != null) conn.close();
+	            
+				
+				} // fin de try
+				catch ( SQLException excepcionSql )
+				{
+					excepcionSql.printStackTrace();
+				} // fin de catch
+		}
 		
 		
 		return fecha;

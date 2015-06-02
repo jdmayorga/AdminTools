@@ -43,7 +43,7 @@ public class ClienteDao {
 		//DataSource ds = DBCPDataSourceFactory.getDataSource("mysql");
 		
 		
-        Connection con = null;
+        Connection conn = null;
         
         
         //Statement stmt = null;
@@ -53,9 +53,9 @@ public class ClienteDao {
 		
 		boolean existe=false;
 		try {
-			con = conexion.getPoolConexion().getConnection();
+			conn = conexion.getPoolConexion().getConnection();
 			
-			seleccionarTodasLosClientes = con.prepareStatement("SELECT * FROM cliente;");
+			seleccionarTodasLosClientes = conn.prepareStatement("SELECT * FROM cliente;");
 			
 			res = seleccionarTodasLosClientes.executeQuery();
 			while(res.next()){
@@ -81,14 +81,14 @@ public class ClienteDao {
 				
 				if(res != null) res.close();
                 if(seleccionarTodasLosClientes != null)seleccionarTodasLosClientes.close();
-                if(con != null) con.close();
+                if(conn != null) conn.close();
                 
 				
 				} // fin de try
 				catch ( SQLException excepcionSql )
 				{
 					excepcionSql.printStackTrace();
-					conexion.desconectar();
+					//Sconexion.desconectar();
 				} // fin de catch
 		} // fin de finally
 		

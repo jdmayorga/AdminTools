@@ -1,5 +1,6 @@
 package Modelo;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,20 +11,25 @@ public class BodegaDao {
 	private PreparedStatement buscarBodega=null;
 	public BodegaDao(Conexion conn){
 		conexion=conn;
-		try {
+		/*try {
 			buscarBodega=conexion.getConnection().prepareStatement("SELECT * FROM bodega where codigo_bodega=?");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	
 	public Bodega buscarBodega(int id){
 		Bodega myBodega=new Bodega();
 		ResultSet res=null;
+		Connection conn=null;
 		boolean existe=false;
 		try {
+			conn=conexion.getPoolConexion().getConnection();
+			buscarBodega=conn.prepareStatement("SELECT * FROM bodega where codigo_bodega=?");
+			
+			
 			buscarBodega.setInt(1, id);
 			res=buscarBodega.executeQuery();
 			while(res.next()){
@@ -38,12 +44,13 @@ public class BodegaDao {
 		finally
 		{
 			try{
-				res.close();
+				if(res!=null)res.close();
+				if(buscarBodega!=null)buscarBodega.close();
+				if(conn!=null)conn.close();
 			} // fin de try
 			catch ( SQLException excepcionSql )
 			{
-			excepcionSql.printStackTrace();
-			conexion.desconectar();
+				excepcionSql.printStackTrace();
 			} // fin de catch
 		} // fin de finally
 		

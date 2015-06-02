@@ -1,5 +1,6 @@
 package Modelo;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -12,20 +13,22 @@ public class DetalleFacturaProveedorDao {
 		conexion=conn;
 		inventarioDao=new InventarioDao(conexion);
 		kardexDao=new KardexDao(conexion);
-		try {
+		/*try {
 			agregarDetalle=conexion.getConnection().prepareStatement( "INSERT INTO detalle_factura_compra(numero_compra,codigo_articulo,precio,cantidad,impuesto,subtotal) VALUES (?,?,?,?,?,?)");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para agreagar detalle>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 	public boolean agregarDetalle(DetalleFacturaProveedor detalle,int noCompra){
 		boolean resultado=false;
-		
+		Connection conn=null;
 		
 		
 		try{
+			conn=conexion.getPoolConexion().getConnection();
+			agregarDetalle=conn.prepareStatement( "INSERT INTO detalle_factura_compra(numero_compra,codigo_articulo,precio,cantidad,impuesto,subtotal) VALUES (?,?,?,?,?,?)");
 			agregarDetalle.setInt(1, noCompra);
 			agregarDetalle.setInt(2, detalle.getArticulo().getId());
 			agregarDetalle.setDouble(3, detalle.getPrecioCompra());
@@ -76,6 +79,22 @@ public class DetalleFacturaProveedorDao {
 			conexion.desconectar();
 			resultado= false;
 		}
+		finally
+		{
+			try{
+				
+				//if(res != null) res.close();
+                if(agregarDetalle != null)agregarDetalle.close();
+                if(conn != null) conn.close();
+                
+				
+				} // fin de try
+				catch ( SQLException excepcionSql )
+				{
+					excepcionSql.printStackTrace();
+					//Sconexion.desconectar();
+				} // fin de catch
+		} // fin de finally
 		return resultado;
 	}
 

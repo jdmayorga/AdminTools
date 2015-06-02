@@ -1,5 +1,6 @@
 package Modelo;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,22 +19,22 @@ public class ImpuestoDao {
 	public ImpuestoDao(Conexion conn){
 		conexion=conn;
 		
-		try{
+		/*try{
 			
 			//conexion= new Conexion();
 			seleccionarTodasLosImpuesto = conexion.getConnection().prepareStatement("SELECT codigo_impuesto,porcentaje FROM impuesto");
-			/*insertarNuevaMarca=conexion.getConnection().prepareStatement( "INSERT INTO marcas(descripcion,observacion) VALUES (?,?)");
+			insertarNuevaMarca=conexion.getConnection().prepareStatement( "INSERT INTO marcas(descripcion,observacion) VALUES (?,?)");
 			actualizarMarca=conexion.getConnection().prepareStatement("UPDATE marcas SET descripcion = ?, observacion = ? WHERE codigo_marca = ?");
 			eliminarMarca=conexion.getConnection().prepareStatement("DELETE FROM marcas WHERE codigo_marca = ?");
 			buscarMarca=conexion.getConnection().prepareStatement("SELECT codigo_marca,descripcion,observacion FROM marcas where codigo_marca =  ?");
 			buscarMarcaObseracion=conexion.getConnection().prepareStatement("SELECT codigo_marca,descripcion,observacion FROM marcas where observacion LIKE ? ;");
-			buscarMarcaNombre=conexion.getConnection().prepareStatement("SELECT codigo_marca,descripcion,observacion FROM marcas where descripcion LIKE ? ;");*/
+			buscarMarcaNombre=conexion.getConnection().prepareStatement("SELECT codigo_marca,descripcion,observacion FROM marcas where descripcion LIKE ? ;");
 		}
 		catch ( SQLException excepcionSql )
 		{
 			excepcionSql.printStackTrace();
 			System.exit( 1 );
-		} // fin de catch
+		} // fin de catch*/
 	}
 	
 	
@@ -43,13 +44,15 @@ public class ImpuestoDao {
 		//List<Impuesto> impuestos=new ArrayList<Impuesto>();
 		Vector<Impuesto> impuestos=new Vector<Impuesto>();
 		ResultSet res=null;
+		Connection conn=null;
 		//DefaultComboBoxModel modelImpuesto = new DefaultComboBoxModel();
 		boolean existe=false;
 		try {
-			
-			
+			conn=conexion.getPoolConexion().getConnection();
+			seleccionarTodasLosImpuesto = conn.prepareStatement("SELECT codigo_impuesto,porcentaje FROM impuesto");
 			
 			res = seleccionarTodasLosImpuesto.executeQuery();
+			
 			while(res.next()){
 				Impuesto unaImpuesto=new Impuesto();
 				existe=true;
@@ -70,12 +73,15 @@ public class ImpuestoDao {
 		finally
 		{
 			try{
-				res.close();
+				if(res != null) res.close();
+                if(seleccionarTodasLosImpuesto != null)seleccionarTodasLosImpuesto.close();
+                if(conn != null) conn.close();
+                
 				} // fin de try
 				catch ( SQLException excepcionSql )
 				{
 					excepcionSql.printStackTrace();
-					conexion.desconectar();
+					//conexion.desconectar();
 				} // fin de catch
 		} // fin de finally
 		

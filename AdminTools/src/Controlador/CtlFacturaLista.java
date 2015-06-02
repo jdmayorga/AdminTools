@@ -121,7 +121,10 @@ private void cobrar(){
 			
 				try {
 					AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "../AdminTools/src/Reportes/Factura_Saint_Paul.jasper",myFactura.getIdFactura() );
-					AbstractJasperReports.showViewer();
+					//this.view.setModal(false);
+					AbstractJasperReports.imprimierFactura();
+					//this.view.setModal(true);
+				
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

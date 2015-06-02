@@ -1,5 +1,6 @@
 package Modelo;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,44 +26,47 @@ public class ProveedorDao {
 	public ProveedorDao(Conexion conn){
 		
 		conexion=conn;
-		try {
+		myProveedor=new Proveedor();
+		/*try {
 			
 			//conexion= new Conexion();
-			myProveedor=new Proveedor();
+			
 		
 		
-			seleccionarTodasLosProveedores = conexion.getConnection().prepareStatement( "SELECT * FROM proveedor;");
-			insertarNuevoProveedor=conexion.getConnection().prepareStatement( "INSERT INTO proveedor(nombre_proveedor,telefono,celular,direccion) VALUES (?,?,?,?)");
-			elimiarProveedor=conexion.getConnection().prepareStatement("DELETE FROM proveedor WHERE codigo_proveedor = ?");
-			buscarProveedor=conexion.getConnection().prepareStatement("SELECT codigo_proveedor,nombre_proveedor,telefono,celular,direccion FROM proveedor where codigo_proveedor =  ?");
-			buscarProveedorNombre=conexion.getConnection().prepareStatement("SELECT * FROM proveedor where nombre_proveedor LIKE ? ;");
-			buscarProveedorDireccion=conexion.getConnection().prepareStatement("SELECT * FROM proveedor where direccion LIKE ? ;");
-			actualizarProveedor=conexion.getConnection().prepareStatement("UPDATE proveedor SET nombre_proveedor = ?, telefono =?, celular = ?, direccion = ?  WHERE codigo_proveedor = ?");
+			//seleccionarTodasLosProveedores = conexion.getConnection().prepareStatement( "SELECT * FROM proveedor;");
+			//insertarNuevoProveedor=conexion.getConnection().prepareStatement( "INSERT INTO proveedor(nombre_proveedor,telefono,celular,direccion) VALUES (?,?,?,?)");
+			//elimiarProveedor=conexion.getConnection().prepareStatement("DELETE FROM proveedor WHERE codigo_proveedor = ?");
+			//buscarProveedor=conexion.getConnection().prepareStatement("SELECT codigo_proveedor,nombre_proveedor,telefono,celular,direccion FROM proveedor where codigo_proveedor =  ?");
+			//buscarProveedorNombre=conexion.getConnection().prepareStatement("SELECT * FROM proveedor where nombre_proveedor LIKE ? ;");
+			//buscarProveedorDireccion=conexion.getConnection().prepareStatement("SELECT * FROM proveedor where direccion LIKE ? ;");
+			//actualizarProveedor=conexion.getConnection().prepareStatement("UPDATE proveedor SET nombre_proveedor = ?, telefono =?, celular = ?, direccion = ?  WHERE codigo_proveedor = ?");
 			
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}/*/
 	}
 	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para agregar un proveedores>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 	public boolean registrarProveedor(Proveedor myProveedor)
 	{
 		
 		int resultado=0;
-		ResultSet rs=null;
+		ResultSet res=null;
+		Connection conn=null;
 		try 
 		{
-			
+			conn=conexion.getPoolConexion().getConnection();
+			insertarNuevoProveedor=conn.prepareStatement( "INSERT INTO proveedor(nombre_proveedor,telefono,celular,direccion) VALUES (?,?,?,?)");
 			insertarNuevoProveedor.setString( 1, myProveedor.getNombre() );
 			insertarNuevoProveedor.setString( 2, myProveedor.getTelefono() );
 			insertarNuevoProveedor.setString( 3, myProveedor.getCelular() );
 			insertarNuevoProveedor.setString( 4, myProveedor.getDireccion() );
 			
 			resultado=insertarNuevoProveedor.executeUpdate();
-			rs=insertarNuevoProveedor.getGeneratedKeys(); //obtengo las ultimas llaves generadas
-			while(rs.next()){
-				this.setIdProveedorRegistrado(rs.getInt(1));
+			res=insertarNuevoProveedor.getGeneratedKeys(); //obtengo las ultimas llaves generadas
+			while(res.next()){
+				this.setIdProveedorRegistrado(res.getInt(1));
 				//int clave=rs.getInt(1);
 			}
 		
@@ -78,12 +82,14 @@ public class ProveedorDao {
 		finally
 		{
 			try{
-				rs.close();
+				if(res != null) res.close();
+                if(insertarNuevoProveedor != null)insertarNuevoProveedor.close();
+                if(conn != null) conn.close();
 			} // fin de try
 			catch ( SQLException excepcionSql )
 			{
 				excepcionSql.printStackTrace();
-				conexion.desconectar();
+				//conexion.desconectar();
 			} // fin de catch
 		} // fin de finally
 	}
@@ -100,11 +106,12 @@ public class ProveedorDao {
 	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para Actualizar los proveedores>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 	public boolean actualizarProveedor(Proveedor myProveedor){
 		
-		
+		Connection conn=null;
 		
 		
 		try {
-			
+				conn=conexion.getPoolConexion().getConnection();
+				actualizarProveedor=conn.prepareStatement("UPDATE proveedor SET nombre_proveedor = ?, telefono =?, celular = ?, direccion = ?  WHERE codigo_proveedor = ?");
 				actualizarProveedor.setString(1, myProveedor.getNombre());
 				actualizarProveedor.setString(2, myProveedor.getTelefono());
 				actualizarProveedor.setString(3, myProveedor.getCelular());
@@ -125,6 +132,19 @@ public class ProveedorDao {
             
 			
 		}
+		finally
+		{
+			try{
+				//if(res != null) res.close();
+                if(actualizarProveedor != null)actualizarProveedor.close();
+                if(conn != null) conn.close();
+			} // fin de try
+			catch ( SQLException excepcionSql )
+			{
+				excepcionSql.printStackTrace();
+				//conexion.desconectar();
+			} // fin de catch
+		} // fin de finally
 		
 	}
 
@@ -133,9 +153,10 @@ public class ProveedorDao {
 	public boolean eliminarProveedor(int id){
 		
 		int resultado=0;
-		
+		Connection conn=null;
 		try {
-			
+			conn=conexion.getPoolConexion().getConnection();
+			elimiarProveedor=conn.prepareStatement("DELETE FROM proveedor WHERE codigo_proveedor = ?");
 				elimiarProveedor.setInt( 1, id );
 				resultado=elimiarProveedor.executeUpdate();
 				return true;
@@ -144,6 +165,19 @@ public class ProveedorDao {
 				System.out.println(e.getMessage());
 				return false;
 			}
+		finally
+		{
+			try{
+				//if(res != null) res.close();
+                if(elimiarProveedor != null)elimiarProveedor.close();
+                if(conn != null) conn.close();
+			} // fin de try
+			catch ( SQLException excepcionSql )
+			{
+				excepcionSql.printStackTrace();
+				//conexion.desconectar();
+			} // fin de catch
+		} // fin de finally
 		
 	}
 	
@@ -153,8 +187,11 @@ public class ProveedorDao {
 		Proveedor unoPro=new Proveedor();
 		ResultSet res=null;
 		boolean existe=false;
+		
+		Connection conn=null;
 		try {
-			
+			conn=conexion.getPoolConexion().getConnection();
+			buscarProveedor=conn.prepareStatement("SELECT codigo_proveedor,nombre_proveedor,telefono,celular,direccion FROM proveedor where codigo_proveedor =  ?");
 			buscarProveedor.setInt(1, i);
 			res = buscarProveedor.executeQuery();
 			while(res.next()){
@@ -169,18 +206,20 @@ public class ProveedorDao {
 					
 					
 			} catch (SQLException e) {
-					JOptionPane.showMessageDialog(null, "Error, no se conecto");
+					//JOptionPane.showMessageDialog(null, "Error, no se conecto");
 					System.out.println(e);
 			}
 			finally
 			{
 				try{
-					res.close();
+					if(res != null) res.close();
+	                if(buscarProveedor != null)buscarProveedor.close();
+	                if(conn != null) conn.close();
 				} // fin de try
 				catch ( SQLException excepcionSql )
 				{
-				excepcionSql.printStackTrace();
-				conexion.desconectar();
+					excepcionSql.printStackTrace();
+				//conexion.desconectar();
 				} // fin de catch
 			} // fin de finally
 		
@@ -198,11 +237,12 @@ public class ProveedorDao {
 	public List<Proveedor> buscarProveedorNombre(String busqueda){
 		List<Proveedor> proveedores=new ArrayList<Proveedor>();
 		ResultSet res=null;
-		 
+		Connection conn=null;
 		boolean existe=false;
 		try {
 			
-		
+			conn=conexion.getPoolConexion().getConnection();
+			buscarProveedorNombre=conn.prepareStatement("SELECT * FROM proveedor where nombre_proveedor LIKE ? ;");
 			buscarProveedorNombre.setString(1, "%" + busqueda + "%");
 			res = buscarProveedorNombre.executeQuery();
 			//System.out.println(buscarProveedorNombre);
@@ -220,17 +260,19 @@ public class ProveedorDao {
 					
 					
 			} catch (SQLException e) {
-					JOptionPane.showMessageDialog(null, "Error, no se conecto");
-					System.out.println(e);
+					//JOptionPane.showMessageDialog(null, "Error, no se conecto");
+				e.printStackTrace();
 			}finally
 			{
 				try{
-					res.close();
+					if(res != null) res.close();
+	                if(buscarProveedorNombre != null)buscarProveedorNombre.close();
+	                if(conn != null) conn.close();
 				} // fin de try
 				catch ( SQLException excepcionSql )
 				{
 					excepcionSql.printStackTrace();
-					conexion.desconectar();
+					//conexion.desconectar();
 				} // fin de catch
 			} // fin de finally
 		
@@ -246,9 +288,12 @@ public class ProveedorDao {
 	public List<Proveedor> buscarProveedorDireccion(String busqueda){
 		List<Proveedor> proveedores=new ArrayList<Proveedor>();
 		ResultSet res=null;
-		 
+		Connection conn=null;
 		boolean existe=false;
 		try {
+			
+			conn=conexion.getPoolConexion().getConnection();
+			buscarProveedorDireccion=conn.prepareStatement("SELECT * FROM proveedor where direccion LIKE ? ;");
 			
 		
 			buscarProveedorDireccion.setString(1, "%" + busqueda + "%");
@@ -267,17 +312,18 @@ public class ProveedorDao {
 					
 					
 			} catch (SQLException e) {
-					JOptionPane.showMessageDialog(null, "Error, no se conecto");
-					System.out.println(e);
+				e.printStackTrace();
 			}finally
 			{
 				try{
-					res.close();
+					if(res != null) res.close();
+	                if(buscarProveedorDireccion != null)buscarProveedorDireccion.close();
+	                if(conn != null) conn.close();
 				} // fin de try
 				catch ( SQLException excepcionSql )
 				{
 					excepcionSql.printStackTrace();
-					conexion.desconectar();
+					//conexion.desconectar();
 				} // fin de catch
 			} // fin de finally
 		
@@ -293,11 +339,13 @@ public class ProveedorDao {
 		List<Proveedor> proveedores=new ArrayList<Proveedor>();
 		
 		ResultSet res=null;
+		Connection conn=null;
 		boolean existe=false;
 		
 		try {
 			
-			
+			conn=conexion.getPoolConexion().getConnection();
+			seleccionarTodasLosProveedores = conexion.getConnection().prepareStatement( "SELECT * FROM proveedor;");
 			res = seleccionarTodasLosProveedores.executeQuery();
 			while(res.next()){
 				Proveedor unoPro=new Proveedor();
@@ -311,18 +359,19 @@ public class ProveedorDao {
 			 }					
 					
 			} catch (SQLException e) {
-					JOptionPane.showMessageDialog(null, "Error, no se conecto");
-					System.out.println(e);
+				e.printStackTrace();
 			}
 			finally
 			{
 				try{
-					res.close();
+					if(res != null) res.close();
+	                if(seleccionarTodasLosProveedores != null)seleccionarTodasLosProveedores.close();
+	                if(conn != null) conn.close();
 				} // fin de try
 				catch ( SQLException excepcionSql )
 				{
 					excepcionSql.printStackTrace();
-					conexion.desconectar();
+					//conexion.desconectar();
 				} // fin de catch
 			} // fin de finally
 		

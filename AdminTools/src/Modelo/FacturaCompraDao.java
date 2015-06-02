@@ -1,5 +1,6 @@
 package Modelo;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,11 +29,14 @@ public class FacturaCompraDao {
 	{
 		
 		boolean resultado;
-		ResultSet rs=null;
+		ResultSet res=null;
+		Connection conn=null;
 		int idFactura=0;
 		
 		try 
 		{
+			conn=conexion.getPoolConexion().getConnection();
+			agregarFactura=conn.prepareStatement( "INSERT INTO encabezado_factura_compra(fecha,subtotal,impuesto,total,codigo_cliente,no_factura_compra,tipo_factura,fecha_vencimiento,estado_factura,fecha_ingreso) VALUES (?,?,?,?,?,?,?,?,?,now())");
 			agregarFactura.setString(1, fac.getFechaCompra());
 			agregarFactura.setDouble(2, fac.getSubTotal());
 			agregarFactura.setDouble(3, fac.getTotalImpuesto());
@@ -52,9 +56,9 @@ public class FacturaCompraDao {
 			}
 			
 			agregarFactura.executeUpdate();
-			rs=agregarFactura.getGeneratedKeys(); //obtengo las ultimas llaves generadas
-			while(rs.next()){
-				idFactura=rs.getInt(1);
+			res=agregarFactura.getGeneratedKeys(); //obtengo las ultimas llaves generadas
+			while(res.next()){
+				idFactura=res.getInt(1);
 			}
 			
 			//JOptionPane.showMessageDialog(null,""+idFactura);
@@ -72,7 +76,9 @@ public class FacturaCompraDao {
 		finally
 		{
 			try{
-				rs.close();
+				if(res != null) res.close();
+                if(agregarFactura != null)agregarFactura.close();
+                if(conn != null) conn.close();
 			} // fin de try
 			catch ( SQLException excepcionSql )
 			{
@@ -87,9 +93,11 @@ public class FacturaCompraDao {
 	public String getFechaSistema(){
 		String fecha="";
 		
-		Statement instrucions;
+		Statement instrucions=null;
+		Connection conn=null;
 		try {
-			instrucions = conexion.getConnection().createStatement();
+			conn=conexion.getPoolConexion().getConnection();
+			instrucions = conn.createStatement();
 			ResultSet res=null;
 			//res=instrucions.executeQuery(" SELECT DATE_FORMAT(now(), '%d/%m/%Y %h:%i:%s %p') as fecha;");
 			res=instrucions.executeQuery(" SELECT DATE_FORMAT(now(), '%d/%m/%Y') as fecha;");
@@ -100,6 +108,19 @@ public class FacturaCompraDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		finally
+		{
+			try{
+				//if(res != null) res.close();
+                if(instrucions != null)instrucions.close();
+                if(conn != null) conn.close();
+			} // fin de try
+			catch ( SQLException excepcionSql )
+			{
+				excepcionSql.printStackTrace();
+				//conexion.desconectar();
+			} // fin de catch
+		} // fin de finally
 		
 		
 		
