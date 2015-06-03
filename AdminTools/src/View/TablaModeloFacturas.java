@@ -70,5 +70,10 @@ public class TablaModeloFacturas extends AbstractTableModel {
 		facturas.clear();
 		fireTableDataChanged();
 	}
+	public void eliminarFactura(int row) {
+		// TODO Auto-generated method stub
+		facturas.remove(row);
+		fireTableDataChanged();
+	}
 
 }

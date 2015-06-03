@@ -133,6 +133,7 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 		
 		myFactura.setCliente(myCliente);
 		myFactura.setDetalles(this.view.getModeloTabla().getDetalles());
+		myFactura.setFecha(facturaDao.getFechaSistema());
 		//JOptionPane.showMessageDialog(view, myCliente);*/
 		
 	}
@@ -481,6 +482,7 @@ public void calcularTotal(DetalleFactura detalle){
 	private void guardar(){
 		setFactura();
 		facturaDao.registrarFacturaTemp(myFactura);
+		this.view.setVisible(false);
 		
 	}
 	private void cobrar(){
@@ -493,8 +495,11 @@ public void calcularTotal(DetalleFactura detalle){
 			myFactura.setIdFactura(facturaDao.getIdFacturaGuardada());
 			
 				try {
+					this.view.setVisible(false);
+					this.view.dispose();
 					AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "../AdminTools/src/Reportes/Factura_Saint_Paul.jasper",myFactura.getIdFactura() );
 					AbstractJasperReports.showViewer();
+					myFactura=null;
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -502,7 +507,9 @@ public void calcularTotal(DetalleFactura detalle){
 				
 			
 		}else{
-			
+			JOptionPane.showMessageDialog(view, "No se guardo la factura", "Error Base de Datos", JOptionPane.ERROR_MESSAGE);
+			this.view.setVisible(false);
+			this.view.dispose();
 		}
 		
 	}
@@ -617,6 +624,12 @@ public void calcularTotal(DetalleFactura detalle){
 		cargarFacturaView();
 		this.view.setVisible(true);
 		
+	}
+
+
+	public Factura getAccion() {
+		view.setVisible(true);
+		return myFactura;
 	}
 
 }

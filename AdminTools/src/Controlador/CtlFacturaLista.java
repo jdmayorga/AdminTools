@@ -117,6 +117,8 @@ private void cobrar(){
 		boolean resul=myFacturaDao.registrarFactura(myFactura);
 				
 		if(resul){
+			
+			int idFacTemp=myFactura.getIdFactura();
 			myFactura.setIdFactura(myFacturaDao.getIdFacturaGuardada());
 			
 				try {
@@ -124,7 +126,10 @@ private void cobrar(){
 					//this.view.setModal(false);
 					AbstractJasperReports.imprimierFactura();
 					//this.view.setModal(true);
-				
+					//JOptionPane.showMessageDialog(view, "El id factura:"+myFactura.getIdFactura());
+					myFacturaDao.EliminarTemp(idFacTemp);
+					
+					this.view.getModelo().eliminarFactura(this.filaPulsada);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -150,8 +155,12 @@ private void cobrar(){
 			ViewFacturar vistaFacturar=new ViewFacturar(this.view);
 			
 			CtlFacturar ctlFacturar=new CtlFacturar(vistaFacturar,conexion );
-			vistaFacturar.setVisible(true);
+						
+			Factura myFac=ctlFacturar.getAccion();
 			
+			if(myFac!=null){
+				this.view.getModelo().agregarFactura(myFac);
+			}
 			
 			vistaFacturar.dispose();
 			vistaFacturar=null;

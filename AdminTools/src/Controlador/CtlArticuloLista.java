@@ -226,9 +226,12 @@ public class CtlArticuloLista implements ActionListener,MouseListener, WindowLis
 	
 	public void cargarTabla(List<Articulo> articulos){
 		//JOptionPane.showMessageDialog(view, articulos);
-		this.view.getModelo().limpiarArticulos();
-		for(int c=0;c<articulos.size();c++){
-			this.view.getModelo().agregarArticulo(articulos.get(c));
+		
+		if(articulos!=null){
+			this.view.getModelo().limpiarArticulos();
+			for(int c=0;c<articulos.size();c++){
+				this.view.getModelo().agregarArticulo(articulos.get(c));
+			}
 		}
 	}
 

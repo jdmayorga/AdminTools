@@ -18,6 +18,7 @@ public class FacturaDao {
 	private Conexion conexion;
 	private PreparedStatement agregarFactura=null;
 	private PreparedStatement seleccionarFacturasPendientes=null;
+	private PreparedStatement elimiarTem = null;
 	
 	private DetalleFacturaDao detallesDao=null;
 	private ClienteDao myClienteDao=null;
@@ -240,7 +241,21 @@ public class FacturaDao {
 		
         Connection con = null;
         
-        
+    	String sql="SELECT "
+				+ "encabezado_factura_temp.numero_factura, "
+				+ "DATE_FORMAT(encabezado_factura_temp.fecha, '%d/%m/%Y') as fecha,"
+				+ " encabezado_factura_temp.subtotal, "
+				+ "encabezado_factura_temp.impuesto, "
+				+ "encabezado_factura_temp.total, "
+				+ "encabezado_factura_temp.codigo_cliente,"
+				+ "encabezado_factura_temp.codigo, "
+				+ "encabezado_factura_temp.estado_factura, "
+				+ "encabezado_factura_temp.isv18, "
+				+ "encabezado_factura_temp.tipo_factura, "
+				+ "encabezado_factura_temp.descuento,"
+				+ "encabezado_factura_temp.pago, "
+				+ "encabezado_factura_temp.usuario "
+				+ "FROM encabezado_factura_temp";
         //Statement stmt = null;
        	List<Factura> facturas=new ArrayList<Factura>();
 		
@@ -250,7 +265,7 @@ public class FacturaDao {
 		try {
 			con = Conexion.getPoolConexion().getConnection();
 			
-			seleccionarFacturasPendientes = con.prepareStatement("SELECT * FROM encabezado_factura_temp;");
+			seleccionarFacturasPendientes = con.prepareStatement(sql);
 			
 			res = seleccionarFacturasPendientes.executeQuery();
 			while(res.next()){
@@ -318,6 +333,43 @@ public class FacturaDao {
 	public Integer getIdFacturaGuardada() {
 		// TODO Auto-generated method stub
 		return idFacturaGuardada;
+	}
+	
+	
+	
+	
+	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para Eliminar los proveedores>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+	public boolean EliminarTemp(Integer IdFactura) {
+		
+		int resultado=0;
+		Connection conn=null;
+		try {
+			conn=conexion.getPoolConexion().getConnection();
+			elimiarTem=conn.prepareStatement("DELETE FROM encabezado_factura_temp WHERE numero_factura = ?");
+			elimiarTem.setInt( 1, IdFactura );
+			resultado=elimiarTem.executeUpdate();
+			
+			this.detallesDao.eliminarTem(IdFactura);
+			return true;
+			
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+				return false;
+			}
+		finally
+		{
+			try{
+				//if(res != null) res.close();
+                if(elimiarTem != null)elimiarTem.close();
+                if(conn != null) conn.close();
+			} // fin de try
+			catch ( SQLException excepcionSql )
+			{
+				excepcionSql.printStackTrace();
+				//conexion.desconectar();
+			} // fin de catch
+		} // fin de finally
+		
 	}
 
 	

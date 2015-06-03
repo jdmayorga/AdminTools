@@ -15,6 +15,7 @@ public class DetalleFacturaDao {
 	private PreparedStatement agregarDetalle=null;
 	private PreparedStatement detallesFacturaPendiente=null;
 	private Conexion conexion=null;
+	private PreparedStatement elimiarTem = null;
 	private InventarioDao inventarioDao;
 	private KardexDao kardexDao;
 	private ArticuloDao articuloDao=null;
@@ -232,6 +233,38 @@ public class DetalleFacturaDao {
 				return detalles;
 			}
 			else return null;
+	}
+
+	public boolean eliminarTem(Integer idFactura) {
+		
+		int resultado=0;
+		Connection conn=null;
+		try {
+			conn=conexion.getPoolConexion().getConnection();
+			elimiarTem=conn.prepareStatement("DELETE FROM detalle_factura_temp WHERE numero_factura = ?");
+			elimiarTem.setInt( 1, idFactura );
+			resultado=elimiarTem.executeUpdate();
+			
+			return true;
+			
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+				return false;
+			}
+		finally
+		{
+			try{
+				//if(res != null) res.close();
+                if(elimiarTem != null)elimiarTem.close();
+                if(conn != null) conn.close();
+			} // fin de try
+			catch ( SQLException excepcionSql )
+			{
+				excepcionSql.printStackTrace();
+				//conexion.desconectar();
+			} // fin de catch
+		} // fin de finally
+		
 	}
 
 }
