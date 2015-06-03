@@ -84,15 +84,7 @@ public class ArticuloDao {
 		}
 	}
 	
-	/*public ArticuloDao(DataSource poolConexion) {
-		// TODO Auto-generated constructor stub
-		try {
-			conexionBD=poolConexion.getConnection();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}*/
+	
 
 	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para busca los articulos por marcas>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 	public List<Articulo> buscarArticuloMarca(String busqueda){
@@ -406,14 +398,12 @@ public class ArticuloDao {
 	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para seleccionar todos los articulos>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 	public List<Articulo> todoArticulos(){
 		
-		//se crear un referencia al pool de conexiones
-		//DataSource ds = DBCPDataSourceFactory.getDataSource("mysql");
 		
 		
         Connection con = null;
         
         
-        //Statement stmt = null;
+      
        	List<Articulo> articulos=new ArrayList<Articulo>();
 		
 		ResultSet res=null;

@@ -345,7 +345,7 @@ public class ProveedorDao {
 		try {
 			
 			conn=conexion.getPoolConexion().getConnection();
-			seleccionarTodasLosProveedores = conexion.getConnection().prepareStatement( "SELECT * FROM proveedor;");
+			seleccionarTodasLosProveedores = conn.prepareStatement( "SELECT * FROM proveedor;");
 			res = seleccionarTodasLosProveedores.executeQuery();
 			while(res.next()){
 				Proveedor unoPro=new Proveedor();

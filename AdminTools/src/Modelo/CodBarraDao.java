@@ -17,7 +17,7 @@ public class CodBarraDao {
 	private PreparedStatement eliminarCodsPorCodBarra=null;
 	public CodBarraDao(Conexion conn){
 		conexion=conn;
-		try{
+		/*try{
 			insertarNuevoCodBarras=conexion.getConnection().prepareStatement( "INSERT INTO codigos_articulos(codigo_articulo,codigo_barra) VALUES (?,?)");
 			eliminarCodsBarra=conexion.getConnection().prepareStatement("DELETE FROM codigos_articulos WHERE codigo_articulo = ?");
 			eliminarCodsPorCodBarra=conexion.getConnection().prepareStatement("DELETE FROM codigos_articulos WHERE codigo_barra = ? and codigo_articulo= ?");
@@ -27,7 +27,7 @@ public class CodBarraDao {
 		{
 			excepcionSql.printStackTrace();
 			System.exit( 1 );
-		} // fin de catch
+		} // fin de catch*/
 		
 	}
 	
@@ -201,7 +201,7 @@ public class CodBarraDao {
 			return true;
 		}catch (SQLException e) {
 				e.printStackTrace();
-				conexion.desconectar();
+				//conexion.desconectar();
 	            return false;
 			}
 		finally

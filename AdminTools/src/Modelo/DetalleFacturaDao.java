@@ -65,7 +65,7 @@ public class DetalleFacturaDao {
 			resultado=true;
 		}catch (SQLException e) {
 			e.printStackTrace();
-			conexion.desconectar();
+			//conexion.desconectar();
 			resultado= false;
 		}
 		finally
@@ -148,7 +148,7 @@ public class DetalleFacturaDao {
 			resultado=true;
 		}catch (SQLException e) {
 			e.printStackTrace();
-			conexion.desconectar();
+			//conexion.desconectar();
 			resultado= false;
 		}
 		finally

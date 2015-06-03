@@ -100,7 +100,7 @@ public class FacturaDao {
 		try 
 		{
 			conn=conexion.getPoolConexion().getConnection();
-			agregarFactura=conexion.getConnection().prepareStatement(sql);
+			agregarFactura=conn.prepareStatement(sql);
 			agregarFactura.setBigDecimal(1,myFactura.getSubTotal() );
 			agregarFactura.setBigDecimal(2, myFactura.getTotalImpuesto());
 			agregarFactura.setBigDecimal(3, myFactura.getTotal());
@@ -177,7 +177,7 @@ public class FacturaDao {
 		try 
 		{
 			conn=Conexion.getPoolConexion().getConnection();
-			agregarFactura=conexion.getConnection().prepareStatement(sql);
+			agregarFactura=conn.prepareStatement(sql);
 			agregarFactura.setBigDecimal(1,myFactura.getSubTotal() );
 			agregarFactura.setBigDecimal(2, myFactura.getTotalImpuesto());
 			agregarFactura.setBigDecimal(3, myFactura.getTotal());

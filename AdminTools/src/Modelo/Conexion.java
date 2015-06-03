@@ -36,9 +36,9 @@ public class Conexion {
    /** Constructor de DbConnection */
    public Conexion() {
 	   
-	   poolConexiones=this.setDataSource("mysql");
+	   poolConexiones=Conexion.setDataSource("mysql");
 	   
-	   BasicDataSource basicDataSource = new BasicDataSource();
+	   /*BasicDataSource basicDataSource = new BasicDataSource();
 	   
 	   basicDataSource.setDriverClassName(driver);
 	   basicDataSource.setUsername(login);
@@ -144,7 +144,11 @@ public class Conexion {
            ds.setUrl(props.getProperty("MYSQL_DB_URL"));
            ds.setUsername(props.getProperty("MYSQL_DB_USERNAME"));
            ds.setPassword(props.getProperty("MYSQL_DB_PASSWORD"));
-           ds.setMinIdle(20);
+          // ds.setMinIdle(20);
+           ds.setMaxActive(10);
+           ds.setMaxIdle(5);
+           ds.setMinIdle(3);
+           ds.setInitialSize(2);
        }else if("oracle".equals(dbType)){
            ds.setDriverClassName(props.getProperty("ORACLE_DB_DRIVER_CLASS"));
            ds.setUrl(props.getProperty("ORACLE_DB_URL"));

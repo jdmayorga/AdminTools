@@ -16,12 +16,12 @@ public class FacturaCompraDao {
 	public FacturaCompraDao(Conexion conn){
 		conexion=conn;
 		detallesDao=new DetalleFacturaProveedorDao(conexion);
-		try {
+		/*try {
 			agregarFactura=conexion.getConnection().prepareStatement( "INSERT INTO encabezado_factura_compra(fecha,subtotal,impuesto,total,codigo_cliente,no_factura_compra,tipo_factura,fecha_vencimiento,estado_factura,fecha_ingreso) VALUES (?,?,?,?,?,?,?,?,?,now())");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para agreagar facturas>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
@@ -70,7 +70,7 @@ public class FacturaCompraDao {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			conexion.desconectar();
+			//conexion.desconectar();
 			resultado= false;
 		}
 		finally

@@ -76,7 +76,6 @@ public class DetalleFacturaProveedorDao {
 			resultado=true;
 		}catch (SQLException e) {
 			e.printStackTrace();
-			conexion.desconectar();
 			resultado= false;
 		}
 		finally
