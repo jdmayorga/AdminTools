@@ -93,6 +93,9 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 			}
 			
 			break;
+		case "ACTUALIZAR":
+			this.actualizar();
+			break;
 		case "BUSCARARTICULO":
 			this.buscarArticulo();
 		break;
@@ -113,6 +116,9 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 		}
 		
 	}
+	
+
+
 	private void setFactura(){
 		
 		//sino se ingreso un cliente en particular que coge el cliente por defecto
@@ -485,6 +491,13 @@ public void calcularTotal(DetalleFactura detalle){
 		this.view.setVisible(false);
 		
 	}
+	private void actualizar() {
+		// TODO Auto-generated method stub
+		setFactura();
+		facturaDao.actualizarFacturaTemp(myFactura);
+		this.view.setVisible(false);
+		
+	}
 	private void cobrar(){
 		
 		//JOptionPane.showInternalInputDialog(view, "Pago con", "Cobro", JOptionPane.INFORMATION_MESSAGE);
@@ -622,6 +635,8 @@ public void calcularTotal(DetalleFactura detalle){
 		// TODO Auto-generated method stub
 		this.myFactura=f;
 		cargarFacturaView();
+		this.view.getBtnGuardar().setVisible(false);
+		this.view.getBtnActualizar().setVisible(true);
 		this.view.setVisible(true);
 		
 	}

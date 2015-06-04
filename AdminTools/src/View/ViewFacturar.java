@@ -72,6 +72,8 @@ public class ViewFacturar extends JDialog {
 	private BotonCobrar btnCobrar;
 	private JTextField txtDescuento;
 	
+	private BotonActualizar btnActualizar;
+	
 	private static final KeyStroke ENTER_KEY =KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
 	
 	public ViewFacturar(Window view) {
@@ -98,6 +100,12 @@ public class ViewFacturar extends JDialog {
 		btnCobrar = new BotonCobrar();
 		btnCobrar.setBounds(10, 180, 144, 38);
 		panelAcciones.add(btnCobrar);
+		
+		btnActualizar=new BotonActualizar();
+		btnActualizar.setBounds(10, 255, 144, 38);
+		//getContentPane().add(btnActualizar);
+		panelAcciones.add(btnActualizar);
+		btnActualizar.setVisible(false);
 		
 		btnGuardar = new BotonGuardar();
 		btnGuardar.setHorizontalAlignment(SwingConstants.LEFT);
@@ -279,6 +287,12 @@ public class ViewFacturar extends JDialog {
 	public  JRadioButton getRdbtnCredito(){
 		return  rdbtnCredito;
 	}
+	public BotonActualizar getBtnActualizar(){
+		return btnActualizar;
+	}
+	public BotonGuardar getBtnGuardar(){
+		return btnGuardar;
+	}
 	public JTextField getTxtDescuento(){
 		return txtDescuento;		
 	}
@@ -342,6 +356,10 @@ public class ViewFacturar extends JDialog {
 		this.btnGuardar.addKeyListener(c);
 		this.btnGuardar.addActionListener(c);
 		this.btnGuardar.setActionCommand("GUARDAR");
+		
+		btnActualizar.addKeyListener(c);
+		this.btnActualizar.addActionListener(c);
+		this.btnActualizar.setActionCommand("ACTUALIZAR");
 		
 		this.rdbtnContado.addKeyListener(c);
 		this.rdbtnCredito.addKeyListener(c);

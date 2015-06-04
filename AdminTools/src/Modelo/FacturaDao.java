@@ -19,6 +19,7 @@ public class FacturaDao {
 	private PreparedStatement agregarFactura=null;
 	private PreparedStatement seleccionarFacturasPendientes=null;
 	private PreparedStatement elimiarTem = null;
+	private PreparedStatement actualizarTem = null;
 	
 	private DetalleFacturaDao detallesDao=null;
 	private ClienteDao myClienteDao=null;
@@ -370,6 +371,25 @@ public class FacturaDao {
 			} // fin de catch
 		} // fin de finally
 		
+	}
+
+	public boolean actualizarFacturaTemp(Factura myFactura) {
+		// TODO Auto-generated method stub
+		boolean resultado=false;
+		Connection conn=null;
+		String sql="";
+		try {
+			conn=conexion.getPoolConexion().getConnection();
+			actualizarTem=conn.prepareStatement(sql);
+			
+			actualizarTem.executeQuery();
+			resultado=true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			resultado=false;
+		}
+		return resultado;
 	}
 
 	
