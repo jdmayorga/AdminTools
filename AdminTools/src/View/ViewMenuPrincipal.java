@@ -70,6 +70,12 @@ public class ViewMenuPrincipal extends JFrame {
 		mntmAgregarCompras = new JMenuItem("Agregar");
 		mnCompras.add(mntmAgregarCompras);
 		
+		JMenu mnCuentasPorCobrar = new JMenu("Cuentas por Cobrar");
+		menuBar.add(mnCuentasPorCobrar);
+		
+		JMenuItem mntmPagosClientes = new JMenuItem("Pagos clientes");
+		mnCuentasPorCobrar.add(mntmPagosClientes);
+		
 		JMenu mnCuentasPorPagar = new JMenu("Cuentas Por Pagar");
 		menuBar.add(mnCuentasPorPagar);
 		
@@ -86,7 +92,7 @@ public class ViewMenuPrincipal extends JFrame {
 		getContentPane().add(panel, BorderLayout.SOUTH);
 		panel.add(usuario);
 		
-		JLabel lblUserName = new JLabel("David");
+		JLabel lblUserName = new JLabel("Unico");
 		panel.add(lblUserName);
 		
 		
@@ -125,6 +131,9 @@ public class ViewMenuPrincipal extends JFrame {
 		
 		mntmBuscarFacturas.addActionListener(c);
 		mntmBuscarFacturas.setActionCommand("BUSCARFACTURAS");
+		
+		mntmCerrarFacturacion.addActionListener(c);
+		mntmCerrarFacturacion.setActionCommand("CERRARFACTURACION");
 		
 	}
 

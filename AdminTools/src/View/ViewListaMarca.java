@@ -91,7 +91,7 @@ public class ViewListaMarca extends JDialog {
         panelAccion.add(btnEliminar);
         
         btnLimpiar = new JButton();
-        btnLimpiar.setIcon(new ImageIcon("recursos/clear.png")); // NOI18N
+        btnLimpiar.setIcon(new ImageIcon(ViewListaMarca.class.getResource("/View/imagen/clear.png"))); // NOI18N
         panelAccion.add(btnLimpiar);
         
       //configuracion del panel busqueda

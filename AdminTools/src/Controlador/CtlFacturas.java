@@ -4,12 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import Modelo.AbstractJasperReports;
 import Modelo.CodBarraDao;
 import Modelo.Conexion;
 import Modelo.Factura;
@@ -67,6 +69,7 @@ public class CtlFacturas implements ActionListener, MouseListener, ChangeListene
             //int idFactura= (int)this.view.getModelo().getValueAt(filaPulsada, 0);
             
             this.view.getBtnEliminar().setEnabled(true);
+            this.view.getBtnImprimir().setEnabled(true);
             this.myFactura=this.view.getModelo().getFactura(filaPulsada);
             /*/se consigue el proveedore de la fila seleccionada
             myArticulo=this.view.getModelo().getArticulo(filaPulsada);
@@ -208,6 +211,21 @@ public class CtlFacturas implements ActionListener, MouseListener, ChangeListene
 					}
 					
 				}
+			break;
+			
+		case "IMPRIMIR":
+			try {
+				//this.view.setVisible(false);
+				//this.view.dispose();
+				AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "Factura_Saint_Paul_Reimpresion.jasper",myFactura.getIdFactura() );
+				//AbstractJasperReports.showViewer();
+				AbstractJasperReports.imprimierFactura();
+				this.view.getBtnImprimir().setEnabled(false);
+				myFactura=null;
+			} catch (SQLException ee) {
+				// TODO Auto-generated catch block
+				ee.printStackTrace();
+			}
 			break;
 		}
 

@@ -2,6 +2,7 @@ package Modelo;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -30,6 +31,19 @@ public abstract class AbstractJasperReports
 	{
 		 Map parametros = new HashMap();
 		 parametros.put("numero_factura",idFactura);
+		 
+		 
+		 
+		 
+		 InputStream ticketReportStream=null;
+		 
+		 
+		 
+		 //ticketReportStream=JReportPrintService.class.getResourceAsStream("/com/floreantpos/jreports/TicketReceiptReport.jasper");
+		    /*JasperReport ticketReport=(JasperReport)JRLoader.loadObject(ticketReportStream);
+		    JasperPrint jasperPrint=JasperFillManager.fillReport(ticketReport,map,new JRTableModelDataSource(new TicketDataSource(ticket)));
+		    JasperViewer.viewReport(jasperPrint,false);
+		    JasperPrintManager.printReport(jasperPrint,false);*/
 		// Connection conn=null;
 		 
 		/* try {
@@ -40,7 +54,10 @@ public abstract class AbstractJasperReports
 		}*/
 		 
 		try {
-			report = (JasperReport) JRLoader.loadObjectFromFile( path );
+			
+			ticketReportStream=AbstractJasperReports.class.getResourceAsStream("/Reportes/"+path);
+			//report = (JasperReport) JRLoader.loadObjectFromFile( path );
+			report = (JasperReport) JRLoader.loadObject( ticketReportStream );
 			reportFilled = JasperFillManager.fillReport( report, parametros, conn );
 			
 		}

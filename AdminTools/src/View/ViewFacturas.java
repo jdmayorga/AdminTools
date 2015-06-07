@@ -38,7 +38,7 @@ public class ViewFacturas extends JDialog {
 	
 	protected BotonAgregar btnAgregar;
 	protected BotonEliminar btnEliminar;
-	protected BotonCobrarSmall btnCobrar;
+	protected BotonImprimirSmall btnImprimir;
 	
 	
 	private JRadioButton rdbtnId;
@@ -84,10 +84,10 @@ public class ViewFacturas extends JDialog {
 		btnEliminar.setEnabled(false);
 	    panelAccion.add(btnEliminar);
 	    
-	    btnCobrar = new BotonCobrarSmall();
-	    btnCobrar.setEnabled(false);
+	    btnImprimir = new BotonImprimirSmall();
+	    btnImprimir.setEnabled(false);
 	    //btnLimpiar.setIcon(new ImageIcon("recursos/clear.png")); // NOI18N
-	    panelAccion.add(btnCobrar);
+	    panelAccion.add(btnImprimir);
 	    //panelAccion.setVisible(false);	
 	    
 	    //configuracion del panel busqueda
@@ -170,8 +170,8 @@ public void conectarControlador(CtlFacturas c){
 		 btnEliminar.addActionListener(c);
 		 btnEliminar.setActionCommand("ANULARFACTURA");
 		 
-		 btnCobrar.addActionListener(c);
-		 btnCobrar.setActionCommand("COBRAR");
+		 btnImprimir.addActionListener(c);
+		 btnImprimir.setActionCommand("IMPRIMIR");
 		 
 		 txtBuscar1.addActionListener(c);
 		 txtBuscar1.setActionCommand("BUSCAR");
@@ -198,8 +198,8 @@ public void conectarControlador(CtlFacturas c){
 	public JTextField getTxtBuscar2(){
 		return txtBuscar2;
 	}
-	public BotonCobrarSmall getBtnCobrar(){
-		return btnCobrar;
+	public BotonImprimirSmall getBtnImprimir(){
+		return btnImprimir;
 	}
 	public JRadioButton getRdbtnFecha(){
 		return rdbtnFecha;

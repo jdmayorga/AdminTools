@@ -110,7 +110,7 @@ public class ViewListaFactura extends JDialog {
 				
 		btnBuscar=new BotonBuscar();
 		panelBusqueda.add(btnBuscar);
-        
+		panelBusqueda.setVisible(false);
         //tabla y sus componentes
 		modelo=new TablaModeloFacturas();
 		tablaFacturas=new JTable();

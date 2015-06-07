@@ -2,12 +2,15 @@ package Controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.sql.DataSource;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import Modelo.AbstractJasperReports;
+import Modelo.CierreCajaDao;
 import Modelo.Conexion;
 import View.ViewAgregarCompras;
 import View.ViewFacturar;
@@ -42,6 +45,25 @@ public class CtlMenuPrincipal implements ActionListener {
 		JDialog.setDefaultLookAndFeelDecorated(true);
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		switch(comando){
+	
+			case "CERRARFACTURACION":
+				try {
+					AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "Cierre_Caja_Saint_Paul.jasper",1 );
+					//this.view.setModal(false);
+					//AbstractJasperReports.imprimierFactura();
+					AbstractJasperReports.showViewer();
+					
+					CierreCajaDao cierre=new CierreCajaDao(conexion);
+					
+					if(cierre.registrarCierre()){
+						JOptionPane.showMessageDialog(view, "Se creo el cierre de caja");
+					}
+					
+				} catch (SQLException ee) {
+					// TODO Auto-generated catch block
+					ee.printStackTrace();
+				}
+				break;
 			case "PROVEEDORES":
 				ViewListaProveedor viewListaProveedor=new ViewListaProveedor();
 				CtlProveedorLista ctlProveedor=new CtlProveedorLista(viewListaProveedor,conexion);

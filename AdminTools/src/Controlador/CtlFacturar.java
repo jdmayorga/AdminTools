@@ -488,6 +488,7 @@ public void calcularTotal(DetalleFactura detalle){
 	private void guardar(){
 		setFactura();
 		facturaDao.registrarFacturaTemp(myFactura);
+		myFactura.setIdFactura(facturaDao.getIdFacturaGuardada());
 		this.view.setVisible(false);
 		
 	}
@@ -510,8 +511,9 @@ public void calcularTotal(DetalleFactura detalle){
 				try {
 					this.view.setVisible(false);
 					this.view.dispose();
-					AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "../AdminTools/src/Reportes/Factura_Saint_Paul.jasper",myFactura.getIdFactura() );
-					AbstractJasperReports.showViewer();
+					AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "Factura_Saint_Paul.jasper",myFactura.getIdFactura() );
+					//AbstractJasperReports.showViewer();
+					AbstractJasperReports.imprimierFactura();
 					myFactura=null;
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
@@ -631,7 +633,7 @@ public void calcularTotal(DetalleFactura detalle){
 	}
 
 
-	public void actualizarFactura(Factura f) {
+	public Factura actualizarFactura(Factura f) {
 		// TODO Auto-generated method stub
 		this.myFactura=f;
 		cargarFacturaView();
@@ -639,6 +641,8 @@ public void calcularTotal(DetalleFactura detalle){
 		this.view.getBtnActualizar().setVisible(true);
 		this.view.getModeloTabla().agregarDetalle();
 		this.view.setVisible(true);
+		
+		return myFactura;
 		
 	}
 

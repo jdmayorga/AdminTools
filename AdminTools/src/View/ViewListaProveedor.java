@@ -123,7 +123,7 @@ public class ViewListaProveedor extends JFrame {
         panelAccion.add(btnEliminar);
         
         btnLimpiar = new JButton();
-        btnLimpiar.setIcon(new ImageIcon("recursos/clear.png")); // NOI18N
+        btnLimpiar.setIcon(new ImageIcon(ViewListaProveedor.class.getResource("/View/imagen/clear.png"))); // NOI18N
         panelAccion.add(btnLimpiar);
 		
 		JScrollPane scrollPane = new JScrollPane(tablaProvedores);

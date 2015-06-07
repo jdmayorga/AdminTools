@@ -68,7 +68,21 @@ public class CtlFacturaLista implements ActionListener, MouseListener {
         		
         		ViewFacturar viewFacturar=new ViewFacturar(this.view);
         		CtlFacturar ctlFacturar=new CtlFacturar(viewFacturar,conexion);
-        		ctlFacturar.actualizarFactura(myFactura);
+        		
+        		//si se cobro la factura se debe eleminiar el temp por eso se guarda el id
+        		int idFactura=myFactura.getIdFactura();
+        		
+        		//se llama al controlador de la factura para que la muestre 
+        		myFactura=ctlFacturar.actualizarFactura(myFactura);
+        		
+        		//si la factura se cobro se regresara null sino modificamos la factura en la lista
+        		if(myFactura==null){
+        			this.view.getModelo().eliminarFactura(filaPulsada);
+        			myFacturaDao.EliminarTemp(idFactura);
+        		}else{
+        			this.view.getModelo().cambiarArticulo(filaPulsada, myFactura);
+        			this.view.getTablaFacturas().getSelectionModel().setSelectionInterval(filaPulsada,filaPulsada);//se seleciona lo cambiado
+        		}
         		viewFacturar.dispose();
         		ctlFacturar=null;
         		
@@ -123,7 +137,7 @@ private void cobrar(){
 			myFactura.setIdFactura(myFacturaDao.getIdFacturaGuardada());
 			
 				try {
-					AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "../AdminTools/src/Reportes/Factura_Saint_Paul.jasper",myFactura.getIdFactura() );
+					AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "Factura_Saint_Paul.jasper",myFactura.getIdFactura() );
 					//this.view.setModal(false);
 					AbstractJasperReports.imprimierFactura();
 					//this.view.setModal(true);

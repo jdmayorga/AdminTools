@@ -120,7 +120,7 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 				//this.view.getDateCompra().cleanup();
 				break;
 			case "CANCELAR":
-				this.conexion.desconectar();
+				//this.conexion.desconectar();
 				this.view.setVisible(false);
 			break;
 		}

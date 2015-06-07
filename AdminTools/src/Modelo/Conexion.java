@@ -10,6 +10,8 @@ import javax.swing.JOptionPane;
 
 import org.apache.commons.dbcp.BasicDataSource;
 
+import View.BotonActualizar;
+
 /**
  * Clase que permite conectar con la base de datos
  * @author jdmayorga
@@ -21,7 +23,7 @@ public class Conexion {
 	
 	private  BasicDataSource basicDataSource;
    private DataSource dataSource;
-   static String bd = "texaco";
+   static String bd = "clinica";
    static String login = "root";
    static String password = "jdmm123";
    static String url = "jdbc:mysql://localhost:3306/"+bd;
@@ -128,19 +130,36 @@ public class Conexion {
    }
    
    public static DataSource setDataSource(String dbType){
-       Properties props = new Properties();
-       FileInputStream fis = null;
+       //Properties props = new Properties();
+       //FileInputStream fis = null;
        BasicDataSource ds = new BasicDataSource();
         
-       try {
-           fis = new FileInputStream("db.config");
+       /*try {
+          fis = new FileInputStream( "db.config");
+    	   //Conexion.class.getResource("/View/imagen/actualizar.png");
+    	   //ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+    	   //fis = ClassLoader.class.getResourceAsStream("/path/to/your/xml");
            props.load(fis);
        }catch(IOException e){
            e.printStackTrace();
            return null;
-       }
+       }*/
        if("mysql".equals(dbType)){
-           ds.setDriverClassName(props.getProperty("MYSQL_DB_DRIVER_CLASS"));
+           ds.setDriverClassName(driver);
+           ds.setUrl(url);
+           ds.setUsername(login);
+           ds.setPassword(password);
+          // ds.setMinIdle(20);
+           ds.setMaxActive(10);
+           ds.setMaxIdle(5);
+           ds.setMinIdle(3);
+           ds.setInitialSize(2);
+           
+           
+           
+           
+           
+           /*ds.setDriverClassName(props.getProperty("MYSQL_DB_DRIVER_CLASS"));
            ds.setUrl(props.getProperty("MYSQL_DB_URL"));
            ds.setUsername(props.getProperty("MYSQL_DB_USERNAME"));
            ds.setPassword(props.getProperty("MYSQL_DB_PASSWORD"));
@@ -148,13 +167,13 @@ public class Conexion {
            ds.setMaxActive(10);
            ds.setMaxIdle(5);
            ds.setMinIdle(3);
-           ds.setInitialSize(2);
-       }else if("oracle".equals(dbType)){
+           ds.setInitialSize(2);*/
+       }/*else if("oracle".equals(dbType)){
            ds.setDriverClassName(props.getProperty("ORACLE_DB_DRIVER_CLASS"));
            ds.setUrl(props.getProperty("ORACLE_DB_URL"));
            ds.setUsername(props.getProperty("ORACLE_DB_USERNAME"));
            ds.setPassword(props.getProperty("ORACLE_DB_PASSWORD"));
-       }else{
+       }*/else{
            return null;
        }
         

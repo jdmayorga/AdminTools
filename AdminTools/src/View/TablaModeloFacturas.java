@@ -75,5 +75,10 @@ public class TablaModeloFacturas extends AbstractTableModel {
 		facturas.remove(row);
 		fireTableDataChanged();
 	}
+	public void cambiarArticulo(int index, Factura f) {
+		// TODO Auto-generated method stub
+		facturas.set(index, f);
+		fireTableDataChanged();
+	}
 
 }
