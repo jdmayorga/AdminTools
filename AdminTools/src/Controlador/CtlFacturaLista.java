@@ -76,6 +76,7 @@ public class CtlFacturaLista implements ActionListener, MouseListener {
         	else{//si solo seleccion la fila se guarda el id de proveedor para accion de eliminar
         		
         		this.view.getBtnEliminar().setEnabled(true);
+        		this.view.getBtnCobrar().setEnabled(true);
         		/*idProveedor=identificador;
         		filaTabla=filaPulsada;*/
         		
@@ -129,6 +130,8 @@ private void cobrar(){
 					//JOptionPane.showMessageDialog(view, "El id factura:"+myFactura.getIdFactura());
 					myFacturaDao.EliminarTemp(idFacTemp);
 					
+					
+					
 					this.view.getModelo().eliminarFactura(this.filaPulsada);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
@@ -168,7 +171,16 @@ private void cobrar(){
 			break;
 		case "COBRAR":
 				cobrar();
+				//this.view.getBtnEliminar().setEnabled(true);
+        		this.view.getBtnCobrar().setEnabled(false);
+        		this.view.getBtnEliminar().setEnabled(false);
 			break;
+		case "ELIMINAR":
+			this.myFacturaDao.EliminarTemp(this.myFactura.getIdFactura());
+			this.view.getModelo().eliminarFactura(this.filaPulsada);
+			this.view.getBtnCobrar().setEnabled(false);
+    		this.view.getBtnEliminar().setEnabled(false);
+		break;
 		}
 
 	}

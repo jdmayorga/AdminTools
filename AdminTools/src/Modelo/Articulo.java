@@ -98,7 +98,8 @@ public class Articulo {
 	
 	@Override
 	public String toString(){
-		return "Id Articulo:"+codigo+", Articulo:"+articulo+", Precio Venta:"+ this.precioVenta+"Marca["+mar.toString()+"]"+", Impueso:"+imp.getPorcentaje()+"%"+", Codigos Barra["+codigos+"]";
+		return "Id Articulo:"+codigo+", Articulo:"+articulo+", Precio Venta:"+ this.precioVenta+"Marca["+mar.toString()+"]"+", Impueso:"+imp.getPorcentaje()+"%"+
+	", Codigos Barra["+codigos+"] , Tipo Articulo:"+tipoArticulo;
 	}
 
 }

@@ -27,11 +27,12 @@ public class KardexDao {
 		Connection conn=null;
 		try {
 			conn=conexion.getPoolConexion().getConnection();
-			insertarNuevoMovimiento=conn.prepareStatement( "INSERT INTO kardex(no_documento,codigo_articulo,codigo_bodega,entrada,fecha) VALUES (?,?,?,?,now())");
+			insertarNuevoMovimiento=conn.prepareStatement( "INSERT INTO kardex(no_documento,codigo_articulo,codigo_bodega,entrada,salida,fecha) VALUES (?,?,?,?,?,now())");
 			insertarNuevoMovimiento.setString(1, kar.getNoDocumento());
 			insertarNuevoMovimiento.setInt(2, kar.getArticulo().getId());
 			insertarNuevoMovimiento.setInt(3, kar.getBodega().getId());
 			insertarNuevoMovimiento.setDouble(4, kar.getEntrada());
+			insertarNuevoMovimiento.setDouble(5, kar.getSalida());
 			insertarNuevoMovimiento.executeUpdate();
 			resultado=true;
 		} catch (SQLException e) {

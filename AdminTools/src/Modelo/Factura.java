@@ -16,7 +16,7 @@ public class Factura {
 	private BigDecimal subTotal=new BigDecimal(0.0);
 	private BigDecimal totalDescuento=new BigDecimal(0.0);
 	private String fechaVencimento=null;
-	private int estado=1;
+	private String estado;
 	private BigDecimal pago=new BigDecimal(0.0);
 	
 	public void setPago(BigDecimal p){
@@ -26,10 +26,10 @@ public class Factura {
 		return pago;
 	}
 	
-	public int getEstado(){
+	public String getEstado(){
 		return estado;
 	}
-	public void setEstado(int e){
+	public void setEstado(String e){
 		estado=e;
 	}
 	public String getFechaVencimento(){
@@ -108,6 +108,17 @@ public class Factura {
 		total=BigDecimal.ZERO;
 		subTotal=BigDecimal.ZERO;
 		totalDescuento=BigDecimal.ZERO;
+	}
+	@Override
+	public String toString(){
+		return "Fecha: "+fecha
+				+", Id factura: "+idFactura
+				+", tipo factura: "+tipoFactura
+				+", Cliente"+cliente.getNombre()
+				+", subtotal:"+subTotal
+				+", Impuesto:"+totalImpuesto
+				+", descuento:"+totalDescuento
+				+", total:"+total;
 	}
 
 }

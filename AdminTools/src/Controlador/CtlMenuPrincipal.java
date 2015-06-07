@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import Modelo.Conexion;
 import View.ViewAgregarCompras;
 import View.ViewFacturar;
+import View.ViewFacturas;
 import View.ViewListaArticulo;
 import View.ViewListaClientes;
 import View.ViewListaFactura;
@@ -88,6 +89,11 @@ public class CtlMenuPrincipal implements ActionListener {
 			case "CLIENTES":
 				ViewListaClientes viewClientes=new ViewListaClientes();
 				CtlClienteLista  ctlClientes=new CtlClienteLista(viewClientes,conexion);
+				break;
+			case "BUSCARFACTURAS":
+				
+				ViewFacturas viewBuscarFacturas = new ViewFacturas(this.view);
+				CtlFacturas cltBuscarFacturas= new CtlFacturas(viewBuscarFacturas,conexion);
 				break;
 		}
 		

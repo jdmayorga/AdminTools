@@ -274,7 +274,7 @@ public class ArticuloDao {
 				unArticulo.setTipoArticulo(res.getInt("tipo_articulo"));
 				
 			 }
-					
+			//JOptionPane.showMessageDialog(null, unArticulo);		
 					
 			} catch (SQLException e) {
 					JOptionPane.showMessageDialog(null, "Error, no se conecto");
@@ -345,12 +345,13 @@ public class ArticuloDao {
 		
 		try {
 			conn=conexion.getPoolConexion().getConnection();
-			actualizarArticulo=conn.prepareStatement("UPDATE articulo SET articulo = ?, codigo_marca = ? ,codigo_impuesto = ?, precio_articulo=? WHERE codigo_articulo = ?");
+			actualizarArticulo=conn.prepareStatement("UPDATE articulo SET articulo = ?, codigo_marca = ? ,codigo_impuesto = ?, precio_articulo=?,tipo_articulo=? WHERE codigo_articulo = ?");
 			actualizarArticulo.setString(1,a.getArticulo());
 			actualizarArticulo.setInt(2, a.getMarcaObj().getId());
 			actualizarArticulo.setInt(3, a.getImpuestoObj().getId());
 			actualizarArticulo.setDouble(4, a.getPrecioVenta());
-			actualizarArticulo.setInt(5, a.getId());
+			actualizarArticulo.setDouble(5, a.getTipoArticulo());
+			actualizarArticulo.setInt(6, a.getId());
 			
 			resultado=actualizarArticulo.executeUpdate();
 			//JOptionPane.showMessageDialog(null, a+","+resultado );
@@ -481,12 +482,13 @@ public class ArticuloDao {
 		{
 			con = conexion.getPoolConexion().getConnection();
 			
-			insertarNuevaArticulo=con.prepareStatement( "INSERT INTO articulo(articulo,codigo_marca,codigo_impuesto,precio_articulo) VALUES (?,?,?,?)");
+			insertarNuevaArticulo=con.prepareStatement( "INSERT INTO articulo(articulo,codigo_marca,codigo_impuesto,precio_articulo,tipo_articulo) VALUES (?,?,?,?,?)");
 			
 			insertarNuevaArticulo.setString( 1, myArticulo.getArticulo() );
 			insertarNuevaArticulo.setInt( 2, myArticulo.getMarcaObj().getId() );
 			insertarNuevaArticulo.setDouble( 3, myArticulo.getImpuestoObj().getId());
 			insertarNuevaArticulo.setDouble(4, myArticulo.getPrecioVenta());
+			insertarNuevaArticulo.setInt(5, myArticulo.getTipoArticulo());
 			
 			resultado=insertarNuevaArticulo.executeUpdate();
 			

@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 public class DetalleFacturaDao {
 	
 	private PreparedStatement agregarDetalle=null;
+	private PreparedStatement actualizarDetalle=null;
 	private PreparedStatement detallesFacturaPendiente=null;
 	private Conexion conexion=null;
 	private PreparedStatement elimiarTem = null;
@@ -130,6 +131,14 @@ public class DetalleFacturaDao {
 					inventario.decrementarExistencia(detalle.getCantidad().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue());
 					//se actualizar el articulo del inventario
 					inventarioDao.actualizarInventario(inventario);
+				}else{//sino esta el inventario el articulo, se debe crear el inventario
+					
+					//para implementar varias bodegas hay que cambiar el codigo de la bodega
+					Inventario inventario1=new Inventario();
+					inventario1.getBodega().setId(1);
+					inventario1.setArticulo(detalle.getArticulo());
+					inventario1.setExistencia(detalle.getCantidad().doubleValue()*-1);
+					inventarioDao.agregarInventario(inventario1);				
 				}
 				
 				
@@ -137,7 +146,7 @@ public class DetalleFacturaDao {
 				Kardex myKardex =new Kardex();
 				
 				myKardex.setArticulo(detalle.getArticulo());
-				myKardex.setSalida(detalle.getCantidad().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue());
+				myKardex.setSalida(detalle.getCantidad().doubleValue());
 				
 				//hay que cambiar para implementar multiples bodegas
 				myKardex.getBodega().setId(1);
@@ -266,5 +275,7 @@ public class DetalleFacturaDao {
 		} // fin de finally
 		
 	}
+
+	
 
 }

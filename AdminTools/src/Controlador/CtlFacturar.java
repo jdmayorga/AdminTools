@@ -637,6 +637,7 @@ public void calcularTotal(DetalleFactura detalle){
 		cargarFacturaView();
 		this.view.getBtnGuardar().setVisible(false);
 		this.view.getBtnActualizar().setVisible(true);
+		this.view.getModeloTabla().agregarDetalle();
 		this.view.setVisible(true);
 		
 	}

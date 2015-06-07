@@ -134,6 +134,7 @@ public class CtlArticulo extends MouseAdapter implements ActionListener,KeyListe
 			break;
 		case "CANCELAR":
 			//cargarDatosArticuloView();
+			//JOptionPane.showMessageDialog(view, this.view.getCbxTipo().getSelectedIndex());
 			this.view.setVisible(false);
 			
 			break;
@@ -184,6 +185,14 @@ public class CtlArticulo extends MouseAdapter implements ActionListener,KeyListe
 		
 		//se establece el precion de articulo
 		myArticulo.setPrecioVenta(Double.parseDouble(this.view.getTxtPrecio().getText()));
+		
+		int x=this.view.getCbxTipo().getSelectedIndex();
+		if(x==0){
+			myArticulo.setTipoArticulo(1);
+		}
+		if(x==1){
+			myArticulo.setTipoArticulo(2);
+		}
 	}
 	
 	
@@ -221,6 +230,14 @@ public class CtlArticulo extends MouseAdapter implements ActionListener,KeyListe
 		
 		//se estable el precio del articulo en la view
 		this.view.getTxtPrecio().setText(""+a.getPrecioVenta());
+		
+		//se estable el tipo de articulo
+		if(a.getTipoArticulo()==1){
+			this.view.getCbxTipo().setSelectedIndex(0);
+		}
+		if(a.getTipoArticulo()==2){
+			this.view.getCbxTipo().setSelectedIndex(1);
+		}
 				
 		// se hace visible la ventana modal
 		this.view.setVisible(true);
@@ -306,6 +323,7 @@ public class CtlArticulo extends MouseAdapter implements ActionListener,KeyListe
 	@Override
 	public void windowClosing(WindowEvent e) {
 		// TODO Auto-generated method stub
+		
 		this.view.setVisible(false);
 	}
 
