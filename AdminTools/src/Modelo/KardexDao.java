@@ -25,9 +25,11 @@ public class KardexDao {
 	public boolean agregarEntrada(Kardex kar){
 		boolean resultado=false;
 		Connection conn=null;
+		
 		try {
 			conn=conexion.getPoolConexion().getConnection();
 			insertarNuevoMovimiento=conn.prepareStatement( "INSERT INTO kardex(no_documento,codigo_articulo,codigo_bodega,entrada,salida,fecha) VALUES (?,?,?,?,?,now())");
+			//insertarNuevoMovimiento=conn.prepareStatement(sql);
 			insertarNuevoMovimiento.setString(1, kar.getNoDocumento());
 			insertarNuevoMovimiento.setInt(2, kar.getArticulo().getId());
 			insertarNuevoMovimiento.setInt(3, kar.getBodega().getId());
