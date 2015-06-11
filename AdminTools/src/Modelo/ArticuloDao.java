@@ -19,6 +19,7 @@ public class ArticuloDao {
 	private PreparedStatement eliminarArticulo = null;
 	private PreparedStatement actualizarArticulo=null;
 	private PreparedStatement buscarArticulo=null;
+	private PreparedStatement buscarArticuloCodBarra=null;
 	private PreparedStatement buscarArticuloMarca=null;
 	private PreparedStatement buscarArticuloNombre=null;
 	private CodBarraDao myCodBarraDao=null;
@@ -297,12 +298,75 @@ public class ArticuloDao {
 			if (existe) {
 				return unArticulo;
 			}
-			else return null;
+			else{
+				
+				unArticulo=buscarArticuloBarraCod(i+"");
+				if(unArticulo!=null){
+					return unArticulo;
+				}else
+					return null;
+			}
 		
 		
 		
 	}
 	
+	
+	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para buscar articulo por codigo de barra>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+	public Articulo buscarArticuloBarraCod(String i){
+		Articulo unArticulo=new Articulo();
+		ResultSet res=null;
+		Connection conn=null;
+		boolean existe=false;
+		try {
+			conn=conexion.getPoolConexion().getConnection();
+			buscarArticuloCodBarra=conn.prepareStatement("SELECT * FROM v_articulo_codigo_barra WHERE codigo_barra = ?");
+			buscarArticuloCodBarra.setString(1, i);
+			res = buscarArticuloCodBarra.executeQuery();
+			while(res.next()){
+				existe=true;
+				unArticulo.setId(Integer.parseInt(res.getString("codigo_articulo")));
+				unArticulo.setArticulo(res.getString("articulo"));
+				unArticulo.getMarcaObj().setMarca(res.getString("marca"));
+				unArticulo.getMarcaObj().setId(res.getInt("codigo_marca"));
+				unArticulo.getImpuestoObj().setPorcentaje(res.getString("impuesto"));
+				unArticulo.getImpuestoObj().setId(res.getInt("codigo_impuesto"));
+				unArticulo.setPrecioVenta(res.getDouble("precio_articulo"));
+				unArticulo.setTipoArticulo(res.getInt("tipo_articulo"));
+				
+			 }
+			//JOptionPane.showMessageDialog(null, unArticulo);		
+					
+			} catch (SQLException e) {
+					JOptionPane.showMessageDialog(null, "Error, no se conecto");
+					System.out.println(e);
+			}
+			finally
+			{
+				try{
+					if(res!=null)res.close();
+					if(buscarArticuloCodBarra != null)buscarArticuloCodBarra.close();
+	                if(conn != null) conn.close();
+				} // fin de try
+				catch ( SQLException excepcionSql )
+				{
+				excepcionSql.printStackTrace();
+				conexion.desconectar();
+				} // fin de catch
+			} // fin de finally
+		
+			if (existe) {
+				return unArticulo;
+			}
+			else{
+				
+				
+				return null;
+			}
+		
+		
+		
+	}
 	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para eliminar un articulo>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 	public boolean eliminarArticulo(int id){
 		int resultado=0;
