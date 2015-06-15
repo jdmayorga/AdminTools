@@ -1,5 +1,6 @@
 package Modelo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
  
@@ -12,7 +13,7 @@ public class Articulo {
 	//private double impuesto;
 	private Marca mar=new Marca();
 	private Impuesto imp=new Impuesto();
-	private List<CodBarra> codigos;
+	private List<CodBarra> codigos=new ArrayList<CodBarra>();
 	private double precioVenta=0;
 	private double precioCompra=0;
 	private int tipoArticulo=0;

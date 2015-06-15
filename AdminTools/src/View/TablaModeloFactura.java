@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 import Modelo.Articulo;
+import Modelo.CodBarra;
 import Modelo.DetalleFactura;
 import Modelo.DetalleFacturaProveedor;
 
@@ -135,7 +136,17 @@ public class TablaModeloFactura extends AbstractTableModel {
 		String v=(String) value;
 		switch(columnIndex){
 		case 0:
-			detallesFactura.get(rowIndex).getArticulo().setId((Integer.parseInt(v)));
+			try{
+				int id=Integer.parseInt(v);
+				detallesFactura.get(rowIndex).getArticulo().setId(id);
+			}catch(NumberFormatException e){
+				CodBarra cod=new CodBarra();
+				cod.setCodigoBarra(v);
+				detallesFactura.get(rowIndex).getArticulo().getCodBarra().add(cod);
+				detallesFactura.get(rowIndex).getArticulo().setId(-2);
+				//detallesFactura.get(rowIndex).getArticulo().getCodBarra().add(e)
+			}
+			//detallesFactura.get(rowIndex).getArticulo().setId((Integer.parseInt(v)));
 				this.fireTableCellUpdated(rowIndex, columnIndex);
 				//this.fireTableDataChanged();
 				//fireTableCellUpdated(row,col);

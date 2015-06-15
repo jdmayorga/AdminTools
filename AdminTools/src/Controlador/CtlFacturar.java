@@ -194,7 +194,16 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 				if(colum==0){
 					//Se recoge el id de la fila marcada
 			        int identificador= (int)this.view.getModeloTabla().getValueAt(row, 0);
-					this.myArticulo=this.myArticuloDao.buscarArticulo(identificador);
+			        myArticulo=this.view.getModeloTabla().getDetalle(row).getArticulo();
+			        //JOptionPane.showMessageDialog(view, myArticulo);
+			        //this.myArticulo=this.myArticuloDao.buscarArticuloBarraCod(this.view.getModeloTabla().getDetalle(row).getArticulo().getCodBarra().get(0).getCodigoBarra());
+					if(myArticulo.getId()==-2){
+						String cod=this.view.getModeloTabla().getDetalle(row).getArticulo().getCodBarra().get(0).getCodigoBarra();
+						this.myArticulo=this.myArticuloDao.buscarArticuloBarraCod(cod);
+						
+					}else{
+						this.myArticulo=this.myArticuloDao.buscarArticulo(identificador);
+					}
 					//JOptionPane.showMessageDialog(view, myArticulo);
 					
 					if(myArticulo!=null){
@@ -204,11 +213,11 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 						this.view.getModeloTabla().agregarDetalle();
 						
 						
-						boolean toggle = false;
+						/*boolean toggle = false;
 						boolean extend = false;
 						this.view.geTableDetalle().requestFocus();
 							
-						this.view.geTableDetalle().changeSelection(row,colum+3, toggle, extend);
+						this.view.geTableDetalle().changeSelection(row,colum+3, toggle, extend);*/
 							
 						
 					}else{

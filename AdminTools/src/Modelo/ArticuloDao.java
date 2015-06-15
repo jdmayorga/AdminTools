@@ -300,10 +300,10 @@ public class ArticuloDao {
 			}
 			else{
 				
-				unArticulo=buscarArticuloBarraCod(i+"");
+				/*unArticulo=buscarArticuloBarraCod(i+"");
 				if(unArticulo!=null){
 					return unArticulo;
-				}else
+				}else*/
 					return null;
 			}
 		
@@ -338,7 +338,7 @@ public class ArticuloDao {
 			//JOptionPane.showMessageDialog(null, unArticulo);		
 					
 			} catch (SQLException e) {
-					JOptionPane.showMessageDialog(null, "Error, no se conecto");
+					//JOptionPane.showMessageDialog(null, "Error, no se conecto");
 					System.out.println(e);
 			}
 			finally
