@@ -79,7 +79,10 @@ public class CtlMenuPrincipal implements ActionListener {
 				break;
 			case "AGREGARCOMPRAS":
 				ViewAgregarCompras viewAgregarCompras= new ViewAgregarCompras(this.view);
-				CtlAgregarCompras ctl=new CtlAgregarCompras(viewAgregarCompras,conexion);
+				CtlAgregarCompras ctlAgregarCompra=new CtlAgregarCompras(viewAgregarCompras,conexion);
+				viewAgregarCompras.dispose();
+				viewAgregarCompras=null;
+				ctlAgregarCompra=null;
 				break;
 			case "FACTURAR":
 				

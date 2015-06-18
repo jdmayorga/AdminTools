@@ -103,8 +103,10 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 				boolean result=this.myFacturaDao.registrarFactura(myFactura);
 				if(result){
 					JOptionPane.showMessageDialog(view,"Se guarda la factura");
+					this.view.setVisible(false);
 				}else{
-					
+					JOptionPane.showMessageDialog(view,"No se guarda la factura");
+					this.view.setVisible(false);
 				}
 	
 				

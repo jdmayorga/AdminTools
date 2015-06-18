@@ -50,7 +50,7 @@ public class TablaModeloFacturas extends AbstractTableModel {
 		case 0:
 			return facturas.get(rowIndex).getFecha();
 		case 1:
-
+			return facturas.get(rowIndex).getCliente().getNombre();
 
 		case 2:
 			return facturas.get(rowIndex).getCliente().getTelefono();
