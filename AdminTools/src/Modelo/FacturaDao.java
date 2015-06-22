@@ -260,7 +260,8 @@ public class FacturaDao {
 				+ "encabezado_factura.descuento,"
 				+ "encabezado_factura.pago, "
 				+ "encabezado_factura.usuario,"
-				+ "encabezado_factura.estado_factura "
+				+ "encabezado_factura.estado_factura, "
+				+ "encabezado_factura.agrega_kardex "
 				+ "FROM encabezado_factura where numero_factura=?";
         //Statement stmt = null;
     	Factura unaFactura=new Factura();
@@ -292,8 +293,9 @@ public class FacturaDao {
 				
 				unaFactura.setEstado(res.getString("estado_factura"));
 				unaFactura.setTipoFactura(res.getInt("tipo_factura"));
+				unaFactura.setAgregadoAkardex(res.getInt("agrega_kardex"));
 				
-				unaFactura.setDetalles(detallesDao.detallesFacturaPendiente(res.getInt("numero_factura")));
+				unaFactura.setDetalles(detallesDao.getDetallesFactura(res.getInt("numero_factura")));
 				
 				
 			
@@ -350,8 +352,9 @@ public class FacturaDao {
 				+ "encabezado_factura.descuento,"
 				+ "encabezado_factura.pago, "
 				+ "encabezado_factura.usuario,"
-				+ "encabezado_factura.estado_factura "
-				+ "FROM encabezado_factura";
+				+ "encabezado_factura.estado_factura, "
+				+ "encabezado_factura.agrega_kardex "
+				+ " FROM encabezado_factura";
         //Statement stmt = null;
        	List<Factura> facturas=new ArrayList<Factura>();
 		
@@ -381,6 +384,7 @@ public class FacturaDao {
 				
 				unaFactura.setEstado(res.getString("estado_factura"));
 				unaFactura.setTipoFactura(res.getInt("tipo_factura"));
+				unaFactura.setAgregadoAkardex(res.getInt("agrega_kardex"));
 				
 				unaFactura.setDetalles(detallesDao.detallesFacturaPendiente(res.getInt("numero_factura")));
 				
@@ -642,7 +646,8 @@ public class FacturaDao {
 				+ "encabezado_factura.descuento,"
 				+ "encabezado_factura.pago, "
 				+ "encabezado_factura.usuario,"
-				+ "encabezado_factura.estado_factura "
+				+ "encabezado_factura.estado_factura, "
+				+ "encabezado_factura.agrega_kardex "
 				+ "FROM encabezado_factura where DATE_FORMAT(encabezado_factura.fecha, '%d/%m/%Y')>=? and DATE_FORMAT(encabezado_factura.fecha, '%d/%m/%Y')<=?";
         //Statement stmt = null;
        	List<Factura> facturas=new ArrayList<Factura>();
@@ -676,8 +681,9 @@ public class FacturaDao {
 				
 				unaFactura.setEstado(res.getString("estado_factura"));
 				unaFactura.setTipoFactura(res.getInt("tipo_factura"));
+				unaFactura.setAgregadoAkardex(res.getInt("agrega_kardex"));
 				
-				unaFactura.setDetalles(detallesDao.detallesFacturaPendiente(res.getInt("numero_factura")));
+				unaFactura.setDetalles(detallesDao.getDetallesFactura(res.getInt("numero_factura")));
 				
 				
 				facturas.add(unaFactura);

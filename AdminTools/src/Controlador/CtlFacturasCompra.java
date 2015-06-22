@@ -12,38 +12,41 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import Modelo.AbstractJasperReports;
-import Modelo.CodBarraDao;
 import Modelo.Conexion;
-import Modelo.Factura;
-import Modelo.FacturaDao;
+import Modelo.FacturaCompra;
+import Modelo.FacturaCompraDao;
 import Modelo.UsuarioDao;
-import View.ViewCrearArticulo;
-import View.ViewFacturas;
+import View.ViewListaFacturasCompra;
 
-public class CtlFacturas implements ActionListener, MouseListener, ChangeListener {
-	private ViewFacturas view;
-	
-	private FacturaDao myFacturaDao=null;
+public class CtlFacturasCompra implements ActionListener, MouseListener, ChangeListener {
+	private ViewListaFacturasCompra view;
 	private Conexion conexion=null;
-	private Factura myFactura;
+	private FacturaCompraDao facturaCompraDao=null;
 	private UsuarioDao myUsuarioDao=null;
-	
+	private FacturaCompra myFacturaCompra=null;
 	
 	//fila selecciona enla lista
-	private int filaPulsada;
+		private int filaPulsada;
 	
-	public CtlFacturas(ViewFacturas v,Conexion conn) {
+	
+	
+	public CtlFacturasCompra(ViewListaFacturasCompra v,Conexion conn){
+		
 		view =v;
 		view.conectarControlador(this);
 		conexion=conn;
-		myFacturaDao=new FacturaDao(conexion);
-		cargarTabla(myFacturaDao.todasfacturas());
-		myFactura=new Factura();
+		
+		facturaCompraDao=new FacturaCompraDao(conexion);
 		myUsuarioDao=new UsuarioDao(conexion);
+		
+		myFacturaCompra=new FacturaCompra();
+		
+		cargarTabla(facturaCompraDao.todasfacturas());
 		view.setVisible(true);
+		
 	}
 	
-	public void cargarTabla(List<Factura> facturas){
+	public void cargarTabla(List<FacturaCompra> facturas){
 		//JOptionPane.showMessageDialog(view, " "+facturas.size());
 		this.view.getModelo().limpiarFacturas();
 		
@@ -53,6 +56,12 @@ public class CtlFacturas implements ActionListener, MouseListener, ChangeListene
 				
 			}
 		}
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -69,8 +78,8 @@ public class CtlFacturas implements ActionListener, MouseListener, ChangeListene
             //int idFactura= (int)this.view.getModelo().getValueAt(filaPulsada, 0);
             
             this.view.getBtnEliminar().setEnabled(true);
-            this.view.getBtnImprimir().setEnabled(true);
-            this.myFactura=this.view.getModelo().getFactura(filaPulsada);
+            //this.view.getBtnImprimir().setEnabled(true);
+            this.myFacturaCompra=this.view.getModelo().getFactura(filaPulsada);
             /*/se consigue el proveedore de la fila seleccionada
             myArticulo=this.view.getModelo().getArticulo(filaPulsada);
         
@@ -121,25 +130,25 @@ public class CtlFacturas implements ActionListener, MouseListener, ChangeListene
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -169,10 +178,10 @@ public class CtlFacturas implements ActionListener, MouseListener, ChangeListene
 			
 			//si la busqueda es por id
 			if(this.view.getRdbtnId().isSelected()){
-				myFactura=myFacturaDao.facturasPorId(Integer.parseInt(this.view.getTxtBuscar1().getText()));
-				if(myFactura!=null){												
+				myFacturaCompra=facturaCompraDao.facturasPorId(Integer.parseInt(this.view.getTxtBuscar1().getText()));
+				if(myFacturaCompra!=null){												
 					this.view.getModelo().limpiarFacturas();
-					this.view.getModelo().agregarFactura(myFactura); 
+					this.view.getModelo().agregarFactura(myFacturaCompra); 
 				}else{
 					JOptionPane.showMessageDialog(view, "No se encuentro la factura");
 				}
@@ -182,7 +191,7 @@ public class CtlFacturas implements ActionListener, MouseListener, ChangeListene
 			if(this.view.getRdbtnFecha().isSelected()){  
 				String fecha1=this.view.getTxtBuscar1().getText();
 				String fecha2=this.view.getTxtBuscar2().getText();
-				cargarTabla(myFacturaDao.facturasPorFechas(fecha1,fecha2));
+				cargarTabla(facturaCompraDao.facturasPorFechas(fecha1,fecha2));
 				//this.view.getTxtBuscar1().setText("");
 				//this.view.getTxtBuscar2().setText("");
 				}
@@ -190,16 +199,14 @@ public class CtlFacturas implements ActionListener, MouseListener, ChangeListene
 			
 			//si la busqueda son tadas
 			if(this.view.getRdbtnTodos().isSelected()){  
-				cargarTabla(myFacturaDao.todasfacturas());
+				cargarTabla(facturaCompraDao.todasfacturas());
 				this.view.getTxtBuscar1().setText("");
 				}
 			break;
 		case "ANULARFACTURA":
-			
 			//se verifica si la factura ya esta agregada al kardex
-			if (myFactura.getAgregadoAkardex()==0){
-				
-					int resul=JOptionPane.showConfirmDialog(view, "¿Desea anular la factura no "+myFactura.getIdFactura()+"?");
+			if (myFacturaCompra.getAgregadoAkardex()==0){
+					int resul=JOptionPane.showConfirmDialog(view, "¿Desea anular la factura no "+myFacturaCompra.getIdFactura()+"?");
 					//sin confirmo la anulacion
 					if(resul==0){
 						String pwd=JOptionPane.showInputDialog(view, "Escriba la contraseña admin", "Seguridad", JOptionPane.INFORMATION_MESSAGE);
@@ -207,21 +214,24 @@ public class CtlFacturas implements ActionListener, MouseListener, ChangeListene
 						//comprabacion del permiso administrativo
 						if(this.myUsuarioDao.comprobarAdmin(pwd)){
 							//se anula la factura en la bd
-							if(myFacturaDao.anularFactura(myFactura))
-								myFactura.setEstado("NULA");
+							if(facturaCompraDao.anularFactura(myFacturaCompra))
+								myFacturaCompra.setEstado("NULA");
 							//JOptionPane.showMessageDialog(view, "Usuario Valido");
+							this.view.getBtnEliminar().setEnabled(false);
 						}else{
 							JOptionPane.showMessageDialog(view, "Usuario Invalido");
 						}
+						
 						
 					}
 			}else{
 				JOptionPane.showMessageDialog(view, "No se puede anular la compra porque ya esta en el Kardex!!!");
 				this.view.getBtnEliminar().setEnabled(false);
 			}
+			
 			break;
 			
-		case "IMPRIMIR":
+		/*case "IMPRIMIR":
 			try {
 				//this.view.setVisible(false);
 				//this.view.dispose();
@@ -234,15 +244,9 @@ public class CtlFacturas implements ActionListener, MouseListener, ChangeListene
 				// TODO Auto-generated catch block
 				ee.printStackTrace();
 			}
-			break;
+			break;*/
 		}
 
-	}
-
-	@Override
-	public void stateChanged(ChangeEvent e) {
-		// TODO Auto-generated method stub facturasPorId
-		
 	}
 
 }

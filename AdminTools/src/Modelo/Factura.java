@@ -17,7 +17,16 @@ public class Factura {
 	private BigDecimal totalDescuento=new BigDecimal(0.0);
 	private String fechaVencimento=null;
 	private String estado;
+	private int agregadoAkardex;
 	private BigDecimal pago=new BigDecimal(0.0);
+	
+	
+	public int getAgregadoAkardex(){
+		return agregadoAkardex;
+	}
+	public void setAgregadoAkardex(int a){
+		agregadoAkardex=a;
+	}
 	
 	public void setPago(BigDecimal p){
 		pago=p;

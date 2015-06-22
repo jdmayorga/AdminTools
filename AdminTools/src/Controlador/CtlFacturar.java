@@ -540,6 +540,10 @@ public void calcularTotal(DetalleFactura detalle){
 	private void buscarArticulo(){
 	
 		//se llama el metodo que mostrar la ventana para buscar el articulo
+		ctlArticulo.view.getTxtBuscar().setText("");
+		ctlArticulo.view.getTxtBuscar().selectAll();
+		ctlArticulo.view.getTxtBuscar().requestFocus(true); 
+		//ctlArticulo.view.getTxtBuscar().selectAll();
 		Articulo myArticulo=ctlArticulo.buscarArticulo(view);
 		
 		//se comprueba si le regreso un articulo valido
@@ -594,7 +598,7 @@ public void calcularTotal(DetalleFactura detalle){
 		// TODO Auto-generated method stub
 		//facturaDao.desconectarBD();
 		//this.clienteDao.desconectarBD();
-		this.myArticuloDao.desconectarBD();
+		//this.myArticuloDao.desconectarBD();
 		this.view.setVisible(false);
 	}
 

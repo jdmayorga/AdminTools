@@ -18,6 +18,7 @@ import View.ViewFacturas;
 import View.ViewListaArticulo;
 import View.ViewListaClientes;
 import View.ViewListaFactura;
+import View.ViewListaFacturasCompra;
 import View.ViewListaMarca;
 import View.ViewListaProveedor;
 import View.ViewMenuPrincipal;
@@ -119,6 +120,14 @@ public class CtlMenuPrincipal implements ActionListener {
 				
 				ViewFacturas viewBuscarFacturas = new ViewFacturas(this.view);
 				CtlFacturas cltBuscarFacturas= new CtlFacturas(viewBuscarFacturas,conexion);
+				break;
+				
+			case "LISTAFACTURASCOMPRA":
+				ViewListaFacturasCompra viewFacturasCompra=new ViewListaFacturasCompra(this.view);
+				CtlFacturasCompra ctlFacturasCompra=new CtlFacturasCompra(viewFacturasCompra,conexion);
+				viewFacturasCompra.dispose();
+				viewFacturasCompra=null;
+				ctlFacturasCompra=null;
 				break;
 		}
 		

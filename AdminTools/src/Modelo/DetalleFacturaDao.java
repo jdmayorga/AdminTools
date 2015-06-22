@@ -276,6 +276,70 @@ public class DetalleFacturaDao {
 		
 	}
 
+	public List<DetalleFactura> getDetallesFactura(int idFactura) {
+		List<DetalleFactura> detalles=new ArrayList<DetalleFactura>();
+		
+
+        Connection con = null;
+  
+		
+		ResultSet res=null;
+		
+		boolean existe=false;
+		try {
+			con = conexion.getPoolConexion().getConnection();
+			
+			detallesFacturaPendiente = con.prepareStatement("SELECT * FROM detalle_factura where numero_factura=?;");
+			detallesFacturaPendiente.setInt(1, idFactura);
+			
+			res = detallesFacturaPendiente.executeQuery();
+			while(res.next()){
+				DetalleFactura unDetalle=new DetalleFactura();
+				existe=true;
+				//se consigue el articulo del detalle
+				Articulo articuloDetalle=articuloDao.buscarArticulo(res.getInt("codigo_articulo"));
+				articuloDetalle.setPrecioVenta(res.getDouble("precio"));//se estable el precio del articulo
+				unDetalle.setListArticulos(articuloDetalle);//se agrega el articulo al 
+				unDetalle.setCantidad(res.getBigDecimal("cantidad"));
+				unDetalle.setImpuesto(res.getBigDecimal("impuesto"));
+				unDetalle.setSubTotal(res.getBigDecimal("subtotal"));
+				unDetalle.setDescuentoItem(res.getBigDecimal("descuento"));
+				unDetalle.setTotal(res.getBigDecimal("total"));
+				
+				
+				
+				
+				detalles.add(unDetalle);
+			 }
+					
+			} catch (SQLException e) {
+					JOptionPane.showMessageDialog(null, "Error, no se conecto");
+					System.out.println(e);
+			}
+		finally
+		{
+			try{
+				
+				if(res != null) res.close();
+                if(detallesFacturaPendiente != null)detallesFacturaPendiente.close();
+                if(con != null) con.close();
+                
+				
+				} // fin de try
+				catch ( SQLException excepcionSql )
+				{
+					excepcionSql.printStackTrace();
+					conexion.desconectar();
+				} // fin de catch
+		} // fin de finally
+		
+		
+			if (existe) {
+				return detalles;
+			}
+			else return null;
+	}
+
 	
 
 }

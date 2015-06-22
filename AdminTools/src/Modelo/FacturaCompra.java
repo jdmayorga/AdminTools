@@ -5,6 +5,7 @@ import java.util.List;
 
 public class FacturaCompra {
 	private String fechaCompra;
+	private int noCompra;
 	private String idFactura;
 	private Integer tipoFactura=1;
 	private Proveedor proveedor;
@@ -13,16 +14,29 @@ public class FacturaCompra {
 	private double total=0.0;
 	private double subTotal=0.0;
 	private String fechaVencimento=null;
-	private int estado=1;
+	private String estado;
+	private int agregadoAkardex;
 	
 	public FacturaCompra(){
 		
 	}
+	public int getAgregadoAkardex(){
+		return agregadoAkardex;
+	}
+	public void setAgregadoAkardex(int a){
+		agregadoAkardex=a;
+	}
 	
-	public int getEstado(){
+	public void setNoCompra(int i){
+		noCompra=i;
+	}
+	public int getNoCompra(){
+		return noCompra;
+	}
+	public String getEstado(){
 		return estado;
 	}
-	public void setEstado(int e){
+	public void setEstado(String e){
 		estado=e;
 	}
 	public String getFechaVencimento(){
