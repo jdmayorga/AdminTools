@@ -665,4 +665,13 @@ public void calcularTotal(DetalleFactura detalle){
 		return myFactura;
 	}
 
+
+	public void viewFactura(Factura f) {
+		// TODO Auto-generated method stub
+		this.myFactura=f;
+		cargarFacturaView();
+		this.view.getPanelAcciones().setVisible(false);
+		this.view.setVisible(true);
+	}
+
 }

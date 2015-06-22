@@ -83,6 +83,8 @@ public class ViewFacturar extends JDialog {
 		panelAcciones.setBorder(new TitledBorder(new LineBorder(new Color(130, 135, 144)), "Opciones", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelAcciones.setBounds(20, 11, 175, 407);
 		panelAcciones.setLayout(null);
+		//panelAcciones.setVisible(false);
+		
 		
 		this.setTitle("Facturar");
 		getContentPane().add(panelAcciones);
@@ -292,6 +294,21 @@ public class ViewFacturar extends JDialog {
 	}
 	public BotonGuardar getBtnGuardar(){
 		return btnGuardar;
+	}
+	public JButton getBtnBuscar(){
+		return btnBuscar;
+	}
+	public JButton getBtnBuscarCliente(){
+		return btnCliente;
+	}
+	public JButton getBtnCobrar(){
+		return btnCobrar;
+	}
+	public JButton getBtnCerrar(){
+		return btnCerrar;
+	}
+	public JPanel getPanelAcciones(){
+		return panelAcciones;
 	}
 	public JTextField getTxtDescuento(){
 		return txtDescuento;		

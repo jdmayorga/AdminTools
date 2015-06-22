@@ -18,6 +18,7 @@ import Modelo.Factura;
 import Modelo.FacturaDao;
 import Modelo.UsuarioDao;
 import View.ViewCrearArticulo;
+import View.ViewFacturar;
 import View.ViewFacturas;
 
 public class CtlFacturas implements ActionListener, MouseListener, ChangeListener {
@@ -71,38 +72,34 @@ public class CtlFacturas implements ActionListener, MouseListener, ChangeListene
             this.view.getBtnEliminar().setEnabled(true);
             this.view.getBtnImprimir().setEnabled(true);
             this.myFactura=this.view.getModelo().getFactura(filaPulsada);
-            /*/se consigue el proveedore de la fila seleccionada
-            myArticulo=this.view.getModelo().getArticulo(filaPulsada);
+            //se consigue el proveedore de la fila seleccionada
+            //myArticulo=this.view.getModelo().getArticulo(filaPulsada);
         
             
         	//si fue doble click mostrar modificar
         	if (e.getClickCount() == 2) {
+        	
+        		ViewFacturar viewFacturar=new ViewFacturar(this.view);
+        		CtlFacturar ctlFacturar=new CtlFacturar(viewFacturar,conexion);
         		
-	        	myArticulo=this.view.getModelo().getArticulo(filaPulsada);
-        		//myArticulo=this.view.getModelo().getArticulo(filaPulsada);//se consigue el Marca de la fila seleccionada
-	           
-	        	//crea la ventana para ingresar un nuevo proveedor
-				viewArticulo= new ViewCrearArticulo(this.view);
-				
-				//se crea el controlador de la ventana y se le pasa la view
-				CtlArticulo ctlActulizarArticulo=new CtlArticulo(viewArticulo,myArticuloDao,conexion);
-				viewArticulo.conectarCtl(ctlActulizarArticulo);
-				
-				//se crea el objeto para casultar los codigos de barra en la bd
-				CodBarraDao myCodBarraDao=new CodBarraDao(conexion);
-				
-				//se estable los codigos de bara encontrados al objeto myArticulo;
-				myArticulo.setCodBarras(myCodBarraDao.getCodsArticulo(myArticulo.getId()));
-				
-				//se llama del metodo actualizar marca para que se muestre la ventanda y procesa la modificacion
-				boolean resultado=ctlActulizarArticulo.actualizarArticulo(myArticulo);
-				
-				//se proceso el resultado de modificar la marca
-				if(resultado){
-					this.view.getModelo().cambiarArticulo(filaPulsada, ctlActulizarArticulo.getArticulo());//se cambia en la vista
-					this.view.getModelo().fireTableDataChanged();//se refrescan los cambios
-					this.view.getTablaArticulos().getSelectionModel().setSelectionInterval(filaPulsada,filaPulsada);//se seleciona lo cambiado
-				}	
+        		//si se cobro la factura se debe eleminiar el temp por eso se guarda el id
+        		int idFactura=myFactura.getIdFactura();
+        		
+        		//se llama al controlador de la factura para que la muestre 
+        		ctlFacturar.viewFactura(myFactura);//actualizarFactura(myFactura);
+        		
+        		/*/si la factura se cobro se regresara null sino modificamos la factura en la lista
+        		if(myFactura==null){
+        			this.view.getModelo().eliminarFactura(filaPulsada);
+        			myFacturaDao.EliminarTemp(idFactura);
+        		}else{
+        			this.view.getModelo().cambiarArticulo(filaPulsada, myFactura);
+        			this.view.getTablaFacturas().getSelectionModel().setSelectionInterval(filaPulsada,filaPulsada);//se seleciona lo cambiado
+        		}*/
+        		viewFacturar.dispose();
+        		ctlFacturar=null;
+        		
+	        	
 			
 				
 				
@@ -113,7 +110,7 @@ public class CtlFacturas implements ActionListener, MouseListener, ChangeListene
         		this.view.getBtnEliminar().setEnabled(true);
         		
         		
-        	}*/
+        	}
 		}
 		
 	}

@@ -386,7 +386,7 @@ public class FacturaDao {
 				unaFactura.setTipoFactura(res.getInt("tipo_factura"));
 				unaFactura.setAgregadoAkardex(res.getInt("agrega_kardex"));
 				
-				unaFactura.setDetalles(detallesDao.detallesFacturaPendiente(res.getInt("numero_factura")));
+				unaFactura.setDetalles(detallesDao.getDetallesFactura(res.getInt("numero_factura")));
 				
 				
 				facturas.add(unaFactura);
