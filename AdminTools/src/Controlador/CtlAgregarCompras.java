@@ -176,6 +176,7 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 		
 			case TableModelEvent.UPDATE:
 				
+				
 				//JOptionPane.showMessageDialog(view, "Se modifico el dato en la celda "+e.getColumn()+", "+e.getFirstRow());
 				if(colum==0){
 					
@@ -204,10 +205,10 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 							
 						this.view.getTablaArticulos().changeSelection(row,colum+2, toggle, extend);
 							
-						calcularTotales();
+						//calcularTotales();
 						
 						//se agrega otra fila en la tabla
-						this.view.getModelo().agregarDetalle();
+						//this.view.getModelo().agregarDetalle();
 					}else{
 						JOptionPane.showMessageDialog(view, "No se encuentra el articulo");
 						
@@ -215,10 +216,10 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 						this.view.getModelo().getDetalle(row).getArticulo().setId(-1);
 						
 						//se agrega la nueva fila de la tabla
-						this.view.getModelo().agregarDetalle();
+						//this.view.getModelo().agregarDetalle();
 						
 						// se vuelve a calcular los totales
-						calcularTotales();
+						//calcularTotales();
 					}
 					
 					
@@ -232,7 +233,8 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 					this.view.getTablaArticulos().changeSelection(row,colum+1, toggle, extend);
 					
 					//se agrega la nueva fila de la tabla
-					this.view.getModelo().agregarDetalle();
+					//this.view.getModelo().agregarDetalle();
+					//calcularTotales();
 				}
 				if(colum==3){
 					calcularTotales();
@@ -240,12 +242,14 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 					boolean extend = false;
 					this.view.getTablaArticulos().requestFocus();
 					//se agrega la nueva fila de la tabla
-					this.view.getModelo().agregarDetalle();
+					//this.view.getModelo().agregarDetalle();
 						
-					this.view.getTablaArticulos().changeSelection(row+1,0, toggle, extend);				
+					this.view.getTablaArticulos().changeSelection(row+1,0, toggle, extend);	
+					//calcularTotales();
 				}
 				
-				
+				//se agrega la nueva fila de la tabla
+				//this.view.getModelo().agregarDetalle();
 			break;
 		}
 		
@@ -273,8 +277,8 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 			
 			
 			if(detalle.getArticulo().getId()!=-1)//si el detalle es valido
-				
-				if(detalle.getCantidad().doubleValue()!=0 && detalle.getArticulo().getPrecioVenta()!=0){
+				//if(detalle.getCantidad()!=0 && detalle.getPrecioCompra()!=0)
+				if(detalle.getCantidad().doubleValue()!=0 && detalle.getPrecioCompra().doubleValue()!=0){
 					
 					
 					
@@ -334,6 +338,7 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 					*/
 					
 					//se obtiene el impuesto del articulo 
+					//((Double.parseDouble(detalle.getArticulo().getImpuestoObj().getPorcentaje())  )/100)+1;
 					BigDecimal porcentaImpuesto =new BigDecimal(detalle.getArticulo().getImpuestoObj().getPorcentaje());
 					BigDecimal porImpuesto=new BigDecimal(0);
 					porImpuesto=porcentaImpuesto.divide(new BigDecimal(100));
@@ -371,7 +376,8 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 					//this.view.getTxtDescuento().setText(""+myFactura.getTotalDescuento().setScale(2, BigDecimal.ROUND_HALF_EVEN));
 					
 					
-					
+					//se agrega la nueva fila de la tabla
+					this.view.getModelo().agregarDetalle();
 					
 				
 					
