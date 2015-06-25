@@ -1,5 +1,6 @@
 package Modelo;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,9 +11,9 @@ public class FacturaCompra {
 	private Integer tipoFactura=1;
 	private Proveedor proveedor;
 	private List<DetalleFacturaProveedor> detalles=new ArrayList<DetalleFacturaProveedor>();
-	private double totalImpuesto=0.0;
-	private double total=0.0;
-	private double subTotal=0.0;
+	private BigDecimal totalImpuesto=new BigDecimal(0.0);
+	private BigDecimal total=new BigDecimal(0.0);
+	private BigDecimal subTotal=new BigDecimal(0.0);
 	private String fechaVencimento=null;
 	private String estado;
 	private int agregadoAkardex;
@@ -81,24 +82,33 @@ public class FacturaCompra {
 		return detalles;
 	}
 	
-	public void setTotalImpuesto(double tImp){
-		totalImpuesto=totalImpuesto+tImp;
+	public void setTotalImpuesto(BigDecimal tImp){
+		totalImpuesto=totalImpuesto.add(tImp);
 	}
-	public double getTotalImpuesto(){
+	public BigDecimal getTotalImpuesto(){
 		return totalImpuesto;
 	}
 	
-	public void setTotal(double t){
-		total=total+t;
+	public void setTotal(BigDecimal t){
+		total=total.add(t);
 	}
-	public double getTotal(){
+	public BigDecimal getTotal(){
 		return total;
 	}
-	public void setSubTotal(double s){
-		subTotal+=s;
+	public void setSubTotal(BigDecimal s){
+		subTotal=subTotal.add(s);
 	}
-	public double getSubTotal(){
+	public BigDecimal getSubTotal(){
 		return subTotal;
+	}
+	
+	
+	public void resetTotales() {
+		totalImpuesto=BigDecimal.ZERO;
+		total=BigDecimal.ZERO;
+		subTotal=BigDecimal.ZERO;
+		//totalDescuento=BigDecimal.ZERO;
+		
 	}
 
 }

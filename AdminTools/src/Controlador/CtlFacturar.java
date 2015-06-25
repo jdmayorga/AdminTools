@@ -184,59 +184,64 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 		//JOptionPane.showMessageDialog(view, "paso de celdas");
 		switch(e.getType()){
 		
-		case TableModelEvent.HEADER_ROW:
-			
-		break;
+		
 		
 			case TableModelEvent.UPDATE:
 				
-				//JOptionPane.showMessageDialog(view, "Se modifico el dato en la celda "+e.getColumn()+", "+e.getFirstRow());
+				//se ingreso un id o codigo de barra en la tabla
 				if(colum==0){
 					//Se recoge el id de la fila marcada
 			        int identificador= (int)this.view.getModeloTabla().getValueAt(row, 0);
 			        myArticulo=this.view.getModeloTabla().getDetalle(row).getArticulo();
-			        //JOptionPane.showMessageDialog(view, myArticulo);
-			        //this.myArticulo=this.myArticuloDao.buscarArticuloBarraCod(this.view.getModeloTabla().getDetalle(row).getArticulo().getCodBarra().get(0).getCodigoBarra());
-					if(myArticulo.getId()==-2){
+			        
+					
+			        //se ingreso un codigo de barra y si el articulo en la bd 
+			        if(myArticulo.getId()==-2){
 						String cod=this.view.getModeloTabla().getDetalle(row).getArticulo().getCodBarra().get(0).getCodigoBarra();
 						this.myArticulo=this.myArticuloDao.buscarArticuloBarraCod(cod);
 						
-					}else{
+					}else{//sino se ingreso un codigo de barra se busca por id de articulo
 						this.myArticulo=this.myArticuloDao.buscarArticulo(identificador);
 					}
-					//JOptionPane.showMessageDialog(view, myArticulo);
 					
+					//si se encuentra  el articulo por codigo de barra o por id se calcula los totales y se agrega 
 					if(myArticulo!=null){
+						
+						//se estable en articulo en la tabla
 						this.view.getModeloTabla().setArticulo(myArticulo, row);
-						
+						//se calcula los totales
 						calcularTotales();
+						
+						//se agrega otra fila en la tabla
 						this.view.getModeloTabla().agregarDetalle();
 						
+					}else{//si no se encuentra
 						
-						/*boolean toggle = false;
-						boolean extend = false;
-						this.view.geTableDetalle().requestFocus();
-							
-						this.view.geTableDetalle().changeSelection(row,colum+3, toggle, extend);*/
-							
-						
-					}else{
 						JOptionPane.showMessageDialog(view, "No se encuentra el articulo");
+						//sino se encuentra se estable un id de -1 para que sea eliminado el articulo en la tabla
 						this.view.getModeloTabla().getDetalle(row).getArticulo().setId(-1);
+						
+						//se agrega la nueva fila de la tabla
 						this.view.getModeloTabla().agregarDetalle();
+						
+						// se vuelve a calcular los totales
 						calcularTotales();
 					}
 					
 					
 				}
+				
+				//se cambia la cantidad en la tabla
 				if(colum==3){
-					//calcularTotal(this.view.getModeloTabla().getDetalle(row));
+					
 					calcularTotales();
 					boolean toggle = false;
 					boolean extend = false;
 					this.view.geTableDetalle().requestFocus();
 					
 					this.view.geTableDetalle().changeSelection(row,colum+1, toggle, extend);
+					
+				
 					this.view.getModeloTabla().agregarDetalle();
 					
 					
@@ -245,20 +250,13 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 						
 					this.view.geTableDetalle().changeSelection(row,colum+3, false, false);
 				}
+				
+				//se agrego un descuento a la tabla
 				if(colum==6){
 					calcularTotales();
 					//JOptionPane.showMessageDialog(view, "Modifico el Descuento "+this.view.getModeloTabla().getDetalle(row).getDescuentoItem().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue());
 				}
-				/*if(colum==3){
-					calcularTotal(this.view.getModelo().getDetalle(row));
-					boolean toggle = false;
-					boolean extend = false;
-					this.view.getTablaArticulos().requestFocus();
-						
-					this.view.getTablaArticulos().changeSelection(row+1,0, toggle, extend);				
-				}
 				
-				*/
 			break;
 		}
 		

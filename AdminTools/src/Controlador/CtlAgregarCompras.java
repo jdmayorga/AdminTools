@@ -18,6 +18,7 @@ import javax.swing.event.TableModelListener;
 import Modelo.Articulo;
 import Modelo.ArticuloDao;
 import Modelo.Conexion;
+import Modelo.DetalleFactura;
 import Modelo.DetalleFacturaProveedor;
 import Modelo.FacturaCompra;
 import Modelo.FacturaCompraDao;
@@ -50,7 +51,7 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 		///this.view.getTablaArticulos().getSelectionModel().set
 		
 		//se llena la tabla de articulos llamando a este metodo 
-		agregarNuevoDetalle();
+		view.getModelo().agregarDetalle();
 		//this.view.getTxtFechaIngreso().setText(myFacturaDao.getFechaSistema());
 		this.view.setVisible(true);
 		
@@ -177,9 +178,23 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 				
 				//JOptionPane.showMessageDialog(view, "Se modifico el dato en la celda "+e.getColumn()+", "+e.getFirstRow());
 				if(colum==0){
+					
 					//Se recoge el id de la fila marcada
 			        int identificador= (int)this.view.getModelo().getValueAt(row, 0);
-					this.myArticulo=this.myArticuloDao.buscarArticulo(identificador);
+			        
+			        myArticulo=this.view.getModelo().getDetalle(row).getArticulo();
+					//myArticulo=this.myArticuloDao.buscarArticulo(identificador);
+					
+					//se ingreso un codigo de barra y si el articulo en la bd 
+			        if(myArticulo.getId()==-2){
+						String cod=this.view.getModelo().getDetalle(row).getArticulo().getCodBarra().get(0).getCodigoBarra();
+						this.myArticulo=this.myArticuloDao.buscarArticuloBarraCod(cod);
+						
+					}else{//sino se ingreso un codigo de barra se busca por id de articulo
+						this.myArticulo=this.myArticuloDao.buscarArticulo(identificador);
+					}
+					
+			        
 					if(myArticulo!=null){
 						this.view.getModelo().setArticulo(myArticulo, row);
 						//this.view.getModelo().getDetalle(row).setCantidad(1);
@@ -189,26 +204,43 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 							
 						this.view.getTablaArticulos().changeSelection(row,colum+2, toggle, extend);
 							
-						calcularTotal(this.view.getModelo().getDetalle(row));
+						calcularTotales();
+						
+						//se agrega otra fila en la tabla
+						this.view.getModelo().agregarDetalle();
 					}else{
 						JOptionPane.showMessageDialog(view, "No se encuentra el articulo");
+						
+						//sino se encuentra se estable un id de -1 para que sea eliminado el articulo en la tabla
+						this.view.getModelo().getDetalle(row).getArticulo().setId(-1);
+						
+						//se agrega la nueva fila de la tabla
+						this.view.getModelo().agregarDetalle();
+						
+						// se vuelve a calcular los totales
+						calcularTotales();
 					}
 					
 					
 				}
 				if(colum==2){
-					calcularTotal(this.view.getModelo().getDetalle(row));
+					calcularTotales();
 					boolean toggle = false;
 					boolean extend = false;
 					this.view.getTablaArticulos().requestFocus();
 						
 					this.view.getTablaArticulos().changeSelection(row,colum+1, toggle, extend);
+					
+					//se agrega la nueva fila de la tabla
+					this.view.getModelo().agregarDetalle();
 				}
 				if(colum==3){
-					calcularTotal(this.view.getModelo().getDetalle(row));
+					calcularTotales();
 					boolean toggle = false;
 					boolean extend = false;
 					this.view.getTablaArticulos().requestFocus();
+					//se agrega la nueva fila de la tabla
+					this.view.getModelo().agregarDetalle();
 						
 					this.view.getTablaArticulos().changeSelection(row+1,0, toggle, extend);				
 				}
@@ -227,7 +259,129 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 		}
 	}
 	
-	public void calcularTotal(DetalleFacturaProveedor detalle){
+	
+	public void calcularTotales(){
+		
+		//se establecen los totales en cero
+		this.myFactura.resetTotales();
+		
+		//se recoren los detalles de la factura
+		for(int x=0; x<this.view.getModelo().getDetalles().size();x++){
+			
+			//se obtiene cada detalle por separado de la factura
+			DetalleFacturaProveedor detalle=this.view.getModelo().getDetalle(x);
+			
+			
+			if(detalle.getArticulo().getId()!=-1)//si el detalle es valido
+				
+				if(detalle.getCantidad().doubleValue()!=0 && detalle.getArticulo().getPrecioVenta()!=0){
+					
+					
+					
+					//se obtien la cantidad y el precio de compra por unidad
+					BigDecimal cantidad=detalle.getCantidad();
+					BigDecimal precioCompra=detalle.getPrecioCompra();
+					
+					//se calcula el total del item
+					BigDecimal totalItem=cantidad.multiply(precioCompra);
+					
+					/*int desc=detalle.getDescuento();
+				
+					if(desc==1)
+					{
+						BigDecimal des=totalItem.multiply(new BigDecimal(0.05));
+						detalle.setDescuentoItem(des);
+						totalItem=totalItem.subtract(des);
+						
+					}else if(desc==2){
+						BigDecimal des=totalItem.multiply(new BigDecimal(0.10));
+						detalle.setDescuentoItem(des);
+						totalItem=totalItem.subtract(des);	
+					}else if(desc==3){
+						BigDecimal des=totalItem.multiply(new BigDecimal(0.15));
+						detalle.setDescuentoItem(des);
+						totalItem=totalItem.subtract(des);	
+					}else if(desc==4){
+						BigDecimal des=totalItem.multiply(new BigDecimal(0.20));
+						detalle.setDescuentoItem(des);
+						totalItem=totalItem.subtract(des);	
+					}else if(desc==5){
+						BigDecimal des=totalItem.multiply(new BigDecimal(0.25));
+						detalle.setDescuentoItem(des);
+						totalItem=totalItem.subtract(des);	
+					}else if(desc==6){
+						BigDecimal des=totalItem.multiply(new BigDecimal(0.30));
+						detalle.setDescuentoItem(des);
+						totalItem=totalItem.subtract(des);	
+					}else if(desc==7){
+						BigDecimal des=totalItem.multiply(new BigDecimal(0.35));
+						detalle.setDescuentoItem(des);
+						totalItem=totalItem.subtract(des);	
+					}else if(desc==8){
+						BigDecimal des=totalItem.multiply(new BigDecimal(0.40));
+						detalle.setDescuentoItem(des);
+						totalItem=totalItem.subtract(des);	
+					}else if(desc==9){
+						BigDecimal des=totalItem.multiply(new BigDecimal(0.45));
+						detalle.setDescuentoItem(des);
+						totalItem=totalItem.subtract(des);	
+					}else if(desc==10){
+						BigDecimal des=totalItem.multiply(new BigDecimal(0.50));
+						detalle.setDescuentoItem(des);
+						totalItem=totalItem.subtract(des);	
+					}
+					
+					*/
+					
+					//se obtiene el impuesto del articulo 
+					BigDecimal porcentaImpuesto =new BigDecimal(detalle.getArticulo().getImpuestoObj().getPorcentaje());
+					BigDecimal porImpuesto=new BigDecimal(0);
+					porImpuesto=porcentaImpuesto.divide(new BigDecimal(100));
+					porImpuesto=porImpuesto.add(new BigDecimal(1));
+							//new BigDecimal(((Double.parseDouble(detalle.getArticulo().getImpuestoObj().getPorcentaje())  )/100)+1);
+					
+					
+					
+					//se calcula el total sin  el impuesto;
+					BigDecimal totalsiniva= new BigDecimal("0.0");
+					totalsiniva=totalItem.divide(porImpuesto,2,BigDecimal.ROUND_HALF_EVEN);//.divide(porImpuesto);// (totalItem)/(porcentaImpuesto);
+				
+					
+					//se calcula el total de impuesto del item
+					BigDecimal impuestoItem=totalItem.subtract(totalsiniva);//-totalsiniva;
+					
+					
+					
+					//se estable el total y impuesto en el modelo
+					myFactura.setTotal(totalItem);
+					myFactura.setTotalImpuesto(impuestoItem);
+					myFactura.setSubTotal(totalsiniva);
+					
+					//myFactura.setTotalDescuento(detalle.getDescuentoItem());
+					
+					//detalle.setSubTotal(totalsiniva.setScale(2, BigDecimal.ROUND_HALF_EVEN));
+					detalle.setImpuesto(impuestoItem.setScale(2, BigDecimal.ROUND_HALF_EVEN));
+					
+					detalle.setTotal(totalItem.setScale(2, BigDecimal.ROUND_HALF_EVEN));
+					
+					//se establece el total e impuesto en el vista
+					this.view.getTxtTotal().setText(""+myFactura.getTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN));
+					//this.view.getTxtImpuesto().setText(""+myFactura.getTotalImpuesto().setScale(2, BigDecimal.ROUND_HALF_EVEN));
+					this.view.getTxtSubtotal().setText(""+myFactura.getSubTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN));
+					//this.view.getTxtDescuento().setText(""+myFactura.getTotalDescuento().setScale(2, BigDecimal.ROUND_HALF_EVEN));
+					
+					
+					
+					
+				
+					
+					//this.view.getModelo().fireTableDataChanged();
+				}//fin del if
+			
+		}//fin del for
+		}
+	
+	/*public void calcularTotal(DetalleFacturaProveedor detalle){
 		
 		if(detalle.getCantidad()!=0 && detalle.getPrecioCompra()!=0){
 			//se obtien la cantidad y el precio de compra por unidad
@@ -278,7 +432,7 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 			
 			//this.view.getModelo().fireTableDataChanged();
 		}
-	}
+	}*/
 
 	@Override
 	public void windowOpened(WindowEvent e) {

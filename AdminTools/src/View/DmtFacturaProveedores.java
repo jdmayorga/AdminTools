@@ -1,5 +1,7 @@
 package View;
 
+import java.awt.Component;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +11,7 @@ import javax.swing.table.AbstractTableModel;
 import Modelo.Articulo;
 import Modelo.ArticuloDao;
 import Modelo.Conexion;
+import Modelo.DetalleFactura;
 import Modelo.DetalleFacturaProveedor;
 
 import javax.swing.table.DefaultTableModel;
@@ -24,6 +27,23 @@ public class DmtFacturaProveedores extends AbstractTableModel {
 	public DmtFacturaProveedores(){
 		//datosVacios();
 	
+	}
+	
+	public void agregarDetalle(){
+		//JOptionPane.showMessageDialog(null,detallesFactura.size() );
+		for(int x=0;x<detallesFactura.size();x++){
+			
+			//JOptionPane.showMessageDialog(null,detallesFactura.get(x).getArticulo() );
+			if(detallesFactura.get(x).getArticulo().getId()<0){
+				//JOptionPane.showMessageDialog(null,detallesFactura.get(x).getArticulo()+ "..Eliminando");
+				detallesFactura.remove(x);
+				
+			}
+		}
+		DetalleFacturaProveedor uno =new DetalleFacturaProveedor();
+		detallesFactura.add(uno);
+		fireTableDataChanged();
+		//JOptionPane.showMessageDialog(null,detallesFactura.size() );
 	}
 	public void setTotalCompra(double t){
 		totalCompra+=t;
@@ -76,14 +96,14 @@ public class DmtFacturaProveedores extends AbstractTableModel {
 		        		return detallesFactura.get(rowIndex).getArticulo().getArticulo();
 		        case 2:
 		        	
-		        		if(detallesFactura.get(rowIndex).getCantidad()!=0)
+		        		if(detallesFactura.get(rowIndex).getCantidad().doubleValue()!=0)
 		        			return detallesFactura.get(rowIndex).getCantidad();
 		        		else
 		        			return null;
 		        	
 		        case 3:
 		        	
-		        		if(detallesFactura.get(rowIndex).getPrecioCompra()!=0){
+		        		if(detallesFactura.get(rowIndex).getPrecioCompra().doubleValue()!=0){
 		        			return detallesFactura.get(rowIndex).getPrecioCompra();
 		        			
 		        			
@@ -93,7 +113,7 @@ public class DmtFacturaProveedores extends AbstractTableModel {
 		        
 		        case 4:
 		        	
-		        		if(detallesFactura.get(rowIndex).getPrecioCompra()!=0){
+		        		if(detallesFactura.get(rowIndex).getPrecioCompra().doubleValue()!=0){
 		        			return detallesFactura.get(rowIndex).getImpuesto();
 		        		}
 		        		else
@@ -101,7 +121,7 @@ public class DmtFacturaProveedores extends AbstractTableModel {
 		        	
 		        case 5:
 		        	
-		        		if(detallesFactura.get(rowIndex).getPrecioCompra()!=0){
+		        		if(detallesFactura.get(rowIndex).getPrecioCompra().doubleValue()!=0){
 		        			return detallesFactura.get(rowIndex).getTotal();
 		        		}
 		        		else
@@ -133,12 +153,12 @@ public class DmtFacturaProveedores extends AbstractTableModel {
 					break;
 			case 2:
 				
-				detallesFactura.get(rowIndex).setCantidad(Double.parseDouble(v));
+				detallesFactura.get(rowIndex).setCantidad(new BigDecimal(v));
 				fireTableCellUpdated(rowIndex, columnIndex);
 					//fireTableDataChanged();
 				break;
 			case 3:
-				detallesFactura.get(rowIndex).setPrecioCompra(Double.parseDouble(v));
+				detallesFactura.get(rowIndex).setPrecioCompra(new BigDecimal(v));
 				fireTableCellUpdated(rowIndex, columnIndex);
 				
 				break;
@@ -217,6 +237,16 @@ public boolean isCellEditable(int rowIndex, int columnIndex) {
 	
 	
 	return resul;
+}
+public DetalleFacturaProveedor getDetalles(int index) {
+	// TODO Auto-generated method stub
+	return detallesFactura.get(index);
+}
+
+
+public List<DetalleFacturaProveedor> getDetalles() {
+	// TODO Auto-generated method stub
+	return detallesFactura;
 }
 
 }

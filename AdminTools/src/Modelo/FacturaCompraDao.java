@@ -44,9 +44,9 @@ public class FacturaCompraDao {
 			conn=conexion.getPoolConexion().getConnection();
 			agregarFactura=conn.prepareStatement( "INSERT INTO encabezado_factura_compra(fecha,subtotal,impuesto,total,codigo_proveedor,no_factura_compra,tipo_factura,fecha_vencimiento,estado_factura,fecha_ingreso) VALUES (?,?,?,?,?,?,?,?,?,now())");
 			agregarFactura.setString(1, fac.getFechaCompra());
-			agregarFactura.setDouble(2, fac.getSubTotal());
-			agregarFactura.setDouble(3, fac.getTotalImpuesto());
-			agregarFactura.setDouble(4, fac.getTotal());
+			agregarFactura.setBigDecimal(2, fac.getSubTotal());
+			agregarFactura.setBigDecimal(3, fac.getTotalImpuesto());
+			agregarFactura.setBigDecimal(4, fac.getTotal());
 			agregarFactura.setInt(5, fac.getProveedor().getId());
 			agregarFactura.setString(6, fac.getIdFactura());
 			agregarFactura.setInt(7, fac.getTipoFactura());
@@ -185,9 +185,9 @@ public class FacturaCompraDao {
 				unaFactura.setProveedor(unProveedor);
 				
 				
-				unaFactura.setSubTotal(res.getDouble("subtotal"));
-				unaFactura.setTotalImpuesto(res.getDouble("impuesto"));
-				unaFactura.setTotal(res.getDouble("total"));
+				unaFactura.setSubTotal(res.getBigDecimal("subtotal"));
+				unaFactura.setTotalImpuesto(res.getBigDecimal("impuesto"));
+				unaFactura.setTotal(res.getBigDecimal("total"));
 				//unaFactura.setEstado(res.getInt("estado_factura"));
 				//unaFactura.setTotalDescuento(res.getDouble("descuento"));
 				
@@ -312,9 +312,9 @@ public class FacturaCompraDao {
 				unaFactura.setProveedor(unProveedor);
 				
 				
-				unaFactura.setSubTotal(res.getDouble("subtotal"));
-				unaFactura.setTotalImpuesto(res.getDouble("impuesto"));
-				unaFactura.setTotal(res.getDouble("total"));
+				unaFactura.setSubTotal(res.getBigDecimal("subtotal"));
+				unaFactura.setTotalImpuesto(res.getBigDecimal("impuesto"));
+				unaFactura.setTotal(res.getBigDecimal("total"));
 				//unaFactura.setEstado(res.getInt("estado_factura"));
 				//unaFactura.setTotalDescuento(res.getDouble("descuento"));
 				
@@ -408,9 +408,9 @@ public class FacturaCompraDao {
 				unaFactura.setProveedor(unProveedor);
 				
 				
-				unaFactura.setSubTotal(res.getDouble("subtotal"));
-				unaFactura.setTotalImpuesto(res.getDouble("impuesto"));
-				unaFactura.setTotal(res.getDouble("total"));
+				unaFactura.setSubTotal(res.getBigDecimal("subtotal"));
+				unaFactura.setTotalImpuesto(res.getBigDecimal("impuesto"));
+				unaFactura.setTotal(res.getBigDecimal("total"));
 				//unaFactura.setEstado(res.getInt("estado_factura"));
 				//unaFactura.setTotalDescuento(res.getDouble("descuento"));
 				

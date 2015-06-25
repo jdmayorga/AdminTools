@@ -126,7 +126,7 @@ public class ViewListaFacturasCompra extends JDialog {
 		modelo=new TablaModeloFacturasCompra();
 		tablaFacturas=new JTable();
 		tablaFacturas.setModel(modelo);
-		RenderizadorTablaFacturas renderizador = new RenderizadorTablaFacturas();
+		RenderizadorTablaFacturaCompra renderizador = new RenderizadorTablaFacturaCompra();
 		tablaFacturas.setDefaultRenderer(String.class, renderizador);
 		
 		tablaFacturas.getColumnModel().getColumn(0).setPreferredWidth(60);     //Tamaño de las columnas de las tablas

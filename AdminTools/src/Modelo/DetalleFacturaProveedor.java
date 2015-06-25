@@ -1,14 +1,16 @@
 package Modelo;
 
+import java.math.BigDecimal;
+
 
 
 
 public class DetalleFacturaProveedor {
 	private Articulo articulo;
-	private double cantidad;
-	private double impuesto;
-	private double total;
-	private double precioCompra;
+	private BigDecimal cantidad=new BigDecimal(0.0);
+	private BigDecimal impuesto=new BigDecimal(0.0);
+	private BigDecimal total=new BigDecimal(0.0);
+	private BigDecimal precioCompra=new BigDecimal(0.0);
 	
 	
 
@@ -20,10 +22,10 @@ public class DetalleFacturaProveedor {
 		
 	}
 	
-	public void setPrecioCompra(double p){
+	public void setPrecioCompra(BigDecimal p){
 		precioCompra=p;
 	}
-	public double getPrecioCompra(){
+	public BigDecimal getPrecioCompra(){
 		return precioCompra;
 	}
 	public void setListArticulos(Articulo a){
@@ -33,24 +35,24 @@ public class DetalleFacturaProveedor {
 		return articulo;
 	}
 	
-	public void setCantidad(double c){
+	public void setCantidad(BigDecimal c){
 		cantidad=c;
 	}
-	public double getCantidad(){
+	public BigDecimal getCantidad(){
 		return cantidad;
 	}
 	
-	public void setImpuesto(double i){
+	public void setImpuesto(BigDecimal i){
 		impuesto=i;
 	}
-	public double getImpuesto(){
+	public BigDecimal getImpuesto(){
 		return impuesto;
 	}
 	
-	public void setTotal(double t){
+	public void setTotal(BigDecimal t){
 		total=t;
 	}
-	public double getTotal(){
+	public BigDecimal getTotal(){
 		return total;
 	}
 }

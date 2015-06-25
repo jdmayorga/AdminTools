@@ -1,5 +1,6 @@
 package Modelo;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,10 +40,10 @@ public class DetalleFacturaProveedorDao {
 			agregarDetalle=conn.prepareStatement( "INSERT INTO detalle_factura_compra(numero_compra,codigo_articulo,precio,cantidad,impuesto,subtotal) VALUES (?,?,?,?,?,?)");
 			agregarDetalle.setInt(1, noCompra);
 			agregarDetalle.setInt(2, detalle.getArticulo().getId());
-			agregarDetalle.setDouble(3, detalle.getPrecioCompra());
-			agregarDetalle.setDouble(4, detalle.getCantidad());
-			agregarDetalle.setDouble(5, detalle.getImpuesto());
-			agregarDetalle.setDouble(6, detalle.getTotal());
+			agregarDetalle.setBigDecimal(3, detalle.getPrecioCompra());
+			agregarDetalle.setBigDecimal(4, detalle.getCantidad());
+			agregarDetalle.setBigDecimal(5, detalle.getImpuesto());
+			agregarDetalle.setBigDecimal(6, detalle.getTotal());
 			agregarDetalle.executeUpdate();
 			
 			
@@ -54,7 +55,7 @@ public class DetalleFacturaProveedorDao {
 			//se verifica que exite el articulo en el inventario
 			if(inventario!=null){
 				//se agrega al inventario la nueva cantidad
-				inventario.incremetarExistencia(detalle.getCantidad());
+				inventario.incremetarExistencia(detalle.getCantidad().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue());
 				//se actualizar el articulo del inventario
 				inventarioDao.actualizarInventario(inventario);
 			}
@@ -64,7 +65,7 @@ public class DetalleFacturaProveedorDao {
 				Inventario inventario1=new Inventario();
 				inventario1.getBodega().setId(1);
 				inventario1.setArticulo(detalle.getArticulo());
-				inventario1.setExistencia(detalle.getCantidad());
+				inventario1.setExistencia(detalle.getCantidad().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue());
 				inventarioDao.agregarInventario(inventario1);				
 			}
 			
@@ -72,7 +73,7 @@ public class DetalleFacturaProveedorDao {
 			Kardex myKardex =new Kardex();
 			
 			myKardex.setArticulo(detalle.getArticulo());
-			myKardex.setEntrada(detalle.getCantidad());
+			myKardex.setEntrada(detalle.getCantidad().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue());
 			
 			//hay que cambiar para implementar multiples bodegas
 			myKardex.getBodega().setId(1);
@@ -133,10 +134,10 @@ public class DetalleFacturaProveedorDao {
 				Articulo articuloDetalle=articuloDao.buscarArticulo(res.getInt("codigo_articulo"));
 				articuloDetalle.setPrecioVenta(res.getDouble("precio"));//se estable el precio del articulo
 				unDetalle.setListArticulos(articuloDetalle);//se agrega el articulo al 
-				unDetalle.setCantidad(res.getDouble("cantidad"));
-				unDetalle.setImpuesto(res.getDouble("impuesto"));
+				unDetalle.setCantidad(res.getBigDecimal("cantidad"));
+				unDetalle.setImpuesto(res.getBigDecimal("impuesto"));
 				//unDetalle.setSubTotal(res.getDouble("subtotal"));
-				unDetalle.setTotal(res.getDouble("subtotal"));
+				unDetalle.setTotal(res.getBigDecimal("subtotal"));
 				
 				
 				
