@@ -1,5 +1,7 @@
 package Modelo;
 
+import java.awt.Dialog;
+import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.InputStream;
@@ -8,6 +10,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 import net.sf.jasperreports.engine.JasperReport;
@@ -25,6 +28,74 @@ public abstract class AbstractJasperReports
 	private static JasperReport	report;
 	private static JasperPrint	reportFilled;
 	private static JasperViewer	viewer;
+	
+	private static InputStream factura=null;
+	private static InputStream facturaCompra=null;
+	private static InputStream facturaReimpresion=null;
+	private static InputStream cierreCaja=null;
+	
+	private static JasperReport	reportFactura;
+	private static JasperReport	reportFacturaCompra;
+	private static JasperReport	reportFacturaReimpresion;
+	private static JasperReport	reportFacturaCierreCaja;
+	
+	
+	public static void loadFileReport(){
+		
+		factura=AbstractJasperReports.class.getResourceAsStream("/Reportes/Factura_Saint_Paul.jasper");
+		facturaCompra=AbstractJasperReports.class.getResourceAsStream("/Reportes/Factura_Compra_Saint_Paul.jasper");
+		facturaReimpresion=AbstractJasperReports.class.getResourceAsStream("/Reportes/Factura_Saint_Paul_Reimpresion.jasper");
+		cierreCaja=AbstractJasperReports.class.getResourceAsStream("/Reportes/Cierre_Caja_Saint_Paul.jasper");
+		
+		
+		try {
+			reportFactura = (JasperReport) JRLoader.loadObject( factura );
+			reportFacturaCompra = (JasperReport) JRLoader.loadObject( facturaCompra );
+			reportFacturaReimpresion= (JasperReport) JRLoader.loadObject( facturaReimpresion );
+			reportFacturaCierreCaja= (JasperReport) JRLoader.loadObject( cierreCaja );
+		} catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public static void createReport( Connection conn, int tipoReporte,Integer idFactura )
+	{
+		 Map parametros = new HashMap();
+		 parametros.put("numero_factura",idFactura);
+		 
+		try {
+			
+			if(tipoReporte==1){
+				reportFilled = JasperFillManager.fillReport( reportFactura, parametros, conn );
+			}
+			if(tipoReporte==2){
+				reportFilled = JasperFillManager.fillReport( reportFacturaCompra, parametros, conn );
+			}
+			if(tipoReporte==3){
+				reportFilled = JasperFillManager.fillReport( reportFacturaReimpresion, parametros, conn );
+			}
+			if(tipoReporte==4){
+				reportFilled = JasperFillManager.fillReport( reportFacturaCierreCaja, parametros, conn );
+			}
+			
+			
+			
+			
+			
+			}
+			catch( JRException ex ) {
+				ex.printStackTrace();
+			}
+			try {
+					conn.close();
+				} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+				}
+		
+	}
 	
 
 	public static void createReportFactura( Connection conn, String path,Integer idFactura )
@@ -81,10 +152,16 @@ public abstract class AbstractJasperReports
 		} 
 	}
 
-	public static void showViewer()
+	public static void showViewer(Window view)
 	{
-		viewer = new JasperViewer( reportFilled ,false);
-		viewer.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		JDialog viewer2 = new JDialog(view,"Vista previa del reporte", Dialog.ModalityType.DOCUMENT_MODAL);
+		viewer2.setSize(900,750);
+		viewer2.setLocationRelativeTo(null);
+		
+		
+		JasperViewer viewer3 = new JasperViewer( reportFilled );
+		//viewer.setAlwaysOnTop( true );
+		//viewer.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		/*viewer.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -92,8 +169,10 @@ public abstract class AbstractJasperReports
 				//viewer.dispose();
 			}
 		});*/
-		viewer.setTitle("Factura");
-		viewer.setVisible( true );
+		//viewer2.setTitle("Factura");
+		viewer2.getContentPane().add(viewer3.getContentPane());
+		viewer2.setVisible( true );
+		//viewer.setVisible( true );
 		
 		
 	}

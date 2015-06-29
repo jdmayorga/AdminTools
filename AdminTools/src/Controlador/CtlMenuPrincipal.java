@@ -34,6 +34,8 @@ public class CtlMenuPrincipal implements ActionListener {
 		conexion=conn;
 		this.view=view;
 		
+		view.getLblUserName().setText(conexion.getUsuarioLogin().getNombre());
+		
 		
 	}
 
@@ -49,10 +51,12 @@ public class CtlMenuPrincipal implements ActionListener {
 	
 			case "CERRARFACTURACION":
 				try {
-					AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "Cierre_Caja_Saint_Paul.jasper",1 );
+					//AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "Cierre_Caja_Saint_Paul.jasper",1 );
+					AbstractJasperReports.createReport(conexion.getPoolConexion().getConnection(), 4, 0);
+					
 					//this.view.setModal(false);
 					//AbstractJasperReports.imprimierFactura();
-					AbstractJasperReports.showViewer();
+					AbstractJasperReports.showViewer(this.view);
 					
 					CierreCajaDao cierre=new CierreCajaDao(conexion);
 					
@@ -66,13 +70,13 @@ public class CtlMenuPrincipal implements ActionListener {
 				}
 				break;
 			case "PROVEEDORES":
-				ViewListaProveedor viewListaProveedor=new ViewListaProveedor();
+				ViewListaProveedor viewListaProveedor=new ViewListaProveedor(view);
 				CtlProveedorLista ctlProveedor=new CtlProveedorLista(viewListaProveedor,conexion);
 				viewListaProveedor.conectarControlador(ctlProveedor);
 				
 				break;
 			case "ARTICULOS":
-				ViewListaArticulo viewListaArticulo=new ViewListaArticulo();
+				ViewListaArticulo viewListaArticulo=new ViewListaArticulo(view);
 				CtlArticuloLista ctlArticulo =new CtlArticuloLista(viewListaArticulo,conexion);
 				
 				viewListaArticulo.conectarControlador(ctlArticulo);
@@ -81,6 +85,8 @@ public class CtlMenuPrincipal implements ActionListener {
 			case "AGREGARCOMPRAS":
 				ViewAgregarCompras viewAgregarCompras= new ViewAgregarCompras(this.view);
 				CtlAgregarCompras ctlAgregarCompra=new CtlAgregarCompras(viewAgregarCompras,conexion);
+				
+				viewAgregarCompras.setVisible(true);
 				viewAgregarCompras.dispose();
 				viewAgregarCompras=null;
 				ctlAgregarCompra=null;

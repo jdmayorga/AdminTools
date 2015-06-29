@@ -10,6 +10,7 @@ import javax.swing.table.AbstractTableModel;
 
 import Modelo.Articulo;
 import Modelo.ArticuloDao;
+import Modelo.CodBarra;
 import Modelo.Conexion;
 import Modelo.DetalleFactura;
 import Modelo.DetalleFacturaProveedor;
@@ -132,6 +133,20 @@ public class DmtFacturaProveedores extends AbstractTableModel {
 				}
 	}
 	}
+	
+	
+	public void setDetalles(List<DetalleFacturaProveedor> d){
+		detallesFactura.clear();
+		if(d!=null){
+			for(int x=0;x<d.size();x++){
+				detallesFactura.add(d.get(x));
+			}
+		}else
+			agregarDetalle();
+		//detallesFactura=d;
+		fireTableDataChanged();
+	}
+	
 	public DetalleFacturaProveedor getDetalle(int row){
 		return detallesFactura.get(row);
 	}
@@ -144,12 +159,21 @@ public class DmtFacturaProveedores extends AbstractTableModel {
 		//JOptionPane.showMessageDialog(null, "Columan"+columnIndex+" fila"+rowIndex);
 		switch(columnIndex){
 			case 0:
-				detallesFactura.get(rowIndex).getArticulo().setId((Integer.parseInt(v)));
-					this.fireTableCellUpdated(rowIndex, columnIndex);
+				try{
+					int id=Integer.parseInt(v);
+					detallesFactura.get(rowIndex).getArticulo().setId(id);
+					
 					//this.fireTableDataChanged();
 					//fireTableCellUpdated(row,col);
 					//fireTableDataChanged();
-					
+				}catch(NumberFormatException e){
+					CodBarra cod=new CodBarra();
+					cod.setCodigoBarra(v);
+					detallesFactura.get(rowIndex).getArticulo().getCodBarra().add(cod);
+					detallesFactura.get(rowIndex).getArticulo().setId(-2);
+					//detallesFactura.get(rowIndex).getArticulo().getCodBarra().add(e)
+				}
+				this.fireTableCellUpdated(rowIndex, columnIndex);
 					break;
 			case 2:
 				

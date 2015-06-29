@@ -130,7 +130,7 @@ public class ViewListaFacturasCompra extends JDialog {
 		tablaFacturas.setDefaultRenderer(String.class, renderizador);
 		
 		tablaFacturas.getColumnModel().getColumn(0).setPreferredWidth(60);     //Tamaño de las columnas de las tablas
-		tablaFacturas.getColumnModel().getColumn(1).setPreferredWidth(70);	//de las columnas
+		tablaFacturas.getColumnModel().getColumn(1).setPreferredWidth(80);	//de las columnas
 		tablaFacturas.getColumnModel().getColumn(2).setPreferredWidth(70);	//en la tabla
 		tablaFacturas.getColumnModel().getColumn(3).setPreferredWidth(280);	//
 		

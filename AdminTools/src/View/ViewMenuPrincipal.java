@@ -3,6 +3,7 @@ package View;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -12,6 +13,7 @@ import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Toolkit;
 
 import javax.swing.JLabel;
@@ -19,6 +21,8 @@ import javax.swing.JLabel;
 import Controlador.CtlMenuPrincipal;
 
 import java.awt.Color;
+import java.awt.Component;
+import javax.swing.Box;
 
 public class ViewMenuPrincipal extends JFrame {
 	private final JLabel usuario = new JLabel("Usuario:");
@@ -32,8 +36,11 @@ public class ViewMenuPrincipal extends JFrame {
 	private JMenuItem mntmClientes;
 	private JMenuItem mntmBuscarFacturas;
 	private JMenuItem mntmFacturasIngresadas;
+	private JLabel lblUserName;
 	
 	public ViewMenuPrincipal() {
+		setTitle("AdminTools");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ViewMenuPrincipal.class.getResource("/View/imagen/logo-admin-tool1.png")));
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -49,6 +56,9 @@ public class ViewMenuPrincipal extends JFrame {
 		
 		mntmMarcas = new JMenuItem("Marcas");
 		mnInventario.add(mntmMarcas);
+		
+		JMenuItem mntmRequisicion = new JMenuItem("Requisicion");
+		mnInventario.add(mntmRequisicion);
 		
 		JMenu mnFacturacion = new JMenu("Facturacion");
 		menuBar.add(mnFacturacion);
@@ -92,13 +102,17 @@ public class ViewMenuPrincipal extends JFrame {
 		setSize(1024,700);
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(119, 136, 153));
+		//panel.setBackground(new Color(0, 191, 255));
+		//panel.setBackground(new Color(119, 136, 153));
 		panel.setSize(700, 100);
 		getContentPane().add(panel, BorderLayout.SOUTH);
 		panel.add(usuario);
 		
-		JLabel lblUserName = new JLabel("Unico");
+		lblUserName = new JLabel("Unico");
 		panel.add(lblUserName);
+		
+		JPanel panel_1 = new panelFondo();
+		getContentPane().add(panel_1, BorderLayout.CENTER);
 		
 		
 		setVisible(true);
@@ -144,6 +158,22 @@ public class ViewMenuPrincipal extends JFrame {
 		mntmFacturasIngresadas.addActionListener(c);
 		mntmFacturasIngresadas.setActionCommand("LISTAFACTURASCOMPRA");
 		
+	}
+	public JLabel getLblUserName(){
+		return lblUserName;
+	}
+	
+	private class panelFondo extends JPanel{
+		@Override
+		   public void paintComponent(Graphics g){
+		      Dimension tamanio = getSize();
+		      ImageIcon imagenFondo = new ImageIcon(getClass().
+		      getResource("/View/imagen/fondo-sistema.jpg"));
+		      g.drawImage(imagenFondo.getImage(), 0, 0,
+		      tamanio.width, tamanio.height, null);
+		      setOpaque(false);
+		      super.paintComponent(g);
+		   }
 	}
 
 }

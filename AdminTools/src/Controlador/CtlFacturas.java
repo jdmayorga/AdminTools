@@ -78,8 +78,23 @@ public class CtlFacturas implements ActionListener, MouseListener, ChangeListene
             
         	//si fue doble click mostrar modificar
         	if (e.getClickCount() == 2) {
+        		
+        		
+        		
+        		try {
+    				
+    				//AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "Factura_Saint_Paul_Reimpresion.jasper",myFactura.getIdFactura() );
+        			AbstractJasperReports.createReport(conexion.getPoolConexion().getConnection(), 3, myFactura.getIdFactura());
+        			AbstractJasperReports.showViewer(this.view);
+    				//AbstractJasperReports.imprimierFactura();
+    				this.view.getBtnImprimir().setEnabled(false);
+    				myFactura=null;
+    			} catch (SQLException ee) {
+    				// TODO Auto-generated catch block
+    				ee.printStackTrace();
+    			}
         	
-        		ViewFacturar viewFacturar=new ViewFacturar(this.view);
+        		/*ViewFacturar viewFacturar=new ViewFacturar(this.view);
         		CtlFacturar ctlFacturar=new CtlFacturar(viewFacturar,conexion);
         		
         		//si se cobro la factura se debe eleminiar el temp por eso se guarda el id
@@ -88,16 +103,16 @@ public class CtlFacturas implements ActionListener, MouseListener, ChangeListene
         		//se llama al controlador de la factura para que la muestre 
         		ctlFacturar.viewFactura(myFactura);//actualizarFactura(myFactura);
         		
-        		/*/si la factura se cobro se regresara null sino modificamos la factura en la lista
+        		//si la factura se cobro se regresara null sino modificamos la factura en la lista
         		if(myFactura==null){
         			this.view.getModelo().eliminarFactura(filaPulsada);
         			myFacturaDao.EliminarTemp(idFactura);
         		}else{
         			this.view.getModelo().cambiarArticulo(filaPulsada, myFactura);
         			this.view.getTablaFacturas().getSelectionModel().setSelectionInterval(filaPulsada,filaPulsada);//se seleciona lo cambiado
-        		}*/
+        		}
         		viewFacturar.dispose();
-        		ctlFacturar=null;
+        		ctlFacturar=null;*/
         		
 	        	
 			

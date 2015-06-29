@@ -137,7 +137,8 @@ private void cobrar(){
 			myFactura.setIdFactura(myFacturaDao.getIdFacturaGuardada());
 			
 				try {
-					AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "Factura_Saint_Paul.jasper",myFactura.getIdFactura() );
+					//AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "Factura_Saint_Paul.jasper",myFactura.getIdFactura() );
+					AbstractJasperReports.createReport(conexion.getPoolConexion().getConnection(), 1, myFactura.getIdFactura());
 					//this.view.setModal(false);
 					AbstractJasperReports.imprimierFactura();
 					//this.view.setModal(true);
@@ -174,6 +175,8 @@ private void cobrar(){
 			CtlFacturar ctlFacturar=new CtlFacturar(vistaFacturar,conexion );
 						
 			Factura myFac=ctlFacturar.getAccion();
+			
+			//JOptionPane.showMessageDialog(view, "El id factura:"+myFac.getIdFactura());
 			
 			if(myFac!=null){
 				this.view.getModelo().agregarFactura(myFac);

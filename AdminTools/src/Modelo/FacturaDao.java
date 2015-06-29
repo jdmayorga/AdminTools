@@ -114,7 +114,7 @@ public class FacturaDao {
 			agregarFactura.setBigDecimal(5, myFactura.getTotalDescuento());
 			agregarFactura.setString(6, "ACT");
 			agregarFactura.setInt(7, myFactura.getTipoFactura());
-			agregarFactura.setString(8, "unico");
+			agregarFactura.setString(8, conexion.getUsuarioLogin().getUser());
 			
 			
 			
@@ -191,7 +191,7 @@ public class FacturaDao {
 			agregarFactura.setBigDecimal(5, myFactura.getTotalDescuento());
 			agregarFactura.setString(6, "ACT");
 			agregarFactura.setInt(7, myFactura.getTipoFactura());
-			agregarFactura.setString(8, "unico");
+			agregarFactura.setString(8, conexion.getUsuarioLogin().getUser());
 			
 			
 			
@@ -590,7 +590,7 @@ public class FacturaDao {
 			actualizarTem.setBigDecimal(6, f.getTotalDescuento());
 			
 			actualizarTem.setInt(7, f.getTipoFactura());
-			actualizarTem.setString(8, "unico");
+			actualizarTem.setString(8, conexion.getUsuarioLogin().getUser());
 			actualizarTem.setInt(9, f.getIdFactura());
 			actualizarTem.executeUpdate();
 			

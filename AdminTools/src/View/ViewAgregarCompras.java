@@ -7,8 +7,8 @@ import java.awt.Color;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.Window;
+
 
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
@@ -29,15 +29,15 @@ import Controlador.CtlAgregarCompras;
 
 
 
+
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.JRadioButton;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
+
 import javax.swing.SwingConstants;
 
 
@@ -71,7 +71,7 @@ public class ViewAgregarCompras extends JDialog {
 	private JTextField txtSubtotal;
 	
 	
-	public ViewAgregarCompras(ViewMenuPrincipal view) {
+	public ViewAgregarCompras(Window view) {
 		super(view,"Registrar Compras",Dialog.ModalityType.DOCUMENT_MODAL);
 		getContentPane().setLayout(null);
 		

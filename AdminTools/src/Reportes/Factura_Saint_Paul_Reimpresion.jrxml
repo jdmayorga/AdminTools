@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2015-06-26T08:48:42 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Factura_Saint_Paul" pageWidth="612" pageHeight="396" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="df013db5-f76e-44d3-b0df-bcbc46d93160">
 	<property name="com.jaspersoft.studio.data.sql.tables" value="Y2xpbmljYS52X2VuY2FiZXphZG9fZmFjdHVyYSBBUyAsNDU3LDY0LGNmNjcwZWMxLWNlM2MtNGVk&#xA;Yi05ZTVkLWRiZGE0OTAwMTkzMztjbGluaWNhLnZfZGV0YWxsZV9mYWN0dXJhIEFTICwxMzYsMzYs&#xA;NTEyOGQwOTAtNjhhYi00ZjQ5LTg3YTgtNGRjMTZiZDUwNjk5Ow=="/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Texaco  Adapter "/>
@@ -89,11 +91,12 @@ WHERE
 	<field name="telefono" class="java.lang.String"/>
 	<field name="rtn" class="java.lang.String"/>
 	<field name="tipo_factura" class="java.lang.String"/>
+	<field name="estado_factura" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="112" splitType="Stretch">
+		<band height="128" splitType="Stretch">
 			<staticText>
 				<reportElement style="Title" x="186" y="45" width="210" height="22" uuid="bc1ce1da-8232-46ea-be55-cec4abb986dd"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -173,11 +176,11 @@ WHERE
 				<text><![CDATA[Telefono:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="444" y="95" width="28" height="13" uuid="eeb28120-a349-44ef-8c26-9689bd60ca23"/>
+				<reportElement x="7" y="110" width="28" height="13" uuid="eeb28120-a349-44ef-8c26-9689bd60ca23"/>
 				<text><![CDATA[RTN:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="472" y="95" width="50" height="13" uuid="4e2756b3-e44a-4f2a-a483-f57881d284e6"/>
+				<reportElement x="35" y="110" width="50" height="13" uuid="4e2756b3-e44a-4f2a-a483-f57881d284e6"/>
 				<textFieldExpression><![CDATA[$F{rtn}]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -187,6 +190,14 @@ WHERE
 				</textElement>
 				<text><![CDATA[Copia]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="444" y="95" width="76" height="13" uuid="381250bf-d91b-4908-97e9-2ab70847b3bb"/>
+				<text><![CDATA[Estado Factura:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="520" y="95" width="50" height="13" uuid="486f457e-46ec-4b66-b958-43b4978cd8ad"/>
+				<textFieldExpression><![CDATA[$F{estado_factura}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<columnHeader>

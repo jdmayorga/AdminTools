@@ -2,9 +2,11 @@ package View;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -58,10 +60,10 @@ public class ViewListaArticulo extends JDialog {
 	
 	
 	
-	public ViewListaArticulo(){
-		//super("Articulos");
+	public ViewListaArticulo(Window view){
+		super(view,"Articulos",Dialog.ModalityType.DOCUMENT_MODAL);
 		miEsquema=new BorderLayout();
-		this.setTitle("Articulos");
+		//this.setTitle("Articulos");
 		getContentPane().setLayout(miEsquema);
 		
 		
@@ -139,7 +141,7 @@ public class ViewListaArticulo extends JDialog {
 		
 		//se hace visible
 		//setVisible(true);
-		
+		this.setResizable(false);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 		

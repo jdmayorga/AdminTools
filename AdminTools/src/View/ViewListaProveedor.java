@@ -3,6 +3,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -14,9 +15,11 @@ import Controlador.CtlProveedorLista;
 import Modelo.Proveedor;
 
 import java.awt.BorderLayout;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +35,7 @@ import javax.swing.JRadioButton;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class ViewListaProveedor extends JFrame {
+public class ViewListaProveedor extends JDialog {
 	
 	public JTable tablaProvedores;
 	public TablaModeloProveedor modelo;
@@ -55,9 +58,9 @@ public class ViewListaProveedor extends JFrame {
 	
 	
 	
-	public ViewListaProveedor(){
-		super("Proveedores");
-		
+	public ViewListaProveedor(Window view){
+		//super("Proveedores");
+		super(view,"Proveedores",Dialog.ModalityType.DOCUMENT_MODAL);
 		//mi esquema layout
 		miEsquema =new BorderLayout();
 		//mi esquema grid
@@ -135,12 +138,13 @@ public class ViewListaProveedor extends JFrame {
 		getContentPane().add(scrollPane, BorderLayout.CENTER);
 		setSize(710,600);
 		
-		//se hace visible
-		setVisible(true);
+		
 		
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
-		
+		this.setResizable(false);
+		//se hace visible
+		setVisible(true);
 
 		
 	}

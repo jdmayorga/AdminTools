@@ -28,6 +28,7 @@ public class Conexion {
    static String password = "jdmm123";
    static String url = "jdbc:mysql://localhost:3306/"+bd;
    static String driver="com.mysql.jdbc.Driver";
+   private Usuario usuarioLogin=null;
 
    Connection conn = null;
    
@@ -106,7 +107,13 @@ public class Conexion {
       }*/
 	  // conn.p
    }
-   
+   public Usuario getUsuarioLogin(){
+	   return usuarioLogin;
+   }
+   public void setUsuarioLogin(Usuario u){
+	   usuarioLogin=u;
+	   
+   }
   
    /**Permite retornar la conexión*/
    public Connection getConnection(){

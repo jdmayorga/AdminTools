@@ -65,7 +65,7 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 		this.view.getTxtIdcliente().setText("1");;
 		this.view.getTxtNombrecliente().setText("Cliente Normal");
 		//la ventana buscar articulo y su controlador
-		viewListaArticulo=new ViewListaArticulo();
+		viewListaArticulo=new ViewListaArticulo(this.view);
 		ctlArticulo =new CtlArticuloBuscar(viewListaArticulo,conexion);
 		viewListaArticulo.conectarControladorBuscar(ctlArticulo);
 	
@@ -79,7 +79,19 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 		String comando=e.getActionCommand();
 		//JOptionPane.showMessageDialog(view, "paso de celdas");
 		switch(comando){
-		
+		case "BUSCARARTICULO2":
+				if(myArticulo!=null){
+					this.view.getModeloTabla().setArticulo(myArticulo);
+					//this.view.getModelo().getDetalle(row).setCantidad(1);
+					
+					//calcularTotal(this.view.getModeloTabla().getDetalle(row));
+					calcularTotales();
+					this.view.getModeloTabla().agregarDetalle();
+					view.getTxtArticulo().setText("");
+					view.getTxtPrecio().setText("");
+					view.getTxtBuscar().setText("");
+				}
+			break;
 		case "BUSCARCLIENTE":
 			myCliente=null;
 			myCliente=clienteDao.buscarCliente(Integer.parseInt(this.view.getTxtIdcliente().getText()));
@@ -458,38 +470,52 @@ public void calcularTotal(DetalleFactura detalle){
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
-		
+		/*if(e.getComponent()==this.view.getTxtBuscar()){
+			//JOptionPane.showMessageDialog(view, "2");
+			JOptionPane.showMessageDialog(view, view.getTxtBuscar().getText());
+			this.myArticulo=this.myArticuloDao.buscarArticuloNombre(view.getTxtBuscar().getText());
+			
+			JOptionPane.showMessageDialog(view, myArticulo);
+			if(myArticulo!=null){
+				view.getTxtArticulo().setText(myArticulo.getArticulo());
+				view.getTxtPrecio().setText("L. "+myArticulo.getPrecioVenta());
+				
+			}
+		}*/
 		if(e.getKeyCode()==KeyEvent.VK_F1){
 			buscarArticulo();
-		}
-		if(e.getKeyCode()==KeyEvent.VK_F2){
-			buscarCliente();
-		}
-		if(e.getKeyCode()==KeyEvent.VK_F3){
-			cobrar();
-		}
-		if(e.getKeyCode()==KeyEvent.VK_F4){
-			guardar();
-		}
-		if(e.getKeyCode()==KeyEvent.VK_F5){
-			salir();
-		}
-		if(e.getKeyCode()==KeyEvent.VK_DELETE){
-			 //Recoger qué fila se ha pulsadao en la tabla
-			int filaPulsada = this.view.geTableDetalle().getSelectedRow();
-			 if(filaPulsada>=0){
-				 this.view.getModeloTabla().eliminarDetalle(filaPulsada);
-				 this.calcularTotales();
-			 }
-			
-		}
+		}else
+			if(e.getKeyCode()==KeyEvent.VK_F2){
+				buscarCliente();
+			}else
+				if(e.getKeyCode()==KeyEvent.VK_F3){
+					cobrar();
+				}else
+					if(e.getKeyCode()==KeyEvent.VK_F4){
+						guardar();
+					}else
+						if(e.getKeyCode()==KeyEvent.VK_F5){
+							salir();
+						}else
+							if(e.getKeyCode()==KeyEvent.VK_DELETE){
+								 //Recoger qué fila se ha pulsadao en la tabla
+								int filaPulsada = this.view.geTableDetalle().getSelectedRow();
+								 if(filaPulsada>=0){
+									 this.view.getModeloTabla().eliminarDetalle(filaPulsada);
+									 this.calcularTotales();
+								 }
+								
+							}
+		
 	}
 	
 	private void salir(){
 		//facturaDao.desconectarBD();
 		//this.clienteDao.desconectarBD();
-		this.myArticuloDao.desconectarBD();
+		//this.myArticuloDao.desconectarBD();
+		this.myFactura=null;
 		this.view.setVisible(false);
+		
 		
 	}
 	private void guardar(){
@@ -518,7 +544,8 @@ public void calcularTotal(DetalleFactura detalle){
 				try {
 					this.view.setVisible(false);
 					this.view.dispose();
-					AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "Factura_Saint_Paul.jasper",myFactura.getIdFactura() );
+					//AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "Factura_Saint_Paul.jasper",myFactura.getIdFactura() );
+					AbstractJasperReports.createReport(conexion.getPoolConexion().getConnection(), 1, myFactura.getIdFactura());
 					//AbstractJasperReports.showViewer();
 					AbstractJasperReports.imprimierFactura();
 					myFactura=null;
@@ -582,6 +609,18 @@ public void calcularTotal(DetalleFactura detalle){
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
+		if(e.getComponent()==this.view.getTxtBuscar()){
+			//JOptionPane.showMessageDialog(view, "2");
+			//JOptionPane.showMessageDialog(view, view.getTxtBuscar().getText());
+			this.myArticulo=this.myArticuloDao.buscarArticuloNombre(view.getTxtBuscar().getText());
+			
+			//JOptionPane.showMessageDialog(view, myArticulo);
+			if(myArticulo!=null){
+				view.getTxtArticulo().setText(myArticulo.getArticulo());
+				view.getTxtPrecio().setText("L. "+myArticulo.getPrecioVenta());
+				
+			}
+		}
 		
 	}
 
@@ -597,6 +636,7 @@ public void calcularTotal(DetalleFactura detalle){
 		//facturaDao.desconectarBD();
 		//this.clienteDao.desconectarBD();
 		//this.myArticuloDao.desconectarBD();
+		this.myFactura=null;
 		this.view.setVisible(false);
 	}
 

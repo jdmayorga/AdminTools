@@ -20,6 +20,7 @@ import Modelo.ArticuloDao;
 import Modelo.Conexion;
 import Modelo.DetalleFactura;
 import Modelo.DetalleFacturaProveedor;
+import Modelo.Factura;
 import Modelo.FacturaCompra;
 import Modelo.FacturaCompraDao;
 import Modelo.Proveedor;
@@ -53,7 +54,7 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 		//se llena la tabla de articulos llamando a este metodo 
 		view.getModelo().agregarDetalle();
 		//this.view.getTxtFechaIngreso().setText(myFacturaDao.getFechaSistema());
-		this.view.setVisible(true);
+		//this.view.setVisible(true);
 		
 	}
 
@@ -481,6 +482,26 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 	public void windowDeactivated(WindowEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+	public void cargarFacturaView(){
+		
+		//this.view.getTxtIdcliente().setText(""+myFactura.getCliente().getId());;
+		//this.view.getTxtNombrecliente().setText(myFactura.getCliente().getNombre());
+		
+		//se establece el total e impuesto en el vista
+		this.view.getTxtTotal().setText(""+myFactura.getTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN));
+		this.view.getTxtTotalimpuesto().setText(""+myFactura.getTotalImpuesto().setScale(2, BigDecimal.ROUND_HALF_EVEN));
+		this.view.getTxtSubtotal().setText(""+myFactura.getSubTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN));
+		
+		this.view.getModelo().setDetalles(myFactura.getDetalles());
+	}
+	
+	public void viewFactura(FacturaCompra f) {
+		// TODO Auto-generated method stub
+		this.myFactura=f;
+		cargarFacturaView();
+		//this.view.getPanelAcciones().setVisible(false);
+		this.view.setVisible(true);
 	}
 
 	

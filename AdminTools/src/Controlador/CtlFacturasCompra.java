@@ -16,6 +16,7 @@ import Modelo.Conexion;
 import Modelo.FacturaCompra;
 import Modelo.FacturaCompraDao;
 import Modelo.UsuarioDao;
+import View.ViewAgregarCompras;
 import View.ViewListaFacturasCompra;
 
 public class CtlFacturasCompra implements ActionListener, MouseListener, ChangeListener {
@@ -75,45 +76,31 @@ public class CtlFacturasCompra implements ActionListener, MouseListener, ChangeL
         if(filaPulsada>=0){
         	
         	//Se recoge el id de la fila marcada
-            //int idFactura= (int)this.view.getModelo().getValueAt(filaPulsada, 0);
+            int idFactura= (int)this.view.getModelo().getValueAt(filaPulsada, 0);
             
             this.view.getBtnEliminar().setEnabled(true);
             //this.view.getBtnImprimir().setEnabled(true);
             this.myFacturaCompra=this.view.getModelo().getFactura(filaPulsada);
-            /*/se consigue el proveedore de la fila seleccionada
-            myArticulo=this.view.getModelo().getArticulo(filaPulsada);
+            //se consigue el proveedore de la fila seleccionada
+           // myArticulo=this.view.getModelo().getArticulo(filaPulsada);
         
             
         	//si fue doble click mostrar modificar
         	if (e.getClickCount() == 2) {
         		
-	        	myArticulo=this.view.getModelo().getArticulo(filaPulsada);
-        		//myArticulo=this.view.getModelo().getArticulo(filaPulsada);//se consigue el Marca de la fila seleccionada
-	           
-	        	//crea la ventana para ingresar un nuevo proveedor
-				viewArticulo= new ViewCrearArticulo(this.view);
-				
-				//se crea el controlador de la ventana y se le pasa la view
-				CtlArticulo ctlActulizarArticulo=new CtlArticulo(viewArticulo,myArticuloDao,conexion);
-				viewArticulo.conectarCtl(ctlActulizarArticulo);
-				
-				//se crea el objeto para casultar los codigos de barra en la bd
-				CodBarraDao myCodBarraDao=new CodBarraDao(conexion);
-				
-				//se estable los codigos de bara encontrados al objeto myArticulo;
-				myArticulo.setCodBarras(myCodBarraDao.getCodsArticulo(myArticulo.getId()));
-				
-				//se llama del metodo actualizar marca para que se muestre la ventanda y procesa la modificacion
-				boolean resultado=ctlActulizarArticulo.actualizarArticulo(myArticulo);
-				
-				//se proceso el resultado de modificar la marca
-				if(resultado){
-					this.view.getModelo().cambiarArticulo(filaPulsada, ctlActulizarArticulo.getArticulo());//se cambia en la vista
-					this.view.getModelo().fireTableDataChanged();//se refrescan los cambios
-					this.view.getTablaArticulos().getSelectionModel().setSelectionInterval(filaPulsada,filaPulsada);//se seleciona lo cambiado
-				}	
-			
-				
+        		try {
+    				//this.view.setVisible(false);
+    				//this.view.dispose();
+    				//AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "Factura_Compra_Saint_Paul.jasper",idFactura);
+    				AbstractJasperReports.createReport(conexion.getPoolConexion().getConnection(), 2, idFactura);
+    				AbstractJasperReports.showViewer(this.view);
+    				//AbstractJasperReports.imprimierFactura();
+    				this.view.getBtnImprimir().setEnabled(false);
+    				myFacturaCompra=null;
+    			} catch (SQLException ee) {
+    				// TODO Auto-generated catch block
+    				ee.printStackTrace();
+    			}
 				
 				
 	        }//fin del if del doble click
@@ -122,7 +109,7 @@ public class CtlFacturasCompra implements ActionListener, MouseListener, ChangeL
         		this.view.getBtnEliminar().setEnabled(true);
         		
         		
-        	}*/
+        	}
 		}
 		
 	}
