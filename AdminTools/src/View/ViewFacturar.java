@@ -83,7 +83,7 @@ public class ViewFacturar extends JDialog {
 		//panelAcciones.setVisible(false);
 		
 		
-		this.setTitle("Facturar");
+		//this.setTitle("Facturar");
 		getContentPane().add(panelAcciones);
 		
 		btnBuscar = new BotonBuscar1();

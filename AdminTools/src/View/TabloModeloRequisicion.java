@@ -1,67 +1,50 @@
 package View;
 
-import java.awt.Component;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 import Modelo.Articulo;
-import Modelo.ArticuloDao;
 import Modelo.CodBarra;
-import Modelo.Conexion;
-import Modelo.DetalleFactura;
 import Modelo.DetalleFacturaProveedor;
 
-import javax.swing.table.DefaultTableModel;
-
-public class DmtFacturaProveedores extends AbstractTableModel {
+public class TabloModeloRequisicion extends AbstractTableModel  {
 	
 	final private String []columnNames= {
-			"Id Articulo", "Nombre", "Cantidad", "Precio Unidad","Impuesto", "Total"
+			"Id Articulo", "Nombre", "Cantidad", "Precio Unidad", "Total"
 		};
-	private List<DetalleFacturaProveedor> detallesFactura=new ArrayList<DetalleFacturaProveedor>();
-	private double totalCompra=0;
 	
-	public DmtFacturaProveedores(){
-		//datosVacios();
+	private List<DetalleFacturaProveedor> detallesRequi=new ArrayList<DetalleFacturaProveedor>();
 	
-	}
 	
 	public void agregarDetalle(){
 		//JOptionPane.showMessageDialog(null,detallesFactura.size() );
-		for(int x=0;x<detallesFactura.size();x++){
+		for(int x=0;x<detallesRequi.size();x++){
 			
 			//JOptionPane.showMessageDialog(null,detallesFactura.get(x).getArticulo() );
-			if(detallesFactura.get(x).getArticulo().getId()<0){
+			if(detallesRequi.get(x).getArticulo().getId()<0){
 				//JOptionPane.showMessageDialog(null,detallesFactura.get(x).getArticulo()+ "..Eliminando");
-				detallesFactura.remove(x);
+				detallesRequi.remove(x);
 				
 			}
 		}
 		DetalleFacturaProveedor uno =new DetalleFacturaProveedor();
-		detallesFactura.add(uno);
+		detallesRequi.add(uno);
 		fireTableDataChanged();
 		//JOptionPane.showMessageDialog(null,detallesFactura.size() );
 	}
-	public void setTotalCompra(double t){
-		totalCompra+=t;
-	}
-	public double getTotalCompra(){
-		return totalCompra;
-	}
+	
 	public void agregarDetalle(DetalleFacturaProveedor detalle) {
-		detallesFactura.add(detalle);
+		detallesRequi.add(detalle);
         fireTableDataChanged();
     }
 	
 	public void setArticulo(Articulo a, int row){
-		detallesFactura.get(row).setListArticulos(a);
+		detallesRequi.get(row).setListArticulos(a);
 	}
 	
-
 	@Override
 	public String getColumnName(int columnIndex) {
 	        return columnNames[columnIndex];
@@ -71,7 +54,7 @@ public class DmtFacturaProveedores extends AbstractTableModel {
 	@Override
 	public int getRowCount() {
 		// TODO Auto-generated method stub
-		return detallesFactura.size();
+		return detallesRequi.size();
 	}
 
 	@Override
@@ -83,47 +66,39 @@ public class DmtFacturaProveedores extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		// TODO Auto-generated method stub
-		
-		if(detallesFactura.get(rowIndex).getArticulo().getId()==-1){
+		if(detallesRequi.get(rowIndex).getArticulo().getId()==-1){
 			return null;
 		}
 		else{
 				switch (columnIndex) {
 		        case 0:
 		        	
-		        		return detallesFactura.get(rowIndex).getArticulo().getId();
+		        		return detallesRequi.get(rowIndex).getArticulo().getId();
 		        	
 		        case 1:
-		        		return detallesFactura.get(rowIndex).getArticulo().getArticulo();
+		        		return detallesRequi.get(rowIndex).getArticulo().getArticulo();
 		        case 2:
 		        	
-		        		if(detallesFactura.get(rowIndex).getCantidad().doubleValue()!=0)
-		        			return detallesFactura.get(rowIndex).getCantidad();
+		        		if(detallesRequi.get(rowIndex).getCantidad().doubleValue()!=0)
+		        			return detallesRequi.get(rowIndex).getCantidad();
 		        		else
 		        			return null;
 		        	
 		        case 3:
 		        	
-		        		if(detallesFactura.get(rowIndex).getPrecioCompra().doubleValue()!=0){
-		        			return detallesFactura.get(rowIndex).getPrecioCompra();
+		        		if(detallesRequi.get(rowIndex).getPrecioCompra().doubleValue()!=0){
+		        			return detallesRequi.get(rowIndex).getPrecioCompra();
 		        			
 		        			
 		        		}
 		        		else
 		        			return null;
 		        
+		       		        	
 		        case 4:
 		        	
-		        		if(detallesFactura.get(rowIndex).getPrecioCompra().doubleValue()!=0){
-		        			return detallesFactura.get(rowIndex).getImpuesto();
-		        		}
-		        		else
-		        			return null;
-		        	
-		        case 5:
-		        	
-		        		if(detallesFactura.get(rowIndex).getPrecioCompra().doubleValue()!=0){
-		        			return detallesFactura.get(rowIndex).getTotal();
+		        		if(detallesRequi.get(rowIndex).getPrecioCompra().doubleValue()!=0){
+		        			return detallesRequi.get(rowIndex).getTotal();
 		        		}
 		        		else
 		        			return null;
@@ -134,26 +109,24 @@ public class DmtFacturaProveedores extends AbstractTableModel {
 			}
 	}
 	
-	
 	public void setDetalles(List<DetalleFacturaProveedor> d){
-		detallesFactura.clear();
+		detallesRequi.clear();
 		if(d!=null){
 			for(int x=0;x<d.size();x++){
-				detallesFactura.add(d.get(x));
+				detallesRequi.add(d.get(x));
 			}
 		}else
 			agregarDetalle();
 		//detallesFactura=d;
 		fireTableDataChanged();
 	}
-	
 	public DetalleFacturaProveedor getDetalle(int row){
-		return detallesFactura.get(row);
+		return detallesRequi.get(row);
 	}
 	
 	@Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
-		DetalleFacturaProveedor detalle = detallesFactura.get(rowIndex);
+		DetalleFacturaProveedor detalle = detallesRequi.get(rowIndex);
 		//JOptionPane.showMessageDialog(null, value);
 		String v=(String) value;
 		//JOptionPane.showMessageDialog(null, "Columan"+columnIndex+" fila"+rowIndex);
@@ -161,7 +134,7 @@ public class DmtFacturaProveedores extends AbstractTableModel {
 			case 0:
 				try{
 					int id=Integer.parseInt(v);
-					detallesFactura.get(rowIndex).getArticulo().setId(id);
+					detallesRequi.get(rowIndex).getArticulo().setId(id);
 					
 					//this.fireTableDataChanged();
 					//fireTableCellUpdated(row,col);
@@ -169,64 +142,64 @@ public class DmtFacturaProveedores extends AbstractTableModel {
 				}catch(NumberFormatException e){
 					CodBarra cod=new CodBarra();
 					cod.setCodigoBarra(v);
-					detallesFactura.get(rowIndex).getArticulo().getCodBarra().add(cod);
-					detallesFactura.get(rowIndex).getArticulo().setId(-2);
+					detallesRequi.get(rowIndex).getArticulo().getCodBarra().add(cod);
+					detallesRequi.get(rowIndex).getArticulo().setId(-2);
 					//detallesFactura.get(rowIndex).getArticulo().getCodBarra().add(e)
 				}
 				this.fireTableCellUpdated(rowIndex, columnIndex);
 					break;
 			case 2:
 				
-				detallesFactura.get(rowIndex).setCantidad(new BigDecimal(v));
+				detallesRequi.get(rowIndex).setCantidad(new BigDecimal(v));
 				fireTableCellUpdated(rowIndex, columnIndex);
 					//fireTableDataChanged();
 				break;
 			case 3:
-				detallesFactura.get(rowIndex).setPrecioCompra(new BigDecimal(v));
+				detallesRequi.get(rowIndex).setPrecioCompra(new BigDecimal(v));
 				fireTableCellUpdated(rowIndex, columnIndex);
 				
 				break;
 		}
-        
+       
 
        // fireTableCellUpdated(rowIndex, columnIndex);
     }
+	
+	@Override
+	public Class getColumnClass(int columnIndex) {
+		//        return getValueAt(0, columnIndex).getClass();
+	    return String.class;
+	}
+
+	@Override
+	public boolean isCellEditable(int rowIndex, int columnIndex) {
+		boolean resul=false;
+		if(columnIndex==0)
+			resul= true;
+		if(columnIndex==1)
+			resul=false;
+		if(columnIndex==2)
+			resul=true;
+		if(columnIndex==3)
+			resul=false;
+		if(columnIndex==4)
+			resul=false;
+		
+		
+		
+		return resul;
+	}
+	public DetalleFacturaProveedor getDetalles(int index) {
+		// TODO Auto-generated method stub
+		return detallesRequi.get(index);
+	}
 
 
-@Override
-public Class getColumnClass(int columnIndex) {
-	//        return getValueAt(0, columnIndex).getClass();
-    return String.class;
-}
-
-@Override
-public boolean isCellEditable(int rowIndex, int columnIndex) {
-	boolean resul=false;
-	if(columnIndex==0)
-		resul= true;
-	if(columnIndex==1)
-		resul=false;
-	if(columnIndex==2)
-		resul=true;
-	if(columnIndex==3)
-		resul=true;
-	if(columnIndex==4)
-		resul=false;
-	if(columnIndex==5)
-		resul=false;
+	public List<DetalleFacturaProveedor> getDetalles() {
+		// TODO Auto-generated method stub
+		return detallesRequi;
+	}
 	
 	
-	return resul;
-}
-public DetalleFacturaProveedor getDetalles(int index) {
-	// TODO Auto-generated method stub
-	return detallesFactura.get(index);
-}
-
-
-public List<DetalleFacturaProveedor> getDetalles() {
-	// TODO Auto-generated method stub
-	return detallesFactura;
-}
 
 }

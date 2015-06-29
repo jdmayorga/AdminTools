@@ -164,11 +164,6 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 	public void tableChanged(TableModelEvent e) {
 		// TODO Auto-generated method stub
 		
-		//JOptionPane.showMessageDialog(view, "Se modifico el dato en la celda "+e.getColumn()+", "+e.getFirstRow()+", "+e.getType());
-		/*if (e.getType() == TableModelEvent.UPDATE){
-			JOptionPane.showMessageDialog(view, "Se modifico el dato en la celda "+e.getColumn()+", "+e.getFirstRow());
-			
-		}*/
 		int colum=e.getColumn();
 		int row=e.getFirstRow();
 		

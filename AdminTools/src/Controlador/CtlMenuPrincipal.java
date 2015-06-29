@@ -22,6 +22,7 @@ import View.ViewListaFacturasCompra;
 import View.ViewListaMarca;
 import View.ViewListaProveedor;
 import View.ViewMenuPrincipal;
+import View.ViewRequisicion;
 
 public class CtlMenuPrincipal implements ActionListener {
 	
@@ -48,6 +49,11 @@ public class CtlMenuPrincipal implements ActionListener {
 		JDialog.setDefaultLookAndFeelDecorated(true);
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		switch(comando){
+		
+			case "REQUISICIONES":
+					ViewRequisicion viewRequi=new ViewRequisicion(view);
+					CtlRequisicion ctlRequi=new CtlRequisicion(viewRequi,conexion);
+				break;
 	
 			case "CERRARFACTURACION":
 				try {

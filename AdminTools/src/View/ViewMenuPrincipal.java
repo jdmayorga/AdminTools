@@ -36,6 +36,7 @@ public class ViewMenuPrincipal extends JFrame {
 	private JMenuItem mntmClientes;
 	private JMenuItem mntmBuscarFacturas;
 	private JMenuItem mntmFacturasIngresadas;
+	private JMenuItem mntmRequisicion;
 	private JLabel lblUserName;
 	
 	public ViewMenuPrincipal() {
@@ -57,7 +58,7 @@ public class ViewMenuPrincipal extends JFrame {
 		mntmMarcas = new JMenuItem("Marcas");
 		mnInventario.add(mntmMarcas);
 		
-		JMenuItem mntmRequisicion = new JMenuItem("Requisicion");
+		mntmRequisicion = new JMenuItem("Requisicion");
 		mnInventario.add(mntmRequisicion);
 		
 		JMenu mnFacturacion = new JMenu("Facturacion");
@@ -157,6 +158,9 @@ public class ViewMenuPrincipal extends JFrame {
 		
 		mntmFacturasIngresadas.addActionListener(c);
 		mntmFacturasIngresadas.setActionCommand("LISTAFACTURASCOMPRA");
+		
+		mntmRequisicion.addActionListener(c);
+		mntmRequisicion.setActionCommand("REQUISICIONES");
 		
 	}
 	public JLabel getLblUserName(){
