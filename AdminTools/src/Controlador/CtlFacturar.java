@@ -44,8 +44,8 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 	private ArticuloDao myArticuloDao=null;
 	private Cliente myCliente=null;
 	private Conexion conexion=null;
-	private ViewListaArticulo viewListaArticulo=null;
-	private CtlArticuloBuscar ctlArticulo=null;
+	//private ViewListaArticulo viewListaArticulo=null;
+	//private CtlArticuloBuscar ctlArticulo=null;
 	
 	public CtlFacturar(ViewFacturar v,Conexion conn){
 		view=v;
@@ -65,9 +65,10 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 		this.view.getTxtIdcliente().setText("1");;
 		this.view.getTxtNombrecliente().setText("Cliente Normal");
 		//la ventana buscar articulo y su controlador
-		viewListaArticulo=new ViewListaArticulo(this.view);
-		ctlArticulo =new CtlArticuloBuscar(viewListaArticulo,conexion);
-		viewListaArticulo.conectarControladorBuscar(ctlArticulo);
+		//viewListaArticulo=new ViewListaArticulo(this.view);
+		//view.getTxtBuscar().requestFocusInWindow();
+		//ctlArticulo =new CtlArticuloBuscar(viewListaArticulo,conexion);
+		//viewListaArticulo.conectarControladorBuscar(ctlArticulo);
 	
 		
 	}
@@ -565,14 +566,19 @@ public void calcularTotal(DetalleFactura detalle){
 	private void buscarArticulo(){
 	
 		//se llama el metodo que mostrar la ventana para buscar el articulo
+		ViewListaArticulo viewListaArticulo=new ViewListaArticulo(view);
+		CtlArticuloBuscar ctlArticulo=new CtlArticuloBuscar(viewListaArticulo,conexion);
+		viewListaArticulo.conectarControladorBuscar(ctlArticulo);
 		ctlArticulo.view.getTxtBuscar().setText("");
 		ctlArticulo.view.getTxtBuscar().selectAll();
-		ctlArticulo.view.getTxtBuscar().requestFocus(true); 
+		//ctlArticulo.view.getTxtBuscar().requestFocus(true);
 		//ctlArticulo.view.getTxtBuscar().selectAll();
+		view.getTxtBuscar().requestFocusInWindow();
 		Articulo myArticulo=ctlArticulo.buscarArticulo(view);
 		
+		JOptionPane.showMessageDialog(view, myArticulo);
 		//se comprueba si le regreso un articulo valido
-		if(myArticulo.getArticulo()!=null && myArticulo.getId()!=-1){
+		if(myArticulo!=null && myArticulo.getId()!=-1){
 			this.view.getModeloTabla().setArticulo(myArticulo);
 			//this.view.getModelo().getDetalle(row).setCantidad(1);
 			
@@ -582,6 +588,8 @@ public void calcularTotal(DetalleFactura detalle){
 		}
 		
 		myArticulo=null;
+		viewListaArticulo.dispose();
+		ctlArticulo=null;
 		
 	}
 	

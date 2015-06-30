@@ -420,12 +420,5 @@ public class ViewFacturar extends JDialog {
 		//this.addWindowListener(c);
 		//this.addw
 	}
-public static void main(String arg[]){
-		 JDialog.setDefaultLookAndFeelDecorated(true);
-		ViewFacturar vista=new ViewFacturar(null);
-		CtlFacturar ctl =new CtlFacturar(vista, null);
-		
-		vista.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		vista.setVisible(true);
-	}
+
 }

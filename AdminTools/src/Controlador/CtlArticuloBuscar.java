@@ -1,8 +1,10 @@
 package Controlador;
 
-import java.awt.Rectangle;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
@@ -14,12 +16,10 @@ import javax.swing.JOptionPane;
 import Modelo.Articulo;
 import Modelo.ArticuloDao;
 import Modelo.Conexion;
-import View.TablaModeloMarca;
-import View.ViewCrearArticulo;
 import View.ViewFacturar;
 import View.ViewListaArticulo;
 
-public class CtlArticuloBuscar implements ActionListener,MouseListener, WindowListener {
+public class CtlArticuloBuscar implements ActionListener,MouseListener, WindowListener,KeyListener {
 	
 	public ViewListaArticulo view;
 	//public ViewCrearArticulo viewArticulo;
@@ -41,6 +41,9 @@ public class CtlArticuloBuscar implements ActionListener,MouseListener, WindowLi
 		myArticulo=new Articulo();
 		myArticuloDao=new ArticuloDao(conexion);
 		cargarTabla(myArticuloDao.todoArticulos());
+		
+		view.getRdbtnArticulo().setSelected(true);
+		
 		//this.view.setVisible(true);
 	}
 	
@@ -61,7 +64,7 @@ public class CtlArticuloBuscar implements ActionListener,MouseListener, WindowLi
 	@Override
 	public void windowClosing(WindowEvent e) {
 		// TODO Auto-generated method stub
-		myArticuloDao.desconectarBD();
+		//myArticuloDao.desconectarBD();
 		this.view.setVisible(false);
 	}
 
@@ -102,7 +105,7 @@ public class CtlArticuloBuscar implements ActionListener,MouseListener, WindowLi
         filaPulsada = this.view.getTablaArticulos().getSelectedRow();
 		if (e.getClickCount() == 2){
 			myArticulo=this.view.getModelo().getArticulo(filaPulsada);
-			myArticuloDao.desconectarBD();
+			//myArticuloDao.desconectarBD();
 			this.view.setVisible(false);
 			//JOptionPane.showMessageDialog(null,myMarca);
 			this.view.dispose();
@@ -185,8 +188,32 @@ public class CtlArticuloBuscar implements ActionListener,MouseListener, WindowLi
 		this.view.getBtnAgregar().setEnabled(false);
 		this.view.setLocationRelativeTo(v);
 		this.view.setModal(true);
+		view.getTxtBuscar().requestFocusInWindow();
+		
+		//view.setFocusable(true);
 		this.view.setVisible(true);
+		//
 		return this.myArticulo;
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
+	          view.setVisible(false);
+	      }
 	}
 
 }

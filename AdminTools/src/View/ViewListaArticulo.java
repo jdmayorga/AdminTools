@@ -88,6 +88,7 @@ public class ViewListaArticulo extends JDialog {
         btnLimpiar = new JButton();
         btnLimpiar.setIcon(new ImageIcon(ViewListaArticulo.class.getResource("/View/imagen/clear.png"))); // NOI18N
         panelAccion.add(btnLimpiar);
+        btnLimpiar.setEnabled(false);
         
         //configuracion del panel busqueda
         grupoOpciones = new ButtonGroup(); // crea ButtonGroup
@@ -213,35 +214,48 @@ public class ViewListaArticulo extends JDialog {
 	}
 	
 public void conectarControladorBuscar(CtlArticuloBuscar c){
+	
+	
+	
+		
 		
 		
 		rdbtnId.addActionListener(c);
-		//rdbtnId.getActionCommand();
 		rdbtnId.setActionCommand("ID");
+		rdbtnId.addKeyListener(c);
+		
 		
 		rdbtnArticulo.addActionListener(c);
 		rdbtnArticulo.setActionCommand("ARTICULO");
+		rdbtnArticulo.addKeyListener(c);
 		
 		rdbtnMarca.addActionListener(c);
 		rdbtnMarca.setActionCommand("MARCA");
+		rdbtnMarca.addKeyListener(c);
 		
 		btnBuscar.addActionListener(c);
 		btnBuscar.setActionCommand("BUSCAR");
+		btnBuscar.addKeyListener(c);
 		
 		 btnAgregar.addActionListener(c);
 		 btnAgregar.setActionCommand("INSERTAR");
+		 btnAgregar.addKeyListener(c);
 		 
 		 btnEliminar.addActionListener(c);
 		 btnEliminar.setActionCommand("ELIMINAR");
+		 btnEliminar.addKeyListener(c);
 		 
 		 btnLimpiar.addActionListener(c);
 		 btnLimpiar.setActionCommand("LIMPIAR");
+		 btnLimpiar.addKeyListener(c);
 		 
 		 txtBuscar.addActionListener(c);
 		 txtBuscar.setActionCommand("BUSCAR");
+		 txtBuscar.addKeyListener(c);
 		 
 		 tablaArticulos.addMouseListener(c);
 		 tablaArticulos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		 tablaArticulos.addKeyListener(c);
 	}
 	
 
