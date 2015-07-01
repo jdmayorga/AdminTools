@@ -216,9 +216,7 @@ public class ViewListaArticulo extends JDialog {
 public void conectarControladorBuscar(CtlArticuloBuscar c){
 	
 	
-	
-		
-		
+		rdbtnTodos.addKeyListener(c);
 		
 		rdbtnId.addActionListener(c);
 		rdbtnId.setActionCommand("ID");

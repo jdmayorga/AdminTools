@@ -1,6 +1,7 @@
 package Controlador;
 
 
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -20,6 +21,7 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
 
 import Modelo.AbstractJasperReports;
 import Modelo.Articulo;
@@ -201,10 +203,12 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 		
 			case TableModelEvent.UPDATE:
 				
+				//Se recoge el id de la fila marcada
+		        int identificador=0; 
+				
 				//se ingreso un id o codigo de barra en la tabla
 				if(colum==0){
-					//Se recoge el id de la fila marcada
-			        int identificador= (int)this.view.getModeloTabla().getValueAt(row, 0);
+					identificador=(int)this.view.getModeloTabla().getValueAt(row, 0);
 			        myArticulo=this.view.getModeloTabla().getDetalle(row).getArticulo();
 			        
 					
@@ -242,6 +246,9 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 					}
 					
 					
+					
+					
+					
 				}
 				
 				//se cambia la cantidad en la tabla
@@ -269,6 +276,7 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 					calcularTotales();
 					//JOptionPane.showMessageDialog(view, "Modifico el Descuento "+this.view.getModeloTabla().getDetalle(row).getDescuentoItem().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue());
 				}
+				
 				
 			break;
 		}
@@ -568,15 +576,16 @@ public void calcularTotal(DetalleFactura detalle){
 		//se llama el metodo que mostrar la ventana para buscar el articulo
 		ViewListaArticulo viewListaArticulo=new ViewListaArticulo(view);
 		CtlArticuloBuscar ctlArticulo=new CtlArticuloBuscar(viewListaArticulo,conexion);
-		viewListaArticulo.conectarControladorBuscar(ctlArticulo);
+		viewListaArticulo.pack();
 		ctlArticulo.view.getTxtBuscar().setText("");
 		ctlArticulo.view.getTxtBuscar().selectAll();
 		//ctlArticulo.view.getTxtBuscar().requestFocus(true);
 		//ctlArticulo.view.getTxtBuscar().selectAll();
 		view.getTxtBuscar().requestFocusInWindow();
+		viewListaArticulo.conectarControladorBuscar(ctlArticulo);
 		Articulo myArticulo=ctlArticulo.buscarArticulo(view);
 		
-		JOptionPane.showMessageDialog(view, myArticulo);
+		//JOptionPane.showMessageDialog(view, myArticulo);
 		//se comprueba si le regreso un articulo valido
 		if(myArticulo!=null && myArticulo.getId()!=-1){
 			this.view.getModeloTabla().setArticulo(myArticulo);
@@ -585,6 +594,14 @@ public void calcularTotal(DetalleFactura detalle){
 			//calcularTotal(this.view.getModeloTabla().getDetalle(row));
 			calcularTotales();
 			this.view.getModeloTabla().agregarDetalle();
+			
+			int row =  view.geTableDetalle().getRowCount () - 1;
+			   Rectangle rect = view.geTableDetalle().getCellRect(row, 0, true);
+			   view.geTableDetalle().scrollRectToVisible(rect);
+			   view.geTableDetalle().clearSelection();
+			   view.geTableDetalle().setRowSelectionInterval(row, row);
+			   DefaultTableModel modelo = (DefaultTableModel)view.geTableDetalle().getModel();
+			   modelo.fireTableDataChanged();
 		}
 		
 		myArticulo=null;
