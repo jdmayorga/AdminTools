@@ -197,7 +197,7 @@ public class CtlArticulo extends MouseAdapter implements ActionListener,KeyListe
 	
 	
 	public boolean agregarArticulo(){
-		this.view.setVisible(true);
+		view.setVisible(true);
 		return resultaOperacion;
 	}
 	

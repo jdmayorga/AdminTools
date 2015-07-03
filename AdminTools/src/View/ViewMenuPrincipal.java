@@ -115,7 +115,7 @@ public class ViewMenuPrincipal extends JFrame {
 		JPanel panel_1 = new panelFondo();
 		getContentPane().add(panel_1, BorderLayout.CENTER);
 		
-		
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setVisible(true);
 		
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
