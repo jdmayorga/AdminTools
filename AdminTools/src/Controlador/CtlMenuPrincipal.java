@@ -36,6 +36,7 @@ public class CtlMenuPrincipal implements ActionListener {
 		this.view=view;
 		
 		view.getLblUserName().setText(conexion.getUsuarioLogin().getNombre());
+		//view.setMaximumSize(maximumSize);
 		
 		
 	}
@@ -86,6 +87,8 @@ public class CtlMenuPrincipal implements ActionListener {
 				CtlArticuloLista ctlArticulo =new CtlArticuloLista(viewListaArticulo,conexion);
 				
 				viewListaArticulo.conectarControlador(ctlArticulo);
+				
+				viewListaArticulo.setVisible(true);
 				
 				break;
 			case "AGREGARCOMPRAS":
