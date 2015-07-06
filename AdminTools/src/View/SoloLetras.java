@@ -1,7 +1,9 @@
 package View;
 
 import java.awt.Robot;
+
 import javax.swing.*;
+
 import java.awt.event.*;
 public class SoloLetras extends JFrame {
      
@@ -21,7 +23,7 @@ public class SoloLetras extends JFrame {
                 if (esValido(new Character(caja.getText().charAt(i))))
                     texto += caja.getText().charAt(i);
                 caja.setText(texto);
-                getToolkit().beep();
+                //getToolkit().beep();
         }
     }
              
@@ -31,6 +33,7 @@ public class SoloLetras extends JFrame {
                 if ( !(Character.isLetter(c) //si es letra
                         || c == ' ' //o un espacio
                         || c == 8 //o backspace
+                        || (Character.isDigit(c))
                     ))
                     return false;
                 else

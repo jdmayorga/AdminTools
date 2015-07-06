@@ -233,7 +233,7 @@ public class ViewFacturar extends JDialog {
 		scrollPane.setBounds(208, 175, 790, 295);
 		getContentPane().add(scrollPane);
 		
-		this.setSize(1024, 600);
+		
 		getContentPane().setLayout(null);
 		
 		Font myFont=new Font("OCR A Extended", Font.PLAIN, 45);
@@ -290,6 +290,10 @@ public class ViewFacturar extends JDialog {
 		JLabel lblDescuento = new JLabel("Descuento");
 		lblDescuento.setBounds(548, 490, 92, 14);
 		getContentPane().add(lblDescuento);
+		setSize(1024, 600);
+		
+		this.setPreferredSize(new Dimension(1024, 600));
+		this.setResizable(false);
 		//centrar la ventana en la pantalla
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);

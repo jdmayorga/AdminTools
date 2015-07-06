@@ -170,10 +170,12 @@ private void cobrar(){
 		
 		switch(comando){
 		case "INSERTAR":
-			ViewFacturar vistaFacturar=new ViewFacturar(this.view);
 			
+			ViewFacturar vistaFacturar=new ViewFacturar(this.view);
+			vistaFacturar.pack();
 			CtlFacturar ctlFacturar=new CtlFacturar(vistaFacturar,conexion );
-						
+				
+			vistaFacturar.getTxtBuscar().requestFocusInWindow();
 			Factura myFac=ctlFacturar.getAccion();
 			
 			//JOptionPane.showMessageDialog(view, "El id factura:"+myFac.getIdFactura());

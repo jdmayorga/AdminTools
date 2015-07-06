@@ -88,6 +88,28 @@ public class TablaModeloFactura extends AbstractTableModel {
 		fireTableDataChanged();
 		
 	}
+	public void masCantidad(int index){
+		BigDecimal temp=detallesFactura.get(index).getCantidad().add(new BigDecimal(1));
+		detallesFactura.get(index).setCantidad(temp);
+		fireTableCellUpdated(index, 3);
+		fireTableCellUpdated(index, 4);
+		fireTableCellUpdated(index, 5);
+		fireTableCellUpdated(index, 6);
+		fireTableCellUpdated(index, 7);
+		//fireTableDataChanged();
+		//fireTableDataChanged();
+	}
+	public void restarCantidad(int index){
+		BigDecimal temp=detallesFactura.get(index).getCantidad().subtract(new BigDecimal(1));
+		detallesFactura.get(index).setCantidad(temp);
+		fireTableCellUpdated(index, 3);
+		fireTableCellUpdated(index, 4);
+		fireTableCellUpdated(index, 5);
+		fireTableCellUpdated(index, 6);
+		fireTableCellUpdated(index, 7);
+		//fireTableDataChanged();
+		//fireTableDataChanged();
+	}
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		// TODO Auto-generated method stub

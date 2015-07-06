@@ -32,6 +32,7 @@ import Modelo.Conexion;
 import Modelo.DetalleFactura;
 import Modelo.Factura;
 import Modelo.FacturaDao;
+import View.TablaModeloMarca;
 import View.ViewFacturar;
 import View.ViewListaArticulo;
 import View.ViewListaClientes;
@@ -46,6 +47,7 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 	private ArticuloDao myArticuloDao=null;
 	private Cliente myCliente=null;
 	private Conexion conexion=null;
+	private int filaPulsada=0;
 	//private ViewListaArticulo viewListaArticulo=null;
 	//private CtlArticuloBuscar ctlArticulo=null;
 	
@@ -93,6 +95,7 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 					view.getTxtArticulo().setText("");
 					view.getTxtPrecio().setText("");
 					view.getTxtBuscar().setText("");
+					selectRowInset();
 				}
 			break;
 		case "BUSCARCLIENTE":
@@ -255,7 +258,7 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 				if(colum==3){
 					
 					calcularTotales();
-					boolean toggle = false;
+					/*boolean toggle = false;
 					boolean extend = false;
 					this.view.geTableDetalle().requestFocus();
 					
@@ -268,7 +271,7 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 					
 					this.view.geTableDetalle().requestFocus();
 						
-					this.view.geTableDetalle().changeSelection(row,colum+3, false, false);
+					this.view.geTableDetalle().changeSelection(row,colum+3, false, false);*/
 				}
 				
 				//se agrego un descuento a la tabla
@@ -282,6 +285,19 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 		}
 		
 	}
+	
+	public boolean esValido(Character caracter)
+    {
+        char c = caracter.charValue();
+        if ( !(Character.isLetter(c) //si es letra
+                || c == ' ' //o un espacio
+                || c == 8 //o backspace
+                || (Character.isDigit(c))
+            ))
+            return false;
+        else
+            return true;
+    }
 	
 	
 public void calcularTotales(){
@@ -491,6 +507,9 @@ public void calcularTotal(DetalleFactura detalle){
 				
 			}
 		}*/
+		
+		//Recoger qué fila se ha pulsadao en la tabla
+		filaPulsada = this.view.geTableDetalle().getSelectedRow();
 		if(e.getKeyCode()==KeyEvent.VK_F1){
 			buscarArticulo();
 		}else
@@ -507,16 +526,72 @@ public void calcularTotal(DetalleFactura detalle){
 							salir();
 						}else
 							if(e.getKeyCode()==KeyEvent.VK_DELETE){
-								 //Recoger qué fila se ha pulsadao en la tabla
-								int filaPulsada = this.view.geTableDetalle().getSelectedRow();
+								 
 								 if(filaPulsada>=0){
 									 this.view.getModeloTabla().eliminarDetalle(filaPulsada);
 									 this.calcularTotales();
 								 }
-								
 							}
+								 
+							
+								
+	}
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+		//Recoger qué fila se ha pulsadao en la tabla
+		filaPulsada = this.view.geTableDetalle().getSelectedRow();
+		char caracter = e.getKeyChar();
+		//JOptionPane.showMessageDialog(view,e.getKeyChar());
+		
+		//para quitar los simnos mas o numero que ingrese en la busqueda
+		if(e.getComponent()==this.view.getTxtBuscar()){
+			Character caracter1 = new Character(e.getKeyChar());
+	        if (!esValido(caracter1))
+	        {
+	           String texto = "";
+	           for (int i = 0; i < view.getTxtBuscar().getText().length(); i++)
+	                if (esValido(new Character(view.getTxtBuscar().getText().charAt(i))))
+	                    texto += view.getTxtBuscar().getText().charAt(i);
+	           			view.getTxtBuscar().setText(texto);
+	                //view.getToolkit().beep();
+	        }
+		}
+		//if(txtCampo.getText().trim().length()==0)
+		if(e.getComponent()==this.view.getTxtBuscar()&&view.getTxtBuscar().getText().trim().length()!=0){
+			//JOptionPane.showMessageDialog(view, "2");
+			//JOptionPane.showMessageDialog(view, view.getTxtBuscar().getText());
+			this.myArticulo=this.myArticuloDao.buscarArticuloNombre(view.getTxtBuscar().getText());
+			
+			//JOptionPane.showMessageDialog(view, myArticulo);
+			if(myArticulo!=null){
+				view.getTxtArticulo().setText(myArticulo.getArticulo());
+				view.getTxtPrecio().setText("L. "+myArticulo.getPrecioVenta());
+				
+			}
+		}
+		if(caracter=='+'){
+			if(filaPulsada>=0){
+				//JOptionPane.showMessageDialog(view,e.getKeyChar()+" FIla:"+filaPulsada);
+				this.view.getModeloTabla().masCantidad(filaPulsada);
+				//JOptionPane.showMessageDialog(view,view.getModeloTabla().getDetalle(filaPulsada).getCantidad());
+				this.calcularTotales();
+			}
+		}
+		if(caracter=='-'){
+			if(filaPulsada>=0){
+				//JOptionPane.showMessageDialog(view,e.getKeyChar()+" FIla:"+filaPulsada);
+				this.view.getModeloTabla().restarCantidad(filaPulsada);
+				//JOptionPane.showMessageDialog(view,view.getModeloTabla().getDetalle(filaPulsada).getCantidad());
+				this.calcularTotales();
+			}
+		}
+		
 		
 	}
+		
+	
 	
 	private void salir(){
 		//facturaDao.desconectarBD();
@@ -576,6 +651,7 @@ public void calcularTotal(DetalleFactura detalle){
 		//se llama el metodo que mostrar la ventana para buscar el articulo
 		ViewListaArticulo viewListaArticulo=new ViewListaArticulo(view);
 		CtlArticuloBuscar ctlArticulo=new CtlArticuloBuscar(viewListaArticulo,conexion);
+		
 		viewListaArticulo.pack();
 		ctlArticulo.view.getTxtBuscar().setText("");
 		ctlArticulo.view.getTxtBuscar().selectAll();
@@ -583,25 +659,19 @@ public void calcularTotal(DetalleFactura detalle){
 		//ctlArticulo.view.getTxtBuscar().selectAll();
 		view.getTxtBuscar().requestFocusInWindow();
 		viewListaArticulo.conectarControladorBuscar(ctlArticulo);
-		Articulo myArticulo=ctlArticulo.buscarArticulo(view);
+		Articulo myArticulo1=ctlArticulo.buscarArticulo(view);
 		
-		//JOptionPane.showMessageDialog(view, myArticulo);
+		//JOptionPane.showMessageDialog(view, myArticulo1);
 		//se comprueba si le regreso un articulo valido
-		if(myArticulo!=null && myArticulo.getId()!=-1){
-			this.view.getModeloTabla().setArticulo(myArticulo);
+		if(myArticulo1!=null && myArticulo1.getId()!=-1){
+			this.view.getModeloTabla().setArticulo(myArticulo1);
 			//this.view.getModelo().getDetalle(row).setCantidad(1);
 			
 			//calcularTotal(this.view.getModeloTabla().getDetalle(row));
 			calcularTotales();
 			this.view.getModeloTabla().agregarDetalle();
 			
-			int row =  view.geTableDetalle().getRowCount () - 1;
-			   Rectangle rect = view.geTableDetalle().getCellRect(row, 0, true);
-			   view.geTableDetalle().scrollRectToVisible(rect);
-			   view.geTableDetalle().clearSelection();
-			   view.geTableDetalle().setRowSelectionInterval(row, row);
-			   DefaultTableModel modelo = (DefaultTableModel)view.geTableDetalle().getModel();
-			   modelo.fireTableDataChanged();
+			selectRowInset();
 		}
 		
 		myArticulo=null;
@@ -631,22 +701,17 @@ public void calcularTotal(DetalleFactura detalle){
 		ctlBuscarCliente=null;
 	}
 
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		if(e.getComponent()==this.view.getTxtBuscar()){
-			//JOptionPane.showMessageDialog(view, "2");
-			//JOptionPane.showMessageDialog(view, view.getTxtBuscar().getText());
-			this.myArticulo=this.myArticuloDao.buscarArticuloNombre(view.getTxtBuscar().getText());
-			
-			//JOptionPane.showMessageDialog(view, myArticulo);
-			if(myArticulo!=null){
-				view.getTxtArticulo().setText(myArticulo.getArticulo());
-				view.getTxtPrecio().setText("L. "+myArticulo.getPrecioVenta());
-				
-			}
-		}
-		
+	
+	
+	private void selectRowInset(){
+		/*<<<<<<<<<<<<<<<selecionar la ultima fila creada>>>>>>>>>>>>>>>*/
+		int row =  this.view.geTableDetalle().getRowCount () - 2;
+		Rectangle rect = this.view.geTableDetalle().getCellRect(row, 0, true);
+		this.view.geTableDetalle().scrollRectToVisible(rect);
+		this.view.geTableDetalle().clearSelection();
+		this.view.geTableDetalle().setRowSelectionInterval(row, row);
+		TablaModeloMarca modelo = (TablaModeloMarca)this.view.geTableDetalle().getModel();
+		modelo.fireTableDataChanged();
 	}
 
 	@Override
