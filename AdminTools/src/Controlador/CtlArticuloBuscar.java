@@ -1,6 +1,7 @@
 package Controlador;
 
 
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -181,7 +182,7 @@ public class CtlArticuloBuscar implements ActionListener,MouseListener, WindowLi
 					}
 	}
 	//public void buscarArticulo()
-	public Articulo buscarArticulo(ViewFacturar v){
+	public Articulo buscarArticulo(Window v){
 		
 		//this.myArticuloDao.cargarInstrucciones();
 		cargarTabla(myArticuloDao.todoArticulos());

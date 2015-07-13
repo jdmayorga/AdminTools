@@ -126,8 +126,9 @@ public class ViewAgregarCompras extends JDialog {
 		lblFecha.setBounds(10, 21, 97, 14);
 		panelInfoCompra.add(lblFecha);
 		
-		dateCompra = new JDateChooser();
+		dateCompra = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
 		dateCompra.setBounds(117, 18, 109, 20);
+	
 		panelInfoCompra.add(dateCompra);
 		dateCompra.setDateFormatString("dd-MM-yyyy");
 		//dateCompra.setDate(Date.);
@@ -285,23 +286,40 @@ public class ViewAgregarCompras extends JDialog {
 		
 		this.txtIdProveedor.addActionListener(c);
 		this.txtIdProveedor.setActionCommand("BUSCARPROVEEDOR");
+		txtIdProveedor.addKeyListener(c);
 		
 		
 		this.btnGuardar.addActionListener(c);
 		this.btnGuardar.setActionCommand("GUARDARCOMPRA");
+		btnGuardar.addKeyListener(c);
 		
 
 		this.rdbtnContado.addActionListener(c);
 		this.rdbtnContado.setActionCommand("CONTADO");
+		rdbtnContado.addKeyListener(c);
 		
 		
 		this.rdbtnCredito.addActionListener(c);
 		this.rdbtnCredito.setActionCommand("CREDITO");
+		rdbtnCredito.addKeyListener(c);
 		
 		this.btnCancelar.addActionListener(c);
 		this.btnCancelar.setActionCommand("CANCELAR");
+		btnCancelar.addKeyListener(c);
 		
 		this.addWindowListener(c);
+		
+		txtTelefonoProveedor.addKeyListener(c);
+		
+		tablaArticulos.addKeyListener(c);
+		txtNofactura.addKeyListener(c);
+		dateCompra.getDateEditor().getUiComponent().addKeyListener(c);
+		
+		dateVencFactura.addKeyListener(c);
+		dateVencFactura.getDateEditor().getUiComponent().addKeyListener(c);
+		txtTotalimpuesto.addKeyListener(c);
+		txtTotal.addKeyListener(c);
+		txtSubtotal.addKeyListener(c);
 	
 		/*rdbtnTodos.addItemListener(c);
 		
@@ -347,4 +365,5 @@ public class ViewAgregarCompras extends JDialog {
 		 tablaArticulos.setColumnSelectionAllowed(true);
 		 tablaArticulos.setRowSelectionAllowed(true);
 	}
+	
 }

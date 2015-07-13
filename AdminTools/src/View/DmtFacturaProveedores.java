@@ -229,4 +229,21 @@ public List<DetalleFacturaProveedor> getDetalles() {
 	return detallesFactura;
 }
 
+public void setArticulo(Articulo a){
+	
+	for(int x=0;x<detallesFactura.size();x++){
+		if(detallesFactura.get(x).getArticulo().getId()==-1){
+			detallesFactura.get(x).setListArticulos(a);
+			break;
+		}
+	}
+	
+}
+
+public void eliminarDetalle(int index){
+		detallesFactura.remove(index);
+		fireTableDataChanged();
+		
+}
+
 }

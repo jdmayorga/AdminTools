@@ -16,7 +16,6 @@ import Modelo.Conexion;
 import Modelo.FacturaCompra;
 import Modelo.FacturaCompraDao;
 import Modelo.UsuarioDao;
-import View.ViewAgregarCompras;
 import View.ViewListaFacturasCompra;
 
 public class CtlFacturasCompra implements ActionListener, MouseListener, ChangeListener {
@@ -235,5 +234,7 @@ public class CtlFacturasCompra implements ActionListener, MouseListener, ChangeL
 		}
 
 	}
+
+	
 
 }

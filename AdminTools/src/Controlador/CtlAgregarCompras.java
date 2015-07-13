@@ -1,9 +1,12 @@
 package Controlador;
 
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
@@ -25,9 +28,11 @@ import Modelo.FacturaCompra;
 import Modelo.FacturaCompraDao;
 import Modelo.Proveedor;
 import Modelo.ProveedorDao;
+import View.TablaModeloMarca;
 import View.ViewAgregarCompras;
+import View.ViewListaArticulo;
 
-public class CtlAgregarCompras implements ActionListener,MouseListener,TableModelListener, WindowListener {
+public class CtlAgregarCompras implements ActionListener,MouseListener,TableModelListener, WindowListener,KeyListener {
 	public ViewAgregarCompras view;
 	private Conexion conexion=null;
 	private ArticuloDao myArticuloDao;
@@ -497,6 +502,92 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 		cargarFacturaView();
 		//this.view.getPanelAcciones().setVisible(false);
 		this.view.setVisible(true);
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+		int filaPulsada = this.view.getTablaArticulos().getSelectedRow();
+		if(e.getKeyCode()==KeyEvent.VK_F1){
+			buscarArticulo();
+		}else
+			if(e.getKeyCode()==KeyEvent.VK_F2){
+				//buscarCliente();
+			}else
+				if(e.getKeyCode()==KeyEvent.VK_F3){
+					//cobrar();
+				}else
+					if(e.getKeyCode()==KeyEvent.VK_F4){
+						//guardar();
+					}else
+						if(e.getKeyCode()==KeyEvent.VK_F5){
+							//salir();
+						}else
+							if(e.getKeyCode()==KeyEvent.VK_DELETE){
+								 
+								 if(filaPulsada>=0){
+									 this.view.getModelo().eliminarDetalle(filaPulsada);
+									 this.calcularTotales();
+								 }
+							}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	private void buscarArticulo(){
+		
+		//se llama el metodo que mostrar la ventana para buscar el articulo
+		ViewListaArticulo viewListaArticulo=new ViewListaArticulo(view);
+		CtlArticuloBuscar ctlArticulo=new CtlArticuloBuscar(viewListaArticulo,conexion);
+		
+		viewListaArticulo.pack();
+		ctlArticulo.view.getTxtBuscar().setText("");
+		ctlArticulo.view.getTxtBuscar().selectAll();
+		//ctlArticulo.view.getTxtBuscar().requestFocus(true);
+		//ctlArticulo.view.getTxtBuscar().selectAll();
+		//view.getTxtBuscar().requestFocusInWindow();
+		viewListaArticulo.conectarControladorBuscar(ctlArticulo);
+		Articulo myArticulo1=ctlArticulo.buscarArticulo(view);
+		
+		//JOptionPane.showMessageDialog(view, myArticulo1);
+		//se comprueba si le regreso un articulo valido
+		if(myArticulo1!=null && myArticulo1.getId()!=-1){
+			this.view.getModelo().setArticulo(myArticulo1);
+			//this.view.getModelo().getDetalle(row).setCantidad(1);
+			
+			//calcularTotal(this.view.getModeloTabla().getDetalle(row));
+			calcularTotales();
+			this.view.getModelo().agregarDetalle();
+			
+			selectRowInset();
+		}
+		
+		myArticulo=null;
+		viewListaArticulo.dispose();
+		ctlArticulo=null;
+		
+	}
+	
+	private void selectRowInset(){
+		/*<<<<<<<<<<<<<<<selecionar la ultima fila creada>>>>>>>>>>>>>>>*/
+		int row =  this.view.getTablaArticulos().getRowCount () - 2;
+		Rectangle rect = this.view.getTablaArticulos().getCellRect(row, 0, true);
+		this.view.getTablaArticulos().scrollRectToVisible(rect);
+		this.view.getTablaArticulos().clearSelection();
+		this.view.getTablaArticulos().setRowSelectionInterval(row, row);
+		TablaModeloMarca modelo = (TablaModeloMarca)this.view.getTablaArticulos().getModel();
+		modelo.fireTableDataChanged();
 	}
 
 	
