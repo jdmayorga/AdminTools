@@ -33,6 +33,7 @@ import Modelo.DetalleFactura;
 import Modelo.Factura;
 import Modelo.FacturaDao;
 import View.TablaModeloMarca;
+import View.ViewCambioPago;
 import View.ViewFacturar;
 import View.ViewListaArticulo;
 import View.ViewListaClientes;
@@ -619,30 +620,39 @@ public void calcularTotal(DetalleFactura detalle){
 	private void cobrar(){
 		
 		//JOptionPane.showInternalInputDialog(view, "Pago con", "Cobro", JOptionPane.INFORMATION_MESSAGE);
-		setFactura();
-		boolean resul=facturaDao.registrarFactura(myFactura);
+		
+		ViewCambioPago viewPago=new ViewCambioPago(this.view);
+		CtlCambioPago ctlPago=new CtlCambioPago(viewPago,myFactura.getTotal());
+		boolean resulPago=ctlPago.pagar();
+		if(resulPago)
+		{
+			myFactura.setPago(ctlPago.getEfectivo());
+			myFactura.setCambio(ctlPago.getCambio());
+			setFactura();
+			boolean resul=facturaDao.registrarFactura(myFactura);
 				
-		if(resul){
-			myFactura.setIdFactura(facturaDao.getIdFacturaGuardada());
-			
-				try {
-					this.view.setVisible(false);
-					this.view.dispose();
-					//AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "Factura_Saint_Paul.jasper",myFactura.getIdFactura() );
-					AbstractJasperReports.createReport(conexion.getPoolConexion().getConnection(), 1, myFactura.getIdFactura());
-					//AbstractJasperReports.showViewer();
-					AbstractJasperReports.imprimierFactura();
-					myFactura=null;
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			if(resul){
+				myFactura.setIdFactura(facturaDao.getIdFacturaGuardada());
 				
-			
-		}else{
-			JOptionPane.showMessageDialog(view, "No se guardo la factura", "Error Base de Datos", JOptionPane.ERROR_MESSAGE);
-			this.view.setVisible(false);
-			this.view.dispose();
+					try {
+						this.view.setVisible(false);
+						this.view.dispose();
+						//AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "Factura_Saint_Paul.jasper",myFactura.getIdFactura() );
+						AbstractJasperReports.createReport(conexion.getPoolConexion().getConnection(), 1, myFactura.getIdFactura());
+						//AbstractJasperReports.showViewer();
+						AbstractJasperReports.imprimierFactura();
+						myFactura=null;
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				
+			}else{
+				JOptionPane.showMessageDialog(view, "No se guardo la factura", "Error Base de Datos", JOptionPane.ERROR_MESSAGE);
+				this.view.setVisible(false);
+				this.view.dispose();
+			}
 		}
 		
 	}

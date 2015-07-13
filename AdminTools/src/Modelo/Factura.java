@@ -19,6 +19,7 @@ public class Factura {
 	private String estado;
 	private int agregadoAkardex;
 	private BigDecimal pago=new BigDecimal(0.0);
+	private BigDecimal cambio=new BigDecimal(0.0);
 	
 	
 	public int getAgregadoAkardex(){
@@ -33,6 +34,13 @@ public class Factura {
 	}
 	public BigDecimal getPago(){
 		return pago;
+	}
+	
+	public void setCambio(BigDecimal c){
+		cambio=c;
+	}
+	public BigDecimal getCambio(){
+		return cambio;
 	}
 	
 	public String getEstado(){
