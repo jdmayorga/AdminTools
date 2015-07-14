@@ -392,7 +392,12 @@ public void calcularTotales(){
 				
 				//se estable el total y impuesto en el modelo
 				myFactura.setTotal(totalItem);
-				myFactura.setTotalImpuesto(impuestoItem);
+				if(porcentaImpuesto.intValue()==15){
+					myFactura.setTotalImpuesto(impuestoItem);
+				}
+				if(porcentaImpuesto.intValue()==18){
+					myFactura.setTotalImpuesto18(impuestoItem);
+				}
 				myFactura.setSubTotal(totalsiniva);
 				//myFactura.getDetalles().add(detalle);
 				myFactura.setTotalDescuento(detalle.getDescuentoItem());
@@ -408,6 +413,7 @@ public void calcularTotales(){
 				//se establece el total e impuesto en el vista
 				this.view.getTxtTotal().setText(""+myFactura.getTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN));
 				this.view.getTxtImpuesto().setText(""+myFactura.getTotalImpuesto().setScale(2, BigDecimal.ROUND_HALF_EVEN));
+				this.view.getTxtImpuesto18().setText(""+myFactura.getTotalImpuesto18().setScale(2, BigDecimal.ROUND_HALF_EVEN));
 				this.view.getTxtSubtotal().setText(""+myFactura.getSubTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN));
 				this.view.getTxtDescuento().setText(""+myFactura.getTotalDescuento().setScale(2, BigDecimal.ROUND_HALF_EVEN));
 				
@@ -523,7 +529,7 @@ public void calcularTotal(DetalleFactura detalle){
 					if(e.getKeyCode()==KeyEvent.VK_F4){
 						guardar();
 					}else
-						if(e.getKeyCode()==KeyEvent.VK_F5){
+						if(e.getKeyCode()==KeyEvent.VK_ESCAPE){
 							salir();
 						}else
 							if(e.getKeyCode()==KeyEvent.VK_DELETE){
@@ -623,11 +629,25 @@ public void calcularTotal(DetalleFactura detalle){
 		
 		ViewCambioPago viewPago=new ViewCambioPago(this.view);
 		CtlCambioPago ctlPago=new CtlCambioPago(viewPago,myFactura.getTotal());
+		//se muestra y ventana del cobro y se devuelve un resultado del cobro
 		boolean resulPago=ctlPago.pagar();
+		
+		//se procede a verificar si se cobro
 		if(resulPago)
 		{
-			myFactura.setPago(ctlPago.getEfectivo());
-			myFactura.setCambio(ctlPago.getCambio());
+			//si la forma de pago fue en efectivo
+			if(ctlPago.getFormaPago()==1){
+				myFactura.setPago(ctlPago.getEfectivo());
+				myFactura.setCambio(ctlPago.getCambio());
+				myFactura.setTipoPago(1);
+			}
+			//si la forma de pago fue con tarjeta de credito o debito
+			if(ctlPago.getFormaPago()==2){
+				myFactura.setPago(myFactura.getTotal());
+				myFactura.setCambio(new BigDecimal(00));
+				myFactura.setTipoPago(2);
+				myFactura.setObservacion(ctlPago.getRefencia());
+			}
 			setFactura();
 			boolean resul=facturaDao.registrarFactura(myFactura);
 				

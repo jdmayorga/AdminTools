@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2015-06-26T08:48:42 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Factura_Saint_Paul" pageWidth="612" pageHeight="396" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="df013db5-f76e-44d3-b0df-bcbc46d93160">
 	<property name="com.jaspersoft.studio.data.sql.tables" value="Y2xpbmljYS52X2VuY2FiZXphZG9fZmFjdHVyYSBBUyAsNDU3LDY0LGNmNjcwZWMxLWNlM2MtNGVk&#xA;Yi05ZTVkLWRiZGE0OTAwMTkzMztjbGluaWNhLnZfZGV0YWxsZV9mYWN0dXJhIEFTICwxMzYsMzYs&#xA;NTEyOGQwOTAtNjhhYi00ZjQ5LTg3YTgtNGRjMTZiZDUwNjk5Ow=="/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Texaco  Adapter "/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
 	<property name="com.jaspersoft.studio.unit.pageWidth" value="inch"/>
@@ -92,6 +90,7 @@ WHERE
 	<field name="rtn" class="java.lang.String"/>
 	<field name="tipo_factura" class="java.lang.String"/>
 	<field name="estado_factura" class="java.lang.String"/>
+	<field name="isv18" class="java.lang.Float"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -418,9 +417,9 @@ WHERE
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="78">
+		<band height="97">
 			<frame>
-				<reportElement mode="Opaque" x="0" y="12" width="570" height="66" forecolor="#D0B48E" backcolor="#FFFFFF" uuid="5d8169bd-4a75-48c8-8a68-6d3ad5ba9402"/>
+				<reportElement mode="Opaque" x="0" y="12" width="570" height="84" forecolor="#D0B48E" backcolor="#FFFFFF" uuid="5d8169bd-4a75-48c8-8a68-6d3ad5ba9402"/>
 				<textField>
 					<reportElement x="496" y="30" width="70" height="15" uuid="1639fd03-04ec-4493-8e17-f0ecd7f5978e"/>
 					<textElement textAlignment="Right"/>
@@ -431,10 +430,10 @@ WHERE
 					<textElement textAlignment="Right">
 						<font size="11"/>
 					</textElement>
-					<text><![CDATA[Impuesto:]]></text>
+					<text><![CDATA[Impuesto 15%:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="496" y="45" width="71" height="15" uuid="8b86839e-e88c-4436-abff-ff286ee7b12c"/>
+					<reportElement x="496" y="63" width="71" height="15" uuid="8b86839e-e88c-4436-abff-ff286ee7b12c"/>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA["L. "+$F{total}+" "]]></textFieldExpression>
 				</textField>
@@ -463,12 +462,24 @@ WHERE
 					<text><![CDATA[Descuento:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="414" y="45" width="74" height="15" uuid="c4e71c9d-3979-48fb-9d74-f89e425f1ea5"/>
+					<reportElement x="414" y="63" width="74" height="15" uuid="c4e71c9d-3979-48fb-9d74-f89e425f1ea5"/>
 					<textElement textAlignment="Right">
 						<font size="11"/>
 					</textElement>
 					<text><![CDATA[Total pagar:]]></text>
 				</staticText>
+				<staticText>
+					<reportElement x="414" y="46" width="74" height="15" uuid="ab04ba4a-f9ac-49b5-a790-899eadd70570"/>
+					<textElement textAlignment="Right">
+						<font size="11"/>
+					</textElement>
+					<text><![CDATA[Impuesto 18%:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="496" y="46" width="71" height="15" uuid="eb6de510-2f16-4caa-a4aa-5d6cfa6df63a"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA["L. "+$F{isv18}+" "]]></textFieldExpression>
+				</textField>
 			</frame>
 		</band>
 	</summary>

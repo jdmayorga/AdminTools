@@ -177,8 +177,12 @@ public class FacturaDao {
 				+ "descuento,"
 				+ "estado_factura,"
 				+ "tipo_factura,"
+				+ "tipo_pago,"
+				+ "observacion,"
+				+ "isv18,"
+				+ "pago,"
 				+ "usuario)"
-				+ " VALUES (now(),?,?,?,?,?,?,?,?)";
+				+ " VALUES (now(),?,?,?,?,?,?,?,?,?,?,?,?)";
 		
 		try 
 		{
@@ -191,7 +195,11 @@ public class FacturaDao {
 			agregarFactura.setBigDecimal(5, myFactura.getTotalDescuento());
 			agregarFactura.setString(6, "ACT");
 			agregarFactura.setInt(7, myFactura.getTipoFactura());
-			agregarFactura.setString(8, conexion.getUsuarioLogin().getUser());
+			agregarFactura.setInt(8, myFactura.getTipoPago());
+			agregarFactura.setString(9, myFactura.getObservacion());
+			agregarFactura.setBigDecimal(10, myFactura.getTotalImpuesto18());
+			agregarFactura.setBigDecimal(11, myFactura.getPago());
+			agregarFactura.setString(12, conexion.getUsuarioLogin().getUser());
 			
 			
 			

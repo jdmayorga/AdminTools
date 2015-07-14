@@ -1,5 +1,7 @@
 package Modelo;
 
+import java.sql.SQLException;
+
 import javax.sql.DataSource;
 
 import Controlador.CtlAgregarCompras;
@@ -16,6 +18,13 @@ public class principal {
 		Conexion conexion= new Conexion();
 		
 		AbstractJasperReports.loadFileReport();
+		
+		try {
+			AbstractJasperReports.createReport(conexion.getPoolConexion().getConnection(), 1, 1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 		ViewLogin viewLogin =new ViewLogin(); 

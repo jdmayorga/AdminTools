@@ -12,15 +12,32 @@ public class Factura {
 	private Cliente cliente;
 	private List<DetalleFactura> detalles=new ArrayList<DetalleFactura>();
 	private BigDecimal totalImpuesto=new BigDecimal(0.0);
+	private BigDecimal totalImpuesto18=new BigDecimal(0.0);
 	private BigDecimal total=new BigDecimal(0.0);
 	private BigDecimal subTotal=new BigDecimal(0.0);
 	private BigDecimal totalDescuento=new BigDecimal(0.0);
 	private String fechaVencimento=null;
 	private String estado;
 	private int agregadoAkardex;
+	private int tipoPago;
 	private BigDecimal pago=new BigDecimal(0.0);
 	private BigDecimal cambio=new BigDecimal(0.0);
+	private String observacion="";
 	
+	
+	public void setObservacion(String o){
+		observacion=o;
+	}
+	public String getObservacion(){
+		return observacion;
+	}
+	
+	public int getTipoPago(){
+		return tipoPago;
+	}
+	public void setTipoPago(int p){
+		tipoPago=p;
+	}
 	
 	public int getAgregadoAkardex(){
 		return agregadoAkardex;
@@ -98,6 +115,12 @@ public class Factura {
 	public BigDecimal getTotalImpuesto(){
 		return totalImpuesto;
 	}
+	public void setTotalImpuesto18(BigDecimal tImp){
+		totalImpuesto18=totalImpuesto18.add(tImp);
+	}
+	public BigDecimal getTotalImpuesto18(){
+		return totalImpuesto18;
+	}
 	
 	public void setTotal(BigDecimal t){
 		total=total.add(t);
@@ -125,6 +148,7 @@ public class Factura {
 		total=BigDecimal.ZERO;
 		subTotal=BigDecimal.ZERO;
 		totalDescuento=BigDecimal.ZERO;
+		totalImpuesto18=BigDecimal.ZERO;
 	}
 	@Override
 	public String toString(){

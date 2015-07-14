@@ -89,6 +89,7 @@ WHERE
 	<field name="telefono" class="java.lang.String"/>
 	<field name="rtn" class="java.lang.String"/>
 	<field name="tipo_factura" class="java.lang.String"/>
+	<field name="isv18" class="java.lang.Float"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -433,9 +434,9 @@ WHERE
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="78">
+		<band height="102">
 			<frame>
-				<reportElement mode="Opaque" x="0" y="12" width="570" height="66" forecolor="#D0B48E" backcolor="#FFFFFF" uuid="5d8169bd-4a75-48c8-8a68-6d3ad5ba9402"/>
+				<reportElement mode="Opaque" x="0" y="12" width="570" height="90" forecolor="#D0B48E" backcolor="#FFFFFF" uuid="5d8169bd-4a75-48c8-8a68-6d3ad5ba9402"/>
 				<textField>
 					<reportElement x="496" y="30" width="70" height="15" uuid="1639fd03-04ec-4493-8e17-f0ecd7f5978e"/>
 					<textElement textAlignment="Right">
@@ -448,10 +449,10 @@ WHERE
 					<textElement textAlignment="Right">
 						<font fontName="Arial" size="11"/>
 					</textElement>
-					<text><![CDATA[Impuesto:]]></text>
+					<text><![CDATA[Impuesto 15%:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="496" y="45" width="71" height="15" uuid="8b86839e-e88c-4436-abff-ff286ee7b12c"/>
+					<reportElement x="496" y="60" width="71" height="15" uuid="8b86839e-e88c-4436-abff-ff286ee7b12c"/>
 					<textElement textAlignment="Right">
 						<font fontName="Arial"/>
 					</textElement>
@@ -486,12 +487,26 @@ WHERE
 					<text><![CDATA[Descuento:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="414" y="45" width="74" height="15" uuid="c4e71c9d-3979-48fb-9d74-f89e425f1ea5"/>
+					<reportElement x="414" y="60" width="74" height="15" uuid="c4e71c9d-3979-48fb-9d74-f89e425f1ea5"/>
 					<textElement textAlignment="Right">
 						<font fontName="Arial" size="11"/>
 					</textElement>
 					<text><![CDATA[Total pagar:]]></text>
 				</staticText>
+				<staticText>
+					<reportElement x="414" y="45" width="74" height="15" uuid="6a5fc598-0c01-4eae-ab51-c601a253206d"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="11"/>
+					</textElement>
+					<text><![CDATA[Impuesto 18%:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="496" y="45" width="70" height="15" uuid="be4d4971-45d2-4ac0-831a-4308a74f0091"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial"/>
+					</textElement>
+					<textFieldExpression><![CDATA["L. "+$F{isv18}+" "]]></textFieldExpression>
+				</textField>
 			</frame>
 		</band>
 	</summary>

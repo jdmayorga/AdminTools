@@ -24,8 +24,10 @@ import javax.swing.JPanel;
 import Controlador.CtlCambioPago;
 
 import javax.swing.SwingConstants;
+
 import java.awt.SystemColor;
 import java.awt.Color;
+import java.awt.event.WindowListener;
 
 public class ViewCambioPago extends JDialog {
 	private JTextField txtEfectivo;
@@ -48,10 +50,10 @@ public class ViewCambioPago extends JDialog {
 		Font myFont=new Font("OCR A Extended", Font.PLAIN, 45);
 		 grupoOpciones = new ButtonGroup(); // crea ButtonGroup//para el grupo de la forma de pago
 		
-		this.setSize(630, 258);
-		this.setPreferredSize(new Dimension(588, 258));
+		this.setSize(588, 300);
+		this.setPreferredSize(new Dimension(588, 300));
 		this.setResizable(false);
-		setUndecorated(true);
+		//setUndecorated(true);
 		getContentPane().setLayout(null);
 		
 		panel = new JPanel();
@@ -124,7 +126,7 @@ public class ViewCambioPago extends JDialog {
 		
 		panel_2 = new JPanel();
 		panel_2.setBackground(new Color(60, 179, 113));
-		panel_2.setBounds(0, 0, 219, 258);
+		panel_2.setBounds(0, 0, 219, 271);
 		getContentPane().add(panel_2);
 		panel_2.setLayout(null);
 		
@@ -177,7 +179,16 @@ public class ViewCambioPago extends JDialog {
 		tglbtnEfectivo.addItemListener(c);
 		tglbtnTarjetaCredito.addItemListener(c);
 		txtEfectivo.addActionListener(c);
+		txtEfectivo.addKeyListener(c);
 		txtEfectivo.setActionCommand("CAMBIO");
+		txtReferenciatarjeta.addKeyListener(c);
+		
+		txtEfectivo.addKeyListener(c);
+		tglbtnEfectivo.addKeyListener(c);
+		tglbtnTarjetaCredito.addKeyListener(c);
+		this.btnCerrar.addKeyListener(c);
+		this.btnCobrar.addKeyListener(c);
+		this.addWindowListener(c);
 		
 		
 	}

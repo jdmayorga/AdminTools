@@ -72,6 +72,7 @@ public class ViewFacturar extends JDialog {
 	private JTextField txtBuscar;
 	private JTextField txtArticulo;
 	private JTextField txtPrecio;
+	private JTextField txtImpuesto18;
 	
 	public ViewFacturar(Window view) {
 		
@@ -114,7 +115,7 @@ public class ViewFacturar extends JDialog {
 		
 		btnCerrar = new BotonCancelar();
 		btnCerrar.setHorizontalAlignment(SwingConstants.LEFT);
-		btnCerrar.setText("F5 Cerrar");
+		btnCerrar.setText("Esc Cerrar");
 		btnCerrar.setBounds(10, 330, 144, 38);
 		panelAcciones.add(btnCerrar);
 		
@@ -243,12 +244,12 @@ public class ViewFacturar extends JDialog {
 		txtSubtotal.setText("00");
 		
 		txtSubtotal.setEditable(false);
-		txtSubtotal.setBounds(88, 506, 220, 44);
+		txtSubtotal.setBounds(20, 506, 207, 44);
 		getContentPane().add(txtSubtotal);
 		txtSubtotal.setColumns(10);
 		
 		lblSubtotal = new JLabel("SubTotal");
-		lblSubtotal.setBounds(88, 490, 59, 14);
+		lblSubtotal.setBounds(20, 490, 59, 14);
 		getContentPane().add(lblSubtotal);
 		
 		txtImpuesto = new JTextField();
@@ -256,12 +257,12 @@ public class ViewFacturar extends JDialog {
 		txtImpuesto.setFont(myFont);
 		txtImpuesto.setText("00");
 		txtImpuesto.setEditable(false);
-		txtImpuesto.setBounds(318, 506, 220, 44);
+		txtImpuesto.setBounds(237, 506, 177, 44);
 		getContentPane().add(txtImpuesto);
 		txtImpuesto.setColumns(10);
 		
-		lblImpuesto = new JLabel("Impuesto");
-		lblImpuesto.setBounds(318, 490, 59, 14);
+		lblImpuesto = new JLabel("Impuesto 15");
+		lblImpuesto.setBounds(237, 490, 92, 14);
 		getContentPane().add(lblImpuesto);
 		
 		txtTotal = new JTextField();
@@ -283,13 +284,26 @@ public class ViewFacturar extends JDialog {
 		txtDescuento.setEditable(false);
 		txtDescuento.setText("00");
 		txtDescuento.setFont(myFont);
-		txtDescuento.setBounds(548, 506, 220, 44);
+		txtDescuento.setBounds(605, 506, 163, 44);
 		getContentPane().add(txtDescuento);
 		txtDescuento.setColumns(10);
 		
 		JLabel lblDescuento = new JLabel("Descuento");
-		lblDescuento.setBounds(548, 490, 92, 14);
+		lblDescuento.setBounds(605, 490, 92, 14);
 		getContentPane().add(lblDescuento);
+		
+		txtImpuesto18 = new JTextField();
+		txtImpuesto18.setText("00");
+		txtImpuesto18.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtImpuesto18.setFont(myFont);
+		txtImpuesto18.setEditable(false);
+		txtImpuesto18.setBounds(424, 506, 171, 44);
+		getContentPane().add(txtImpuesto18);
+		txtImpuesto18.setColumns(10);
+		
+		JLabel lblImpuesto_1 = new JLabel("Impuesto 18");
+		lblImpuesto_1.setBounds(424, 490, 82, 14);
+		getContentPane().add(lblImpuesto_1);
 		setSize(1024, 600);
 		
 		this.setPreferredSize(new Dimension(1024, 600));
@@ -337,6 +351,9 @@ public class ViewFacturar extends JDialog {
 	}
 	public JTextField getTxtImpuesto(){
 		return txtImpuesto;
+	}
+	public JTextField getTxtImpuesto18(){
+		return txtImpuesto18;
 	}
 	public JTextField getTxtTotal(){
 		return txtTotal;
@@ -424,5 +441,4 @@ public class ViewFacturar extends JDialog {
 		//this.addWindowListener(c);
 		//this.addw
 	}
-
 }
