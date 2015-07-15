@@ -1,5 +1,6 @@
 package Modelo;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,7 +10,19 @@ public class KardexDao {
 	private Conexion conexion=null;
 	private PreparedStatement buscarArticulo=null;
 	private PreparedStatement insertarNuevoMovimiento=null;
-	
+	private String ultimoRistro="SELECT "
+			+ "v_kardex.can_saldo, "
+			+ "v_kardex.precio_saldo, "
+			+ "v_kardex.total_saldo,"
+			+ "v_kardex.cod,"
+			+ "v_kardex.codigo_bodega,"
+			+ "v_kardex.codigo_articulo "
+			+ " FROM v_kardex "
+			+ " WHERE "
+			+ " v_kardex.codigo_articulo = ? AND "
+			+ " v_kardex.codigo_bodega = ? "
+			+ " ORDER BY "
+			+ " v_kardex.cod DESC LIMIT 1";
 	public KardexDao(Conexion conn){
 		conexion=conn;
 		
@@ -111,6 +124,56 @@ public class KardexDao {
 		
 		if(existe){
 			return myKardex;
+			
+		}else{
+			return null;
+		}
+		
+	}
+	
+	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para buscar articulo en el kardex por por id articulo y id bodega>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+	public BigDecimal buscarKardexPrecio(int idArticulo,int idBodega){
+		
+		boolean existe=false;
+		Connection conn=null;
+		ResultSet res=null;
+		BigDecimal precioCompra=new BigDecimal(00);
+		
+		try {
+			conn=conexion.getPoolConexion().getConnection();
+			buscarArticulo=conn.prepareStatement(ultimoRistro);
+			buscarArticulo.setInt(1, idArticulo);
+			buscarArticulo.setInt(2, idBodega);
+			res=buscarArticulo.executeQuery();
+			while(res.next()){
+				existe=true;
+				
+				precioCompra=res.getBigDecimal("precio_saldo");
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally
+		{
+			try{
+				
+				if(res != null) res.close();
+                if(buscarArticulo != null)buscarArticulo.close();
+                if(conn != null) conn.close();
+                
+				
+				} // fin de try
+				catch ( SQLException excepcionSql )
+				{
+					excepcionSql.printStackTrace();
+					//Sconexion.desconectar();
+				} // fin de catch
+		} // fin de finally
+		
+		if(existe){
+			return precioCompra;
 			
 		}else{
 			return null;

@@ -54,6 +54,8 @@ public class CtlMenuPrincipal implements ActionListener {
 			case "REQUISICIONES":
 					ViewRequisicion viewRequi=new ViewRequisicion(view);
 					CtlRequisicion ctlRequi=new CtlRequisicion(viewRequi,conexion);
+					viewRequi.dispose();
+					ctlRequi=null;
 				break;
 	
 			case "CERRARFACTURACION":
@@ -79,23 +81,21 @@ public class CtlMenuPrincipal implements ActionListener {
 			case "PROVEEDORES":
 				ViewListaProveedor viewListaProveedor=new ViewListaProveedor(view);
 				CtlProveedorLista ctlProveedor=new CtlProveedorLista(viewListaProveedor,conexion);
-				viewListaProveedor.conectarControlador(ctlProveedor);
-				
+				viewListaProveedor.dispose();
+				ctlProveedor=null;
 				break;
 			case "ARTICULOS":
 				ViewListaArticulo viewListaArticulo=new ViewListaArticulo(view);
 				CtlArticuloLista ctlArticulo =new CtlArticuloLista(viewListaArticulo,conexion);
-				
-				viewListaArticulo.conectarControlador(ctlArticulo);
-				
-				viewListaArticulo.setVisible(true);
+				viewListaArticulo.dispose();
+				ctlArticulo=null;
 				
 				break;
 			case "AGREGARCOMPRAS":
 				ViewAgregarCompras viewAgregarCompras= new ViewAgregarCompras(this.view);
 				CtlAgregarCompras ctlAgregarCompra=new CtlAgregarCompras(viewAgregarCompras,conexion);
 				
-				viewAgregarCompras.setVisible(true);
+				
 				viewAgregarCompras.dispose();
 				viewAgregarCompras=null;
 				ctlAgregarCompra=null;
@@ -104,8 +104,8 @@ public class CtlMenuPrincipal implements ActionListener {
 				
 				ViewListaFactura vistaFacturars=new ViewListaFactura(this.view);
 				CtlFacturaLista ctlFacturas=new CtlFacturaLista(vistaFacturars,conexion );
-				
-				vistaFacturars.setVisible(true);
+				vistaFacturars.dispose();
+				ctlFacturas=null;
 			
 				/*ViewFacturar vistaFacturar=new ViewFacturar(this.view);
 				
@@ -121,20 +121,22 @@ public class CtlMenuPrincipal implements ActionListener {
 				// se crea el control para la view lista marcas
 				CtlMarcaLista ctlMarca =new CtlMarcaLista(viewMarcas,conexion); 
 				
-				//conectar los controles al objeto que ctlMarca
-				viewMarcas.conectarControlador(ctlMarca);
+				viewMarcas.dispose();
+				ctlMarca=null;
 				
-				//hacer visible la view lista de marcas
-				viewMarcas.setVisible(true);
 				break;
 			case "CLIENTES":
 				ViewListaClientes viewClientes=new ViewListaClientes();
 				CtlClienteLista  ctlClientes=new CtlClienteLista(viewClientes,conexion);
+				viewClientes.dispose();
+				ctlClientes=null;
 				break;
 			case "BUSCARFACTURAS":
 				
 				ViewFacturas viewBuscarFacturas = new ViewFacturas(this.view);
 				CtlFacturas cltBuscarFacturas= new CtlFacturas(viewBuscarFacturas,conexion);
+				viewBuscarFacturas.dispose();
+				cltBuscarFacturas=null;
 				break;
 				
 			case "LISTAFACTURASCOMPRA":

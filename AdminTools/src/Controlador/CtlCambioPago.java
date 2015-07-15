@@ -57,12 +57,18 @@ public class CtlCambioPago implements ActionListener,ItemListener, WindowListene
 				view.getTxtEfectivo().requestFocusInWindow();
 			}
 			//parseBigDecimal( view.getTxtEfectivo().getText());
-			if(this.estadoPago){
+			if(this.estadoPago){ 
 				cambio=efectivo.subtract(total);
 				view.getTxtCambio().setText(""+cambio.setScale(2, BigDecimal.ROUND_HALF_EVEN));
 			}
 			
 		break;
+		case "CERRAR":
+			salir();
+			break;
+		case "COBRAR":
+			cobrar();
+			break;
 		}
 	}
 	
@@ -173,33 +179,40 @@ public class CtlCambioPago implements ActionListener,ItemListener, WindowListene
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getKeyCode()==KeyEvent.VK_F3){
-			
-			if(view.getTglbtnEfectivo().isSelected()){
-				if(estadoPago){
-					this.formaPago=1;
-					this.view.setVisible(false);
-				}else{
-					view.getTxtEfectivo().requestFocusInWindow();
-					view.getToolkit().beep();
-				}
-				
-			}
-			if(view.getTglbtnTarjetaCredito().isSelected()){
-				if(view.getTxtReferencia().getText().trim().length()==0){
-					
-					view.getTxtReferencia().requestFocusInWindow();
-					JOptionPane.showMessageDialog(view, "Escriba la referencia de pago","Error",JOptionPane.ERROR_MESSAGE);
-				}else{
-					this.formaPago=2;
-					this.refencia=view.getTxtReferencia().getText();
-					this.estadoPago=true;
-					view.setVisible(false);
-				}
-					
-				
+			cobrar();
+		}
+	}
+
+	private void cobrar() {
+		// TODO Auto-generated method stub
+
+		
+		if(view.getTglbtnEfectivo().isSelected()){
+			if(estadoPago){
+				this.formaPago=1;
+				this.view.setVisible(false);
+			}else{
+				view.getTxtEfectivo().requestFocusInWindow();
+				view.getToolkit().beep();
 			}
 			
 		}
+		if(view.getTglbtnTarjetaCredito().isSelected()){
+			if(view.getTxtReferencia().getText().trim().length()==0){
+				
+				view.getTxtReferencia().requestFocusInWindow();
+				JOptionPane.showMessageDialog(view, "Escriba la referencia de pago","Error",JOptionPane.ERROR_MESSAGE);
+			}else{
+				this.formaPago=2;
+				this.refencia=view.getTxtReferencia().getText();
+				this.estadoPago=true;
+				view.setVisible(false);
+			}
+				
+			
+		}
+		
+	
 	}
 
 }

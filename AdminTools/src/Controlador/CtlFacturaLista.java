@@ -37,6 +37,8 @@ public class CtlFacturaLista implements ActionListener, MouseListener {
 		myFacturaDao=new FacturaDao(conexion);
 		cargarTabla(myFacturaDao.facturasEnProceso());
 		myFactura=new Factura();
+		
+		view.setVisible(true);
 	}
 	
 	public void cargarTabla(List<Factura> facturas){

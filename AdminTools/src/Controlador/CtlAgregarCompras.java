@@ -42,10 +42,10 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 	private FacturaCompra myFactura;
 	private FacturaCompraDao myFacturaDao;
 	 
-	public CtlAgregarCompras(ViewAgregarCompras view,Conexion conn){
+	public CtlAgregarCompras(ViewAgregarCompras v,Conexion conn){
 		//se asigna las variales recibida a las variables locales
 		conexion=conn;
-		this.view=view;
+		this.view=v;
 		this.view.conectarControlador(this);
 		
 		myFactura=new FacturaCompra();
@@ -60,6 +60,7 @@ public class CtlAgregarCompras implements ActionListener,MouseListener,TableMode
 		view.getModelo().agregarDetalle();
 		//this.view.getTxtFechaIngreso().setText(myFacturaDao.getFechaSistema());
 		//this.view.setVisible(true);
+		view.setVisible(true);
 		
 	}
 

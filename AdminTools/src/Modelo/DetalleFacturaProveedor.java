@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 public class DetalleFacturaProveedor {
 	private Articulo articulo;
-	private BigDecimal cantidad=new BigDecimal(0.0);
+	private BigDecimal cantidad=new BigDecimal(1);
 	private BigDecimal impuesto=new BigDecimal(0.0);
 	private BigDecimal total=new BigDecimal(0.0);
 	private BigDecimal precioCompra=new BigDecimal(0.0);

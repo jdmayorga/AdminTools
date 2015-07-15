@@ -34,14 +34,16 @@ public class CtlProveedorLista  implements ActionListener, MouseListener, Window
 	
 	
 	
-	public CtlProveedorLista(ViewListaProveedor view,Conexion conn){
+	public CtlProveedorLista(ViewListaProveedor v,Conexion conn){
 		conexion=conn;
 		//myProveedorDao.conexion=this.conexion;
-		this.view=view;
+		this.view=v;
 		myProveedor=new Proveedor();
 		myProveedorDao=new ProveedorDao(conexion);
+		view.conectarControlador(this);
 		
 		cargarTabla(myProveedorDao.todoProveedor());
+		view.setVisible(true);
 	}
 
 	@Override

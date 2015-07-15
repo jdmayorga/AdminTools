@@ -40,12 +40,18 @@ public class CtlMarcaLista implements ActionListener, MouseListener,WindowListen
 	
 	private Conexion conexion=null;
 	
-	public CtlMarcaLista(ViewListaMarca view,Conexion conn){
+	public CtlMarcaLista(ViewListaMarca v,Conexion conn){
 		conexion=conn;
-		this.view=view;
+		this.view=v;
 		myMarca=new Marca();
 		myMarcaDao=new MarcaDao(conexion);
 		cargarTabla(myMarcaDao.todoMarcas());
+		
+		//conectar los controles al objeto que ctlMarca
+		view.conectarControlador(this);
+		
+		//hacer visible la view lista de marcas
+		view.setVisible(true);
 		
 	}
 

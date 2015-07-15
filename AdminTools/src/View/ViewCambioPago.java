@@ -186,7 +186,12 @@ public class ViewCambioPago extends JDialog {
 		txtEfectivo.addKeyListener(c);
 		tglbtnEfectivo.addKeyListener(c);
 		tglbtnTarjetaCredito.addKeyListener(c);
+		btnCerrar.addActionListener(c);
+		btnCerrar.setActionCommand("CERRAR");
 		this.btnCerrar.addKeyListener(c);
+		
+		btnCobrar.addActionListener(c);
+		btnCobrar.setActionCommand("COBRAR");
 		this.btnCobrar.addKeyListener(c);
 		this.addWindowListener(c);
 		

@@ -87,7 +87,7 @@ public class TabloModeloRequisicion extends AbstractTableModel  {
 		        case 3:
 		        	
 		        		if(detallesRequi.get(rowIndex).getPrecioCompra().doubleValue()!=0){
-		        			return detallesRequi.get(rowIndex).getPrecioCompra();
+		        			return detallesRequi.get(rowIndex).getPrecioCompra().setScale(2, BigDecimal.ROUND_HALF_EVEN);
 		        			
 		        			
 		        		}
@@ -98,7 +98,7 @@ public class TabloModeloRequisicion extends AbstractTableModel  {
 		        case 4:
 		        	
 		        		if(detallesRequi.get(rowIndex).getPrecioCompra().doubleValue()!=0){
-		        			return detallesRequi.get(rowIndex).getTotal();
+		        			return detallesRequi.get(rowIndex).getTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN);
 		        		}
 		        		else
 		        			return null;
@@ -198,6 +198,44 @@ public class TabloModeloRequisicion extends AbstractTableModel  {
 	public List<DetalleFacturaProveedor> getDetalles() {
 		// TODO Auto-generated method stub
 		return detallesRequi;
+	}
+
+	public void setArticulo(Articulo a){
+		
+		for(int x=0;x<detallesRequi.size();x++){
+			if(detallesRequi.get(x).getArticulo().getId()==-1){
+				detallesRequi.get(x).setListArticulos(a);
+				break;
+			}
+		}
+		
+	}
+
+	public void masCantidad(int index) {
+		// TODO Auto-generated method stub
+		BigDecimal temp=detallesRequi.get(index).getCantidad().add(new BigDecimal(1));
+		detallesRequi.get(index).setCantidad(temp);
+		fireTableCellUpdated(index, 2);
+		fireTableCellUpdated(index, 3);
+		fireTableCellUpdated(index, 4);
+		//fireTableCellUpdated(index, 6);
+		//fireTableCellUpdated(index, 7);
+		
+	}
+
+	public void restarCantidad(int index) {
+		// TODO Auto-generated method stub
+		BigDecimal temp=detallesRequi.get(index).getCantidad().subtract(new BigDecimal(1));
+		detallesRequi.get(index).setCantidad(temp);
+		fireTableCellUpdated(index, 2);
+		fireTableCellUpdated(index, 3);
+		fireTableCellUpdated(index, 4);
+	}
+
+	public void setPricioCompra(BigDecimal precioCompra, int index) {
+		// TODO Auto-generated method stub
+		detallesRequi.get(index).setPrecioCompra(precioCompra);
+		fireTableCellUpdated(index, 3);
 	}
 	
 	

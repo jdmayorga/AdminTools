@@ -550,7 +550,7 @@ public void calcularTotal(DetalleFactura detalle){
 		//Recoger qué fila se ha pulsadao en la tabla
 		filaPulsada = this.view.geTableDetalle().getSelectedRow();
 		char caracter = e.getKeyChar();
-		//JOptionPane.showMessageDialog(view,e.getKeyChar());
+		
 		
 		//para quitar los simnos mas o numero que ingrese en la busqueda
 		if(e.getComponent()==this.view.getTxtBuscar()){
@@ -577,6 +577,16 @@ public void calcularTotal(DetalleFactura detalle){
 				view.getTxtPrecio().setText("L. "+myArticulo.getPrecioVenta());
 				
 			}
+			else{
+				myArticulo=null;
+				view.getTxtArticulo().setText("");
+				view.getTxtPrecio().setText("");
+			}
+		}
+		else{
+			myArticulo=null;
+			view.getTxtArticulo().setText("");
+			view.getTxtPrecio().setText("");
 		}
 		if(caracter=='+'){
 			if(filaPulsada>=0){

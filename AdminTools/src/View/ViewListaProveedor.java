@@ -144,7 +144,7 @@ public class ViewListaProveedor extends JDialog {
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 		this.setResizable(false);
 		//se hace visible
-		setVisible(true);
+		//setVisible(true);
 
 		
 	}

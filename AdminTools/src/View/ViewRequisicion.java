@@ -183,6 +183,15 @@ public class ViewRequisicion extends JDialog {
 	public JTextField getTxtTotal(){
 		return txtTotal;
 	}
+	public JTextField getTxtBuscar(){
+		return txtBuscar;
+	}
+	public JTextField getTxtArticulo(){
+		return txtArticulo;
+	}
+	public JTextField getTxtPrecio(){
+		return txtPrecio;
+	}
 	
 public void conectarContralador(CtlRequisicion c){
 		
@@ -203,7 +212,7 @@ public void conectarContralador(CtlRequisicion c){
 		this.btnBuscar.addKeyListener(c);
 		this.btnBuscar.addActionListener(c);
 		this.btnBuscar.setActionCommand("BUSCARARTICULO");*/
-		
+		txtBuscar.addKeyListener(c);
 		txtBuscar.addActionListener(c);
 		txtBuscar.setActionCommand("BUSCARARTICULO2");
 		
@@ -233,7 +242,7 @@ public void conectarContralador(CtlRequisicion c){
 		this.txtImpuesto.addKeyListener(c);
 		this.txtSubtotal.addKeyListener(c);
 		this.txtTotal.addKeyListener(c);
-		txtBuscar.addKeyListener(c);
+		
 		//txtBuscar.
 		txtArticulo.addKeyListener(c);
 		txtPrecio.addKeyListener(c);*/

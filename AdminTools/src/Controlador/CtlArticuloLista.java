@@ -39,13 +39,17 @@ public class CtlArticuloLista implements ActionListener,MouseListener, WindowLis
 	//pool de conexion
 	private Conexion conexion=null;
 	
-	public CtlArticuloLista(ViewListaArticulo view,Conexion conn){
+	public CtlArticuloLista(ViewListaArticulo v,Conexion conn){
 		//se estable el pool de conexiones del inicio y para su utilizacion
 		conexion=conn;
-		this.view=view;
+		this.view=v;
 		myArticulo=new Articulo();
 		myArticuloDao=new ArticuloDao(conexion);
 		cargarTabla(myArticuloDao.todoArticulos());
+		
+		view.conectarControlador(this);
+		
+		view.setVisible(true);
 		//this.view.setVisible(true);
 		
 	}

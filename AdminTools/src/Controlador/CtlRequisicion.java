@@ -1,5 +1,6 @@
 package Controlador;
 
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -19,7 +20,9 @@ import Modelo.ArticuloDao;
 import Modelo.Conexion;
 import Modelo.DetalleFacturaProveedor;
 import Modelo.Factura;
+import Modelo.KardexDao;
 import Modelo.Requisicion;
+import View.TablaModeloMarca;
 import View.ViewRequisicion;
 
 public class CtlRequisicion implements ActionListener, MouseListener, TableModelListener, KeyListener   {
@@ -28,6 +31,8 @@ public class CtlRequisicion implements ActionListener, MouseListener, TableModel
 	private Requisicion myRequisicion=null;
 	private Articulo myArticulo=null;
 	private ArticuloDao myArticuloDao=null;
+	private int filaPulsada=0;
+	private KardexDao myKardex;
 	
 	public CtlRequisicion(ViewRequisicion v,Conexion conn){
 		view=v;
@@ -37,9 +42,7 @@ public class CtlRequisicion implements ActionListener, MouseListener, TableModel
 		view.getModelo().agregarDetalle();
 		myArticuloDao=new ArticuloDao(conexion);
 		view.conectarContralador(this);
-		
-		
-		
+		myKardex=new KardexDao(conexion);
 		view.setVisible(true);
 	}
 
@@ -59,9 +62,78 @@ public class CtlRequisicion implements ActionListener, MouseListener, TableModel
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
+		//comprobamos si hay algo que buscar
+		if(e.getComponent()==this.view.getTxtBuscar()&&view.getTxtBuscar().getText().trim().length()!=0){
+			//JOptionPane.showMessageDialog(view, "2");
+			//se busca el articulo y se asigna el resultado en el objeto articulo
+			this.myArticulo=this.myArticuloDao.buscarArticuloNombre(view.getTxtBuscar().getText());
+			
+			//se comprueba si la busqueda devolvio un articulo
+			if(myArticulo!=null){
+				view.getTxtArticulo().setText(myArticulo.getArticulo());
+				view.getTxtPrecio().setText("L. "+myArticulo.getPrecioVenta());
+				
+			}else{//si no se encontro ningun articulo se elemina la busqueda anterior
+				myArticulo=null;
+				view.getTxtArticulo().setText("");
+				view.getTxtPrecio().setText("");
+			}
+		}else{///sino hay nada que buscar se elemina la vista y el articulo
+			myArticulo=null;
+			view.getTxtArticulo().setText("");
+			view.getTxtPrecio().setText("");
+		}
+		
+		//Recoger qué fila se ha pulsadao en la tabla
+		filaPulsada = this.view.getTablaArticulos().getSelectedRow();
+		char caracter = e.getKeyChar();
+		
+		
+		//para quitar los simnos mas o numero que ingrese en la busqueda
+		if(e.getComponent()==this.view.getTxtBuscar()){
+			Character caracter1 = new Character(e.getKeyChar());
+	        if (!esValido(caracter1))
+	        {
+	           String texto = "";
+	           for (int i = 0; i < view.getTxtBuscar().getText().length(); i++)
+	                if (esValido(new Character(view.getTxtBuscar().getText().charAt(i))))
+	                    texto += view.getTxtBuscar().getText().charAt(i);
+	           			view.getTxtBuscar().setText(texto);
+	                //view.getToolkit().beep();
+	        }
+		}
+		
+		if(caracter=='+'){
+			if(filaPulsada>=0){
+				//JOptionPane.showMessageDialog(view,e.getKeyChar()+" FIla:"+filaPulsada);
+				this.view.getModelo().masCantidad(filaPulsada);
+				//JOptionPane.showMessageDialog(view,view.getModeloTabla().getDetalle(filaPulsada).getCantidad());
+				this.calcularTotales();
+			}
+		}
+		if(caracter=='-'){
+			if(filaPulsada>=0){
+				//JOptionPane.showMessageDialog(view,e.getKeyChar()+" FIla:"+filaPulsada);
+				this.view.getModelo().restarCantidad(filaPulsada);
+				//JOptionPane.showMessageDialog(view,view.getModeloTabla().getDetalle(filaPulsada).getCantidad());
+				this.calcularTotales();
+			}
+		}
+		
 	}
 
-	
+	private boolean esValido(Character caracter)
+    {
+        char c = caracter.charValue();
+        if ( !(Character.isLetter(c) //si es letra
+                || c == ' ' //o un espacio
+                || c == 8 //o backspace
+                || (Character.isDigit(c))
+            ))
+            return false;
+        else
+            return true;
+    }
 	@Override
 	public void tableChanged(TableModelEvent e) {
 		// TODO Auto-generated method stub
@@ -95,7 +167,13 @@ public class CtlRequisicion implements ActionListener, MouseListener, TableModel
 					
 			        
 					if(myArticulo!=null){
+						
+						
+						//se consigue el articulo en la bd
 						this.view.getModelo().setArticulo(myArticulo, row);
+						
+						//se consiguie el precio de costo 
+						this.view.getModelo().setPricioCompra(myKardex.buscarKardexPrecio(myArticulo.getId(), 1), row);
 						//this.view.getModelo().getDetalle(row).setCantidad(1);
 						boolean toggle = false;
 						boolean extend = false;
@@ -124,30 +202,8 @@ public class CtlRequisicion implements ActionListener, MouseListener, TableModel
 				}
 				if(colum==2){
 					calcularTotales();
-					boolean toggle = false;
-					boolean extend = false;
-					this.view.getTablaArticulos().requestFocus();
-						
-					this.view.getTablaArticulos().changeSelection(row,colum+1, toggle, extend);
-					
-					//se agrega la nueva fila de la tabla
-					//this.view.getModelo().agregarDetalle();
-					//calcularTotales();
-				}
-				if(colum==3){
-					calcularTotales();
-					boolean toggle = false;
-					boolean extend = false;
-					this.view.getTablaArticulos().requestFocus();
-					//se agrega la nueva fila de la tabla
-					//this.view.getModelo().agregarDetalle();
-						
-					this.view.getTablaArticulos().changeSelection(row+1,0, toggle, extend);	
-					//calcularTotales();
 				}
 				
-				//se agrega la nueva fila de la tabla
-				//this.view.getModelo().agregarDetalle();
 			break;
 		}
 		
@@ -233,7 +289,40 @@ public void calcularTotales(){
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		String comando=e.getActionCommand();
 		
+		switch (comando){
+		case "BUSCARARTICULO2":
+			if(myArticulo!=null){
+				this.view.getModelo().setArticulo(myArticulo);
+				
+				
+				this.view.getModelo().agregarDetalle();
+				view.getTxtArticulo().setText("");
+				view.getTxtPrecio().setText("");
+				view.getTxtBuscar().setText("");
+				
+				
+				int row =  this.view.getTablaArticulos().getRowCount () - 2;
+				//this.view.getModelo().getDetalle(row).setCantidad(1);
+				//JOptionPane.showMessageDialog(view, row);
+				this.view.getModelo().setPricioCompra(myKardex.buscarKardexPrecio(myArticulo.getId(), 1), row);
+				calcularTotales();
+				selectRowInset();
+			}
+			break;
+		}
+		
+	}
+	private void selectRowInset(){
+		/*<<<<<<<<<<<<<<<selecionar la ultima fila creada>>>>>>>>>>>>>>>*/
+		int row =  this.view.getTablaArticulos().getRowCount () - 2;
+		Rectangle rect = this.view.getTablaArticulos().getCellRect(row, 0, true);
+		this.view.getTablaArticulos().scrollRectToVisible(rect);
+		this.view.getTablaArticulos().clearSelection();
+		this.view.getTablaArticulos().setRowSelectionInterval(row, row);
+		TablaModeloMarca modelo = (TablaModeloMarca)this.view.getTablaArticulos().getModel();
+		modelo.fireTableDataChanged();
 	}
 
 }
