@@ -181,10 +181,12 @@ public class CtlRequisicion implements ActionListener, MouseListener, TableModel
 							
 						this.view.getTablaArticulos().changeSelection(row,colum+2, toggle, extend);
 							
-						//calcularTotales();
+						//
 						
 						//se agrega otra fila en la tabla
-						//this.view.getModelo().agregarDetalle();
+						this.view.getModelo().agregarDetalle();
+						
+						calcularTotales();
 					}else{
 						JOptionPane.showMessageDialog(view, "No se encuentra el articulo");
 						
@@ -305,7 +307,7 @@ public void calcularTotales(){
 				
 				int row =  this.view.getTablaArticulos().getRowCount () - 2;
 				//this.view.getModelo().getDetalle(row).setCantidad(1);
-				//JOptionPane.showMessageDialog(view, row);
+				JOptionPane.showMessageDialog(view, row);
 				this.view.getModelo().setPricioCompra(myKardex.buscarKardexPrecio(myArticulo.getId(), 1), row);
 				calcularTotales();
 				selectRowInset();

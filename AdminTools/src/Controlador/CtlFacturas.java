@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -214,16 +215,23 @@ public class CtlFacturas implements ActionListener, MouseListener, ChangeListene
 					int resul=JOptionPane.showConfirmDialog(view, "¿Desea anular la factura no "+myFactura.getIdFactura()+"?");
 					//sin confirmo la anulacion
 					if(resul==0){
-						String pwd=JOptionPane.showInputDialog(view, "Escriba la contraseña admin", "Seguridad", JOptionPane.INFORMATION_MESSAGE);
-						
-						//comprabacion del permiso administrativo
-						if(this.myUsuarioDao.comprobarAdmin(pwd)){
-							//se anula la factura en la bd
-							if(myFacturaDao.anularFactura(myFactura))
-								myFactura.setEstado("NULA");
-							//JOptionPane.showMessageDialog(view, "Usuario Valido");
+						JPasswordField pf = new JPasswordField();
+						int action = JOptionPane.showConfirmDialog(view, pf,"Escriba la contraseña admin",JOptionPane.OK_CANCEL_OPTION);
+						//String pwd=JOptionPane.showInputDialog(view, "Escriba la contraseña admin", "Seguridad", JOptionPane.INFORMATION_MESSAGE);
+						if(action < 0){
+							
+							
 						}else{
-							JOptionPane.showMessageDialog(view, "Usuario Invalido");
+							String pwd=new String(pf.getPassword());
+							//comprabacion del permiso administrativo
+							if(this.myUsuarioDao.comprobarAdmin(pwd)){
+								//se anula la factura en la bd
+								if(myFacturaDao.anularFactura(myFactura))
+									myFactura.setEstado("NULA");
+								//JOptionPane.showMessageDialog(view, "Usuario Valido");
+							}else{
+								JOptionPane.showMessageDialog(view, "Usuario Invalido");
+							}
 						}
 						
 					}

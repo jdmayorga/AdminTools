@@ -21,7 +21,13 @@ public class RenderizadorTablaFactura implements TableCellRenderer{
 		    if (value != null)
 		      editor.setText(value.toString());
 		    
-		    editor.setBackground((row % 2 == 0) ? Color.white : Color.cyan);
+		    if (row % 2 == 0) {
+		    	editor.setBackground(new Color(176, 224, 230));
+	        } else {
+	        	editor.setBackground(Color.white);
+	        }
+		    
+		    //editor.setBackground((row % 2 == 0) ? Color.white : Color.cyan);
 		    
 		    
 		   if(column==0){

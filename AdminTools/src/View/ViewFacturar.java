@@ -394,6 +394,7 @@ public class ViewFacturar extends JDialog {
 		tableDetalle.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		tableDetalle.setColumnSelectionAllowed(true);
 		tableDetalle.setRowSelectionAllowed(true);
+		tableDetalle.setCellSelectionEnabled(true);
 		
 		txtIdcliente.addKeyListener(c);
 		txtNombrecliente.addKeyListener(c);

@@ -480,7 +480,7 @@ public class FacturaDao {
 				unaFactura.setTotalDescuento(res.getBigDecimal("descuento"));
 				unaFactura.setTipoFactura(res.getInt("tipo_factura"));
 				
-				unaFactura.setDetalles(detallesDao.detallesFacturaPendiente(res.getInt("numero_factura")));
+				unaFactura.setDetalles(detallesDao.detallesFacturaPendiente(unaFactura.getIdFactura()));
 				
 				
 				facturas.add(unaFactura);

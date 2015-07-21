@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.Window;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -50,8 +51,10 @@ public class ViewListaClientes extends JDialog {
 	
 	
 	
-	public ViewListaClientes() {
+	public ViewListaClientes(Window view) {
 		setTitle("Clientes");
+		this.setLocationRelativeTo(view);
+		this.setModal(true);
 		
 		miEsquema=new BorderLayout();
 		this.setTitle("Articulos");

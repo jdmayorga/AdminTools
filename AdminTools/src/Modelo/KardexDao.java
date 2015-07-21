@@ -11,7 +11,7 @@ public class KardexDao {
 	private PreparedStatement buscarArticulo=null;
 	private PreparedStatement insertarNuevoMovimiento=null;
 	private String ultimoRistro="SELECT "
-			+ "v_kardex.can_saldo, "
+			+ " v_kardex.can_saldo, "
 			+ "v_kardex.precio_saldo, "
 			+ "v_kardex.total_saldo,"
 			+ "v_kardex.cod,"

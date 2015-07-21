@@ -297,7 +297,9 @@ public class DetalleFacturaDao {
 				DetalleFactura unDetalle=new DetalleFactura();
 				existe=true;
 				//se consigue el articulo del detalle
-				Articulo articuloDetalle=articuloDao.buscarArticulo(res.getInt("codigo_articulo"));
+				Articulo articuloDetalle= new Articulo();//articuloDao.buscarArticulo(res.getInt("codigo_articulo"));
+				articuloDetalle.setId(res.getInt("codigo_articulo"));
+				//articuloDetalle.setArticulo(res.getString(""));
 				articuloDetalle.setPrecioVenta(res.getDouble("precio"));//se estable el precio del articulo
 				unDetalle.setListArticulos(articuloDetalle);//se agrega el articulo al 
 				unDetalle.setCantidad(res.getBigDecimal("cantidad"));

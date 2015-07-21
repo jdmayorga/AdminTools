@@ -32,6 +32,7 @@ import Modelo.Conexion;
 import Modelo.DetalleFactura;
 import Modelo.Factura;
 import Modelo.FacturaDao;
+import View.TablaModeloFactura;
 import View.TablaModeloMarca;
 import View.ViewCambioPago;
 import View.ViewFacturar;
@@ -41,7 +42,7 @@ import View.ViewListaClientes;
 public class CtlFacturar  implements ActionListener, MouseListener, TableModelListener, WindowListener, KeyListener  {
 	
 	private ViewFacturar view;
-	private Factura myFactura=new Factura();
+	private Factura myFactura=null;
 	private FacturaDao facturaDao=null;//=new FacturaDao();
 	private ClienteDao clienteDao=null;//=new ClienteDao();
 	private Articulo myArticulo=null;
@@ -49,6 +50,7 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 	private Cliente myCliente=null;
 	private Conexion conexion=null;
 	private int filaPulsada=0;
+	private boolean resultado=false;
 	//private ViewListaArticulo viewListaArticulo=null;
 	//private CtlArticuloBuscar ctlArticulo=null;
 	
@@ -402,22 +404,22 @@ public void calcularTotales(){
 				//myFactura.getDetalles().add(detalle);
 				myFactura.setTotalDescuento(detalle.getDescuentoItem());
 				
-				detalle.setSubTotal(totalsiniva.setScale(2, BigDecimal.ROUND_HALF_EVEN));
-				detalle.setImpuesto(impuestoItem.setScale(2, BigDecimal.ROUND_HALF_EVEN));
+				detalle.setSubTotal(totalsiniva.setScale(0, BigDecimal.ROUND_HALF_EVEN));
+				detalle.setImpuesto(impuestoItem.setScale(0, BigDecimal.ROUND_HALF_EVEN));
 				//myFactura.getDetalles()
 				
 				//se establece en la y el impuesto en el item de la vista
 				//detalle.setImpuesto(impuesto2.setScale(2, BigDecimal.ROUND_HALF_EVEN));
-				detalle.setTotal(totalItem.setScale(2, BigDecimal.ROUND_HALF_EVEN));
+				detalle.setTotal(totalItem.setScale(0, BigDecimal.ROUND_HALF_EVEN));
 				
 				//se establece el total e impuesto en el vista
-				this.view.getTxtTotal().setText(""+myFactura.getTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN));
-				this.view.getTxtImpuesto().setText(""+myFactura.getTotalImpuesto().setScale(2, BigDecimal.ROUND_HALF_EVEN));
-				this.view.getTxtImpuesto18().setText(""+myFactura.getTotalImpuesto18().setScale(2, BigDecimal.ROUND_HALF_EVEN));
-				this.view.getTxtSubtotal().setText(""+myFactura.getSubTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN));
-				this.view.getTxtDescuento().setText(""+myFactura.getTotalDescuento().setScale(2, BigDecimal.ROUND_HALF_EVEN));
+				this.view.getTxtTotal().setText(""+myFactura.getTotal().setScale(0, BigDecimal.ROUND_HALF_EVEN));
+				this.view.getTxtImpuesto().setText(""+myFactura.getTotalImpuesto().setScale(0, BigDecimal.ROUND_HALF_EVEN));
+				this.view.getTxtImpuesto18().setText(""+myFactura.getTotalImpuesto18().setScale(0, BigDecimal.ROUND_HALF_EVEN));
+				this.view.getTxtSubtotal().setText(""+myFactura.getSubTotal().setScale(0, BigDecimal.ROUND_HALF_EVEN));
+				this.view.getTxtDescuento().setText(""+myFactura.getTotalDescuento().setScale(0, BigDecimal.ROUND_HALF_EVEN));
 				
-				
+				view.getModeloTabla().fireTableDataChanged();
 				
 				
 			
@@ -614,15 +616,17 @@ public void calcularTotal(DetalleFactura detalle){
 		//facturaDao.desconectarBD();
 		//this.clienteDao.desconectarBD();
 		//this.myArticuloDao.desconectarBD();
-		this.myFactura=null;
+		//this.myFactura.setIdFactura(-1);
 		this.view.setVisible(false);
 		
 		
 	}
 	private void guardar(){
+		
 		setFactura();
 		facturaDao.registrarFacturaTemp(myFactura);
 		myFactura.setIdFactura(facturaDao.getIdFacturaGuardada());
+		resultado=true;
 		this.view.setVisible(false);
 		
 	}
@@ -676,7 +680,7 @@ public void calcularTotal(DetalleFactura detalle){
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
+				
 				
 			}else{
 				JOptionPane.showMessageDialog(view, "No se guardo la factura", "Error Base de Datos", JOptionPane.ERROR_MESSAGE);
@@ -722,7 +726,7 @@ public void calcularTotal(DetalleFactura detalle){
 	
 	private void buscarCliente(){
 		//se crea la vista para buscar los cliente
-		ViewListaClientes viewListaCliente=new ViewListaClientes ();
+		ViewListaClientes viewListaCliente=new ViewListaClientes (this.view);
 		
 		CtlClienteBuscar ctlBuscarCliente=new CtlClienteBuscar(viewListaCliente,conexion);
 		
@@ -744,14 +748,28 @@ public void calcularTotal(DetalleFactura detalle){
 	
 	
 	private void selectRowInset(){
+		
+		int row = this.view.geTableDetalle().getRowCount () - 2;
+	    int col = 1;
+	    boolean toggle = false;
+	    boolean extend = false;
+	    this.view.geTableDetalle().changeSelection(row, 0, toggle, extend);
+	    this.view.geTableDetalle().changeSelection(row, col, toggle, extend);
+	    this.view.geTableDetalle().addColumnSelectionInterval(0, 7);
+		
 		/*<<<<<<<<<<<<<<<selecionar la ultima fila creada>>>>>>>>>>>>>>>*/
-		int row =  this.view.geTableDetalle().getRowCount () - 2;
-		Rectangle rect = this.view.geTableDetalle().getCellRect(row, 0, true);
+		/*int row =  this.view.geTableDetalle().getRowCount () - 2;
+		JOptionPane.showMessageDialog(view, row);
+		/Rectangle rect = this.view.geTableDetalle().getCellRect(row, 0, true);
 		this.view.geTableDetalle().scrollRectToVisible(rect);
-		this.view.geTableDetalle().clearSelection();
-		this.view.geTableDetalle().setRowSelectionInterval(row, row);
-		TablaModeloMarca modelo = (TablaModeloMarca)this.view.geTableDetalle().getModel();
-		modelo.fireTableDataChanged();
+		this.view.geTableDetalle().clearSelection();*/
+		//this.view.geTableDetalle().setRowSelectionInterval(row, row);
+		//view.geTableDetalle().setRowSelectionInterval(row, row);
+		//view.geTableDetalle().clearSelection();
+		//view.geTableDetalle().addRowSelectionInterval(row,row);
+		//TablaModeloFactura modelo = (TablaModeloFactura)this.view.geTableDetalle().getModel();
+		//modelo.fireTableDataChanged();
+		//this.view.getModeloTabla().fireTableDataChanged();
 	}
 
 	@Override
@@ -766,7 +784,7 @@ public void calcularTotal(DetalleFactura detalle){
 		//facturaDao.desconectarBD();
 		//this.clienteDao.desconectarBD();
 		//this.myArticuloDao.desconectarBD();
-		this.myFactura=null;
+		//this.myFactura.setIdFactura(-1);
 		this.view.setVisible(false);
 	}
 
@@ -828,9 +846,9 @@ public void calcularTotal(DetalleFactura detalle){
 	}
 
 
-	public Factura getAccion() {
+	public boolean getAccion() {
 		view.setVisible(true);
-		return myFactura;
+		return resultado;
 	}
 
 
@@ -840,6 +858,12 @@ public void calcularTotal(DetalleFactura detalle){
 		cargarFacturaView();
 		this.view.getPanelAcciones().setVisible(false);
 		this.view.setVisible(true);
+	}
+
+
+	public Factura getFactura() {
+		// TODO Auto-generated method stub
+		return this.myFactura;
 	}
 
 }

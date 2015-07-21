@@ -20,6 +20,7 @@ import Modelo.Marca;
 import Modelo.Proveedor;
 import Modelo.ProveedorDao;
 import View.TablaModeloMarca;
+import View.TableModeloArticulo;
 import View.ViewCrearArticulo;
 import View.ViewCrearMarca;
 import View.ViewCrearProveedor;
@@ -112,7 +113,7 @@ public class CtlArticuloLista implements ActionListener,MouseListener, WindowLis
 				this.view.getTablaArticulos().scrollRectToVisible(rect);
 				this.view.getTablaArticulos().clearSelection();
 				this.view.getTablaArticulos().setRowSelectionInterval(row, row);
-				TablaModeloMarca modelo = (TablaModeloMarca)this.view.getTablaArticulos().getModel();
+				TableModeloArticulo modelo = (TableModeloArticulo)this.view.getTablaArticulos().getModel();
 				modelo.fireTableDataChanged();
 			}
 			//this.view.modelo.agregarProveedor(ctl.myProveedor);//se agrega el nuevo proveedor registrado a la tabla de la vista

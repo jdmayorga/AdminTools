@@ -52,6 +52,9 @@ public class ViewListaFacturasCompra extends JDialog {
 	private TablaModeloFacturasCompra modelo;
 	private JTextField txtBuscar2;
 
+	
+	
+	
 	public ViewListaFacturasCompra(JFrame view) {
 		addWindowListener(new WindowAdapter() {
 			@Override

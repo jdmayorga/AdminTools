@@ -7,7 +7,7 @@ import java.util.List;
 public class Factura {
 	
 	private String fecha;
-	private Integer idFactura;
+	private Integer idFactura=0;
 	private Integer tipoFactura=1;
 	private Cliente cliente;
 	private List<DetalleFactura> detalles=new ArrayList<DetalleFactura>();

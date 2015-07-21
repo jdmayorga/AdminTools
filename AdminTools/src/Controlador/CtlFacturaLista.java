@@ -178,11 +178,14 @@ private void cobrar(){
 			CtlFacturar ctlFacturar=new CtlFacturar(vistaFacturar,conexion );
 				
 			vistaFacturar.getTxtBuscar().requestFocusInWindow();
-			Factura myFac=ctlFacturar.getAccion();
 			
-			//JOptionPane.showMessageDialog(view, "El id factura:"+myFac.getIdFactura());
+			//myFac=ctlFacturar.getAccion();
+			boolean resul=ctlFacturar.getAccion();
+			//JOptionPane.showMessageDialog(view, myFac);
 			
-			if(myFac!=null){
+			if(resul){
+				Factura myFac=new Factura();
+				myFac=ctlFacturar.getFactura();
 				this.view.getModelo().agregarFactura(myFac);
 			}
 			

@@ -126,7 +126,7 @@ public class CtlMenuPrincipal implements ActionListener {
 				
 				break;
 			case "CLIENTES":
-				ViewListaClientes viewClientes=new ViewListaClientes();
+				ViewListaClientes viewClientes=new ViewListaClientes(view);
 				CtlClienteLista  ctlClientes=new CtlClienteLista(viewClientes,conexion);
 				viewClientes.dispose();
 				ctlClientes=null;
