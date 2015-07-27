@@ -94,14 +94,17 @@ public class ViewFacturar extends JDialog {
 		//btnBuscar.getInputMap().put(KeyStroke.getKeyStroke("F1"), sumar());
 		
 		btnCliente = new BotonBuscarClientes();
+		btnCliente.setHorizontalAlignment(SwingConstants.LEFT);
 		btnCliente.setBounds(10, 105, 144, 38);
 		panelAcciones.add(btnCliente);
 		
 		btnCobrar = new BotonCobrar();
+		btnCobrar.setHorizontalAlignment(SwingConstants.LEFT);
 		btnCobrar.setBounds(10, 180, 144, 38);
 		panelAcciones.add(btnCobrar);
 		
 		btnActualizar=new BotonActualizar();
+		btnActualizar.setHorizontalAlignment(SwingConstants.LEFT);
 		btnActualizar.setBounds(10, 255, 144, 38);
 		//getContentPane().add(btnActualizar);
 		panelAcciones.add(btnActualizar);

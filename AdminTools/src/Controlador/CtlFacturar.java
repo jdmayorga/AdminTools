@@ -420,6 +420,7 @@ public void calcularTotales(){
 				this.view.getTxtDescuento().setText(""+myFactura.getTotalDescuento().setScale(0, BigDecimal.ROUND_HALF_EVEN));
 				
 				view.getModeloTabla().fireTableDataChanged();
+				this.selectRowInset();
 				
 				
 			
