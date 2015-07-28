@@ -51,7 +51,7 @@ public class ViewRequisicion extends JDialog {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				setVisible(false);
+				setVisible(false);// evente del ocultar la ventana
 			}
 		});
 		

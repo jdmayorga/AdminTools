@@ -55,6 +55,7 @@ public class ViewCrearArticulo extends JDialog {
 	
 
 	public ViewCrearArticulo(ViewListaArticulo view) {
+		
 		super(view,"Agregar Articulos",Dialog.ModalityType.DOCUMENT_MODAL);
 		
 		setFont(new Font("Verdana", Font.PLAIN, 12));
@@ -80,7 +81,7 @@ public class ViewCrearArticulo extends JDialog {
 		lblNombre.setBounds(20, 11, 76, 23);
 		getContentPane().add(lblNombre);
 		
-		txtNombre=new JTextField(30);
+		txtNombre=new RoundJTextField(30);
 		txtNombre.setBounds(118, 11, 257, 23);
 		txtNombre.setFont(myFont);
 		getContentPane().add(txtNombre);
@@ -104,7 +105,7 @@ public class ViewCrearArticulo extends JDialog {
 		
 		cbxImpuesto = new JComboBox();
 		modeloImpuesto=new ComboBoxImpuesto();
-		cbxImpuesto.setModel(modeloImpuesto);
+		cbxImpuesto.setModel(modeloImpuesto);//para poder mostrar el formulario en modo diseño comente esta linea
 		cbxImpuesto.setBounds(118, 114, 257, 23);
 		cbxImpuesto.setFont(myFont);
 		getContentPane().add(cbxImpuesto);
@@ -112,18 +113,19 @@ public class ViewCrearArticulo extends JDialog {
 		
 		//botones
 		btnGuardar = new BotonGuardar();
-		btnGuardar.setLocation(20, 353);
+		btnGuardar.setLocation(56, 409);
 		//tnCancelar.setLocation(42, 175);
 		getContentPane().add(btnGuardar);
 		
 		btnActualizar=new BotonActualizar();
-		btnActualizar.setLocation(20, 353);
+		btnActualizar.setLocation(56, 409);
 		getContentPane().add(btnActualizar);
 		btnActualizar.setVisible(false);
 		
 		btnCancelar = new BotonCancelar();
+		btnCancelar.setSize(128, 45);
 		//btnCancelar.setBounds(212, 175, 135, 39);
-		btnCancelar.setLocation(247, 353);
+		btnCancelar.setLocation(240, 409);
 		getContentPane().add(btnCancelar);
 		
 		btnBuscar = new JButton("...");
@@ -132,7 +134,7 @@ public class ViewCrearArticulo extends JDialog {
 		
 		txtMarca = new JTextField();
 		txtMarca.setEditable(false);
-		txtMarca.setBounds(118, 81, 229, 23);
+		txtMarca.setBounds(118, 81, 257, 23);
 		getContentPane().add(txtMarca);
 		txtMarca.setColumns(10);
 		
@@ -144,6 +146,8 @@ public class ViewCrearArticulo extends JDialog {
 		
 		modeloCodBarra=new ListaModeloCodBarra();
 		listCodigos = new JList();
+		listCodigos.setSize(257, 99);
+		listCodigos.setLocation(119, 0);
 		listCodigos.setModel(modeloCodBarra);
 		listCodigos.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		scrollPane.setViewportView(listCodigos);
@@ -179,7 +183,7 @@ public class ViewCrearArticulo extends JDialog {
 		cbxTipo.setBounds(118, 50, 257, 20);
 		getContentPane().add(cbxTipo);
 		
-		setSize(434,454);
+		setSize(431,497);
 		
 		//centrar la ventana en la pantalla
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
