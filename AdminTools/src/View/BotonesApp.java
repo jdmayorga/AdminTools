@@ -7,6 +7,7 @@ public class BotonesApp extends JButton {
 	private static final int alto=45;
 	
 	public BotonesApp(){
+		this.setSize(ancho, alto);
 		
 	}
 	public BotonesApp(String titulo){

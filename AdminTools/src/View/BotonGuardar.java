@@ -10,7 +10,7 @@ public class BotonGuardar extends BotonesApp {
 	private ImageIcon imgGuardar;
 	
 	
-	BotonGuardar(){
+	public BotonGuardar(){
 		super("Guardar");
 		
 		imgGuardar=new ImageIcon(BotonCancelar.class.getResource("/View/imagen/ic_launcher.png"));
