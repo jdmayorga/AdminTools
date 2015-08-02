@@ -74,7 +74,7 @@ public class ProveedorDao {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			conexion.desconectar();
+			//conexion.desconectar();
             return false;
             
 			
@@ -389,9 +389,9 @@ public class ProveedorDao {
 	}
 	
 /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<cierra la conexión a la base de datos>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
-	public void close()
+	/*public void close()
 		{
 			conexion.desconectar();
-		} //// fin del método close
+		} //// fin del método close*/
 
 }

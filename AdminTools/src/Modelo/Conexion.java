@@ -121,7 +121,7 @@ public class Conexion {
       return conn;
    }
 
-   public void desconectar(){
+  /* public void desconectar(){
       //conn = null;
       try {
 		conn.close();
@@ -130,7 +130,7 @@ public class Conexion {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
-   }
+   }*/
    
    public static DataSource getPoolConexion(){
 	   return poolConexiones;

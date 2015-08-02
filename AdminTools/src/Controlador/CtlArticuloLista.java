@@ -251,7 +251,7 @@ public class CtlArticuloLista implements ActionListener,MouseListener, WindowLis
 		// TODO Auto-generated method stub
 		//this.myArticulorDao.close();
 		this.view.setVisible(false);
-		this.conexion.desconectar();
+		//this.conexion.desconectar();
 		
 	}
 
