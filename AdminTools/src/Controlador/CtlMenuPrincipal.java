@@ -102,15 +102,18 @@ public class CtlMenuPrincipal implements ActionListener {
 				break;
 			case "FACTURAR":
 				
-				ViewListaFactura vistaFacturars=new ViewListaFactura(this.view);
+				/*ViewListaFactura vistaFacturars=new ViewListaFactura(this.view);
 				CtlFacturaLista ctlFacturas=new CtlFacturaLista(vistaFacturars,conexion );
 				vistaFacturars.dispose();
-				ctlFacturas=null;
+				ctlFacturas=null;*/
 			
-				/*ViewFacturar vistaFacturar=new ViewFacturar(this.view);
-				
+				ViewFacturar vistaFacturar=new ViewFacturar(this.view);
+				vistaFacturar.pack();
 				CtlFacturar ctlFacturar=new CtlFacturar(vistaFacturar,conexion );
-				vistaFacturar.setVisible(true);*/
+				
+				
+				
+				
 		
 				
 				break;
