@@ -57,10 +57,15 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 	public CtlFacturar(ViewFacturar v,Conexion conn){
 		view=v;
 		view.conectarContralador(this);
-		conexion=conn;		
+		conexion=conn;	
+		//se inicializan atributos de la factura
+		myFactura=new Factura();
+		myArticuloDao=new ArticuloDao(conexion);
+		clienteDao=new ClienteDao(conexion);
+		facturaDao=new FacturaDao(conexion);
 		
-		
-		view.getModeloTabla().agregarDetalle();
+		this.setEmptyView();
+		/*view.getModeloTabla().agregarDetalle();
 		myFactura=new Factura();
 		myArticuloDao=new ArticuloDao(conexion);
 		clienteDao=new ClienteDao(conexion);
@@ -71,6 +76,10 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 		//view.setVisible(true);
 		this.view.getTxtIdcliente().setText("1");;
 		this.view.getTxtNombrecliente().setText("Cliente Normal");
+		
+		this.view.getTxtBuscar().requestFocusInWindow();*/
+		
+		this.view.setVisible(true);
 		//la ventana buscar articulo y su controlador
 		//viewListaArticulo=new ViewListaArticulo(this.view);
 		//view.getTxtBuscar().requestFocusInWindow();
@@ -640,8 +649,8 @@ public void calcularTotal(DetalleFactura detalle){
 	}
 	private void cobrar(){
 		
-		//JOptionPane.showInternalInputDialog(view, "Pago con", "Cobro", JOptionPane.INFORMATION_MESSAGE);
 		
+		//se muestra la vista para cobrar y introducir el cambio
 		ViewCambioPago viewPago=new ViewCambioPago(this.view);
 		CtlCambioPago ctlPago=new CtlCambioPago(viewPago,myFactura.getTotal());
 		//se muestra y ventana del cobro y se devuelve un resultado del cobro
@@ -670,13 +679,15 @@ public void calcularTotal(DetalleFactura detalle){
 				myFactura.setIdFactura(facturaDao.getIdFacturaGuardada());
 				
 					try {
-						this.view.setVisible(false);
-						this.view.dispose();
+						/*this.view.setVisible(false);
+						this.view.dispose();*/
 						//AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "Factura_Saint_Paul.jasper",myFactura.getIdFactura() );
 						AbstractJasperReports.createReport(conexion.getPoolConexion().getConnection(), 1, myFactura.getIdFactura());
 						//AbstractJasperReports.showViewer();
 						AbstractJasperReports.imprimierFactura();
-						myFactura=null;
+						//myFactura=null;
+						setEmptyView();
+						//myFactura.
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -724,7 +735,35 @@ public void calcularTotal(DetalleFactura detalle){
 		ctlArticulo=null;
 		
 	}
-	
+	private void setEmptyView(){
+		//se estable la tabla de detalles vacia
+		view.getModeloTabla().setEmptyDetalles();
+		
+		//se agrega una fila vacia a la tabla detalle
+		view.getModeloTabla().agregarDetalle();
+		
+		
+		//conseguir la fecha la facturaa
+		view.getTxtFechafactura().setText(facturaDao.getFechaSistema());
+		
+		//se estable un cliente generico para la factura
+		this.view.getTxtIdcliente().setText("1");;
+		this.view.getTxtNombrecliente().setText("Cliente Normal");
+		
+		
+		this.view.getTxtArticulo().setText("");
+		this.view.getTxtBuscar().setText("");
+		this.view.getTxtDescuento().setText("");
+		this.view.getTxtImpuesto().setText("0.00");
+		this.view.getTxtImpuesto18().setText("0.00");
+		this.view.getTxtPrecio().setText("0.00");
+		this.view.getTxtSubtotal().setText("0.00");
+		this.view.getTxtTotal().setText("0.00");
+		
+		//se estable el focus de la view en la caja de texto buscar
+		this.view.getTxtBuscar().requestFocusInWindow();
+		
+	}
 	private void buscarCliente(){
 		//se crea la vista para buscar los cliente
 		ViewListaClientes viewListaCliente=new ViewListaClientes (this.view);

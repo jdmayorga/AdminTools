@@ -164,7 +164,7 @@ public class CodBarraDao {
 			return true;
 		}catch (SQLException e) {
 				e.printStackTrace();
-				conexion.desconectar();
+				//conexion.desconectar();
 	            return false;
 			}
 		finally

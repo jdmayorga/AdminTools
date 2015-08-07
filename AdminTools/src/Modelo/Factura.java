@@ -102,7 +102,9 @@ public class Factura {
 	}
 	
 	public void setDetalles(List<DetalleFactura> d){
-		detalles.clear();
+		/*List<DetalleFactura> nuevaDetalle= new ArrayList<DetalleFactura>();
+		nuevaDetalle=nuevaDetalle;
+		detalles.clear();*/
 		detalles=d;
 	}
 	public List<DetalleFactura> getDetalles(){

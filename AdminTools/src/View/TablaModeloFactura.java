@@ -34,6 +34,12 @@ public class TablaModeloFactura extends AbstractTableModel {
 		fireTableDataChanged();
 		//JOptionPane.showMessageDialog(null,detallesFactura.size() );
 	}
+	public void setEmptyDetalles(){
+		
+			detallesFactura.clear();
+		
+		fireTableDataChanged();
+	}
 	public void setDetalles(List<DetalleFactura> d){
 		detallesFactura.clear();
 		if(d!=null){

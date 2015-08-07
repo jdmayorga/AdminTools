@@ -19,6 +19,12 @@ public class principal {
 		
 		AbstractJasperReports.loadFileReport();
 		
+		
+		
+		
+		
+		
+		
 		try {
 			AbstractJasperReports.createReport(conexion.getPoolConexion().getConnection(), 1, 1);
 		} catch (SQLException e) {

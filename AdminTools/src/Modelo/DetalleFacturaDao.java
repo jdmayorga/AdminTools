@@ -83,7 +83,7 @@ public class DetalleFacturaDao {
 				catch ( SQLException excepcionSql )
 				{
 					excepcionSql.printStackTrace();
-					conexion.desconectar();
+					//conexion.desconectar();
 				} // fin de catch
 		} // fin de finally
 		return resultado;
@@ -174,7 +174,7 @@ public class DetalleFacturaDao {
 				catch ( SQLException excepcionSql )
 				{
 					excepcionSql.printStackTrace();
-					conexion.desconectar();
+					//conexion.desconectar();
 				} // fin de catch
 		} // fin de finally
 		return resultado;
@@ -233,7 +233,7 @@ public class DetalleFacturaDao {
 				catch ( SQLException excepcionSql )
 				{
 					excepcionSql.printStackTrace();
-					conexion.desconectar();
+					//conexion.desconectar();
 				} // fin de catch
 		} // fin de finally
 		
@@ -331,7 +331,7 @@ public class DetalleFacturaDao {
 				catch ( SQLException excepcionSql )
 				{
 					excepcionSql.printStackTrace();
-					conexion.desconectar();
+					//conexion.desconectar();
 				} // fin de catch
 		} // fin de finally
 		

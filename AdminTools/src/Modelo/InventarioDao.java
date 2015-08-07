@@ -42,7 +42,7 @@ public class InventarioDao {
 			resultado=true;
 		}catch (SQLException e) {
 			e.printStackTrace();
-			conexion.desconectar();
+			//conexion.desconectar();
 			resultado= false;
 		}
 		finally

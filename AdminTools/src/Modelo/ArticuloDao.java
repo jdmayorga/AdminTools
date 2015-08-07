@@ -134,7 +134,7 @@ public class ArticuloDao {
 				catch ( SQLException excepcionSql )
 				{
 					excepcionSql.printStackTrace();
-					conexion.desconectar();
+					//conexion.desconectar();
 				} // fin de catch
 			} // fin de finally
 		
@@ -187,7 +187,7 @@ public class ArticuloDao {
 				catch ( SQLException excepcionSql )
 				{
 					excepcionSql.printStackTrace();
-					conexion.desconectar();
+					//conexion.desconectar();
 				} // fin de catch
 			} // fin de finally
 		
@@ -239,7 +239,7 @@ public class ArticuloDao {
 				catch ( SQLException excepcionSql )
 				{
 				excepcionSql.printStackTrace();
-				conexion.desconectar();
+				//conexion.desconectar();
 				} // fin de catch
 			} // fin de finally
 		
@@ -293,7 +293,7 @@ public class ArticuloDao {
 				catch ( SQLException excepcionSql )
 				{
 				excepcionSql.printStackTrace();
-				conexion.desconectar();
+				//conexion.desconectar();
 				} // fin de catch
 			} // fin de finally
 		
@@ -345,7 +345,7 @@ public class ArticuloDao {
 				catch ( SQLException excepcionSql )
 				{
 				excepcionSql.printStackTrace();
-				conexion.desconectar();
+				//conexion.desconectar();
 				} // fin de catch
 			} // fin de finally
 		
@@ -405,7 +405,7 @@ public class ArticuloDao {
 				catch ( SQLException excepcionSql )
 				{
 				excepcionSql.printStackTrace();
-				conexion.desconectar();
+				//conexion.desconectar();
 				} // fin de catch
 			} // fin de finally
 		
@@ -449,7 +449,7 @@ public class ArticuloDao {
 			catch ( SQLException excepcionSql )
 			{
 			excepcionSql.printStackTrace();
-			conexion.desconectar();
+			//conexion.desconectar();
 			} // fin de catch
 		} // fin de finally
 	}
@@ -506,7 +506,7 @@ public class ArticuloDao {
 			catch ( SQLException excepcionSql )
 			{
 			excepcionSql.printStackTrace();
-			conexion.desconectar();
+			//conexion.desconectar();
 			} // fin de catch
 		} // fin de finally
 	}
@@ -567,7 +567,7 @@ public class ArticuloDao {
 				catch ( SQLException excepcionSql )
 				{
 					excepcionSql.printStackTrace();
-					conexion.desconectar();
+					//conexion.desconectar();
 				} // fin de catch
 		} // fin de finally
 		
@@ -630,7 +630,7 @@ public class ArticuloDao {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			conexion.desconectar();
+			//conexion.desconectar();
             return false;
 		}
 		finally
