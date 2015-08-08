@@ -1,5 +1,6 @@
 package Modelo;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -181,8 +182,9 @@ public class FacturaDao {
 				+ "observacion,"
 				+ "isv18,"
 				+ "pago,"
-				+ "usuario)"
-				+ " VALUES (now(),?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ "usuario,"
+				+ "total_letras)"
+				+ " VALUES (now(),?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		
 		try 
 		{
@@ -200,6 +202,9 @@ public class FacturaDao {
 			agregarFactura.setBigDecimal(10, myFactura.getTotalImpuesto18());
 			agregarFactura.setBigDecimal(11, myFactura.getPago());
 			agregarFactura.setString(12, conexion.getUsuarioLogin().getUser());
+			
+			
+			agregarFactura.setString(13, NumberToLetterConverter.convertNumberToLetter(myFactura.getTotal().setScale(0, BigDecimal.ROUND_HALF_EVEN).doubleValue()));
 			
 			
 			
