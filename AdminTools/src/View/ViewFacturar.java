@@ -191,6 +191,7 @@ public class ViewFacturar extends JDialog {
 		
 		grupoOpciones = new ButtonGroup();
 		rdbtnCredito = new JRadioButton("");
+		rdbtnCredito.setEnabled(false);
 		rdbtnCredito.setBounds(674, 44, 21, 23);
 		grupoOpciones.add(rdbtnCredito);
 		panelDatosFactura.add(rdbtnCredito);
@@ -314,7 +315,7 @@ public class ViewFacturar extends JDialog {
 		//centrar la ventana en la pantalla
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
-		
+		this.pack();
 		
 	}
 	

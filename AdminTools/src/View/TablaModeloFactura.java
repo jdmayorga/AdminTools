@@ -134,16 +134,16 @@ public class TablaModeloFactura extends AbstractTableModel {
 		 return detallesFactura.get(rowIndex).getArticulo().getPrecioVenta();
 		case 3:
 			if(detallesFactura.get(rowIndex).getCantidad().doubleValue()!=0){
-				return detallesFactura.get(rowIndex).getCantidad().setScale(0, BigDecimal.ROUND_HALF_EVEN);
+				return detallesFactura.get(rowIndex).getCantidad().setScale(2, BigDecimal.ROUND_HALF_EVEN);
 			}else
 				return null;
 		
 		case 4:
 			//salida=detallesFactura.get(rowIndex).getSubTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
-			return  detallesFactura.get(rowIndex).getSubTotal().setScale(0, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+			return  detallesFactura.get(rowIndex).getSubTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
 		case 5:
 			//salida=detallesFactura.get(rowIndex).getImpuesto().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
-			return  detallesFactura.get(rowIndex).getImpuesto().setScale(0, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+			return  detallesFactura.get(rowIndex).getImpuesto().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
 		case 6:
 			if(detallesFactura.get(rowIndex).getDescuentoItem().doubleValue()!=0)
 				return detallesFactura.get(rowIndex).getDescuentoItem().setScale(0, BigDecimal.ROUND_HALF_EVEN).doubleValue();
@@ -151,7 +151,7 @@ public class TablaModeloFactura extends AbstractTableModel {
 				return null;
 		case 7:
 			//salida=detallesFactura.get(rowIndex).getTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
-			return  detallesFactura.get(rowIndex).getTotal().setScale(0, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+			return  detallesFactura.get(rowIndex).getTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
 		 default:
 	            return null;
 		}
@@ -209,8 +209,8 @@ public class TablaModeloFactura extends AbstractTableModel {
 		
 		if(columnIndex==3)
 			resul=true;
-		if(columnIndex==6)
-			resul=true;
+		/*if(columnIndex==6)
+			resul=true;*/
 	
 		
 		

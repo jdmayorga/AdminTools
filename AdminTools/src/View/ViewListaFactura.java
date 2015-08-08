@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.Window;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -50,7 +51,7 @@ public class ViewListaFactura extends JDialog {
 	private JTable tablaFacturas;
 	private TablaModeloFacturas modelo;
 	
-	public ViewListaFactura(JFrame view){
+	public ViewListaFactura(Window view){
 		
 		miEsquema=new BorderLayout();
 		this.setTitle("Creando Facturas");
@@ -140,6 +141,7 @@ public class ViewListaFactura extends JDialog {
 		
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+		
 		
 	}
 	

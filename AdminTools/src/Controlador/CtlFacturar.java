@@ -38,6 +38,7 @@ import View.ViewCambioPago;
 import View.ViewFacturar;
 import View.ViewListaArticulo;
 import View.ViewListaClientes;
+import View.ViewListaFactura;
 
 public class CtlFacturar  implements ActionListener, MouseListener, TableModelListener, WindowListener, KeyListener  {
 	
@@ -79,7 +80,7 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 		
 		this.view.getTxtBuscar().requestFocusInWindow();*/
 		
-		this.view.setVisible(true);
+		//this.view.setVisible(true);
 		//la ventana buscar articulo y su controlador
 		//viewListaArticulo=new ViewListaArticulo(this.view);
 		//view.getTxtBuscar().requestFocusInWindow();
@@ -413,8 +414,8 @@ public void calcularTotales(){
 				//myFactura.getDetalles().add(detalle);
 				myFactura.setTotalDescuento(detalle.getDescuentoItem());
 				
-				detalle.setSubTotal(totalsiniva.setScale(0, BigDecimal.ROUND_HALF_EVEN));
-				detalle.setImpuesto(impuestoItem.setScale(0, BigDecimal.ROUND_HALF_EVEN));
+				detalle.setSubTotal(totalsiniva.setScale(2, BigDecimal.ROUND_HALF_EVEN));
+				detalle.setImpuesto(impuestoItem.setScale(2, BigDecimal.ROUND_HALF_EVEN));
 				//myFactura.getDetalles()
 				
 				//se establece en la y el impuesto en el item de la vista
@@ -422,11 +423,11 @@ public void calcularTotales(){
 				detalle.setTotal(totalItem.setScale(0, BigDecimal.ROUND_HALF_EVEN));
 				
 				//se establece el total e impuesto en el vista
-				this.view.getTxtTotal().setText(""+myFactura.getTotal().setScale(0, BigDecimal.ROUND_HALF_EVEN));
-				this.view.getTxtImpuesto().setText(""+myFactura.getTotalImpuesto().setScale(0, BigDecimal.ROUND_HALF_EVEN));
-				this.view.getTxtImpuesto18().setText(""+myFactura.getTotalImpuesto18().setScale(0, BigDecimal.ROUND_HALF_EVEN));
-				this.view.getTxtSubtotal().setText(""+myFactura.getSubTotal().setScale(0, BigDecimal.ROUND_HALF_EVEN));
-				this.view.getTxtDescuento().setText(""+myFactura.getTotalDescuento().setScale(0, BigDecimal.ROUND_HALF_EVEN));
+				this.view.getTxtTotal().setText(""+myFactura.getTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN));
+				this.view.getTxtImpuesto().setText(""+myFactura.getTotalImpuesto().setScale(2, BigDecimal.ROUND_HALF_EVEN));
+				this.view.getTxtImpuesto18().setText(""+myFactura.getTotalImpuesto18().setScale(2, BigDecimal.ROUND_HALF_EVEN));
+				this.view.getTxtSubtotal().setText(""+myFactura.getSubTotal().setScale(2, BigDecimal.ROUND_HALF_EVEN));
+				this.view.getTxtDescuento().setText(""+myFactura.getTotalDescuento().setScale(2, BigDecimal.ROUND_HALF_EVEN));
 				
 				view.getModeloTabla().fireTableDataChanged();
 				this.selectRowInset();
@@ -541,6 +542,12 @@ public void calcularTotal(DetalleFactura detalle){
 					if(e.getKeyCode()==KeyEvent.VK_F4){
 						guardar();
 					}else
+						if(e.getKeyCode()==KeyEvent.VK_F5){
+							ViewListaFactura vistaFacturars=new ViewListaFactura(this.view);
+							CtlFacturaLista ctlFacturas=new CtlFacturaLista(vistaFacturars,conexion );
+							vistaFacturars.dispose();
+							ctlFacturas=null;
+						}else
 						if(e.getKeyCode()==KeyEvent.VK_ESCAPE){
 							salir();
 						}else
