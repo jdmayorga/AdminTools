@@ -145,7 +145,7 @@ public abstract class AbstractJasperReports
 	}
 	public static void imprimierFactura(){
 		try {
-			JasperPrintManager.printReport(reportFilled, true);
+			JasperPrintManager.printReport(reportFilled, false);
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

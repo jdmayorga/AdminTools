@@ -164,6 +164,9 @@ public class CtlCambioPago implements ActionListener,ItemListener, WindowListene
 		if(e.getKeyCode()==KeyEvent.VK_ESCAPE){
 			salir();
 		}
+		if(e.getKeyCode()==KeyEvent.VK_F2){
+			cobrar();
+		}
 		
 		
 		

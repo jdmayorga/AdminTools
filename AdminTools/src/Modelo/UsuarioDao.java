@@ -93,7 +93,7 @@ public class UsuarioDao {
 		
 		try {
 			conn=conexion.getPoolConexion().getConnection();
-			buscarUser=conn.prepareStatement("SELECT usuario, nombre_completo, clave, permiso FROM usuario WHERE usuario = ? AND clave = ?");
+			buscarUser=conn.prepareStatement("SELECT usuario, nombre_completo, clave, permiso,tipo_permiso FROM usuario WHERE usuario = ? AND clave = ?");
 			buscarUser.setString(1, user.getUser());
 			buscarUser.setString(2, user.getPwd());
 			res = buscarUser.executeQuery();
@@ -103,6 +103,7 @@ public class UsuarioDao {
 				unUsuario.setUser(res.getString("usuario"));
 				unUsuario.setPwd(res.getString("clave"));
 				unUsuario.setPermiso(res.getString("permiso"));
+				unUsuario.setTipoPermiso(res.getInt("tipo_permiso"));
 				
 				
 				

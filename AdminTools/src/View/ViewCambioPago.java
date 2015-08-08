@@ -115,6 +115,7 @@ public class ViewCambioPago extends JDialog {
 		panel_1.setVisible(false);
 		
 		btnCobrar = new BotonCobrar();
+		btnCobrar.setText("F2 Cobrar");
 		btnCobrar.setBounds(424, 209, 144, 38);
 		getContentPane().add(btnCobrar);
 		

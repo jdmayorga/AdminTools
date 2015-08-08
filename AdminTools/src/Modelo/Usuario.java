@@ -7,12 +7,19 @@ public class Usuario {
 	private String user="";
 	private String permiso="";
 	private String pwd="";
+	private int tipo_permiso;
 	
 	public void setCodigo(int c){
 		codigo=c;
 	}
 	public int getCodigo(){
 		return codigo;
+	}
+	public void setTipoPermiso(int tp){
+		tipo_permiso=tp;
+	}
+	public int getTipoPermiso(){
+		return tipo_permiso;
 	}
 	
 	public void setNombre(String n){

@@ -71,6 +71,7 @@ public class ViewListaFactura extends JDialog {
 		
 		//agregar componentes al panel acciones
 		btnAgregar = new BotonAgregar();
+		btnAgregar.setEnabled(false);
 		btnAgregar.setMnemonic('r');
 		panelAccion.add(btnAgregar);
        

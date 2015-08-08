@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 
 
 import java.sql.SQLException;
+import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
@@ -52,6 +53,8 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 	private Conexion conexion=null;
 	private int filaPulsada=0;
 	private boolean resultado=false;
+	
+	private static final Pattern numberPattern=Pattern.compile("-?\\d+");
 	//private ViewListaArticulo viewListaArticulo=null;
 	//private CtlArticuloBuscar ctlArticulo=null;
 	
@@ -89,7 +92,9 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 	
 		
 	}
-	
+	private static boolean isNumber(String string){
+		return string !=null && numberPattern.matcher(string).matches();
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -109,6 +114,25 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 					view.getTxtPrecio().setText("");
 					view.getTxtBuscar().setText("");
 					selectRowInset();
+				}else{
+					String busca=this.view.getTxtBuscar().getText();
+					//if(this.isNumber(busca)){
+						
+						this.myArticulo=this.myArticuloDao.buscarArticuloBarraCod(busca);
+						if(myArticulo!=null){
+							this.view.getModeloTabla().setArticulo(myArticulo);
+							//this.view.getModelo().getDetalle(row).setCantidad(1);
+							
+							//calcularTotal(this.view.getModeloTabla().getDetalle(row));
+							calcularTotales();
+							this.view.getModeloTabla().agregarDetalle();
+							view.getTxtBuscar().setText("");
+							selectRowInset();
+						}else{
+							JOptionPane.showMessageDialog(view, "No se encontro el articulo");
+						}
+						
+					//}
 				}
 			break;
 		case "BUSCARCLIENTE":
@@ -142,6 +166,13 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 			break;
 		case "GUARDAR":
 			this.guardar();
+			break;
+			
+		case "CIERRECAJA":
+			this.cierreCaja();
+			break;
+		case "PENDIENTES":
+			this.showPendientes();
 			break;
 		
 		}
@@ -534,19 +565,17 @@ public void calcularTotal(DetalleFactura detalle){
 			buscarArticulo();
 		}else
 			if(e.getKeyCode()==KeyEvent.VK_F2){
-				buscarCliente();
+				cobrar();
 			}else
 				if(e.getKeyCode()==KeyEvent.VK_F3){
-					cobrar();
+					buscarCliente();
 				}else
 					if(e.getKeyCode()==KeyEvent.VK_F4){
 						guardar();
 					}else
 						if(e.getKeyCode()==KeyEvent.VK_F5){
-							ViewListaFactura vistaFacturars=new ViewListaFactura(this.view);
-							CtlFacturaLista ctlFacturas=new CtlFacturaLista(vistaFacturars,conexion );
-							vistaFacturars.dispose();
-							ctlFacturas=null;
+							showPendientes();
+							
 						}else
 						if(e.getKeyCode()==KeyEvent.VK_ESCAPE){
 							salir();
@@ -557,10 +586,27 @@ public void calcularTotal(DetalleFactura detalle){
 									 this.view.getModeloTabla().eliminarDetalle(filaPulsada);
 									 this.calcularTotales();
 								 }
-							}
+							}else
+								if(e.getKeyCode()==KeyEvent.VK_F6){
+									cierreCaja();
+								}else
+									if(e.getKeyCode()==KeyEvent.VK_F7){
+										actualizar();
+									}
 								 
 							
 								
+	}
+	private void showPendientes() {
+		// TODO Auto-generated method stub
+		ViewListaFactura vistaFacturars=new ViewListaFactura(this.view);
+		CtlFacturaLista ctlFacturas=new CtlFacturaLista(vistaFacturars,conexion );
+		vistaFacturars.dispose();
+		ctlFacturas=null;
+	}
+	private void cierreCaja() {
+		// TODO Auto-generated method stub
+		
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {
@@ -755,7 +801,7 @@ public void calcularTotal(DetalleFactura detalle){
 		
 		//se estable un cliente generico para la factura
 		this.view.getTxtIdcliente().setText("1");;
-		this.view.getTxtNombrecliente().setText("Cliente Normal");
+		this.view.getTxtNombrecliente().setText("Consumidor final");
 		
 		
 		this.view.getTxtArticulo().setText("");

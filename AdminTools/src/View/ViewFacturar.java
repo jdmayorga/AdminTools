@@ -32,6 +32,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.ImageIcon;
 
 public class ViewFacturar extends JDialog {
 	private JTable tableDetalle;
@@ -64,6 +65,7 @@ public class ViewFacturar extends JDialog {
 	private BotonBuscar1 btnBuscar;
 	private BotonBuscarClientes btnCliente;
 	private BotonCobrar btnCobrar;
+	private JButton btnCierreCaja;
 	private JTextField txtDescuento;
 	
 	private BotonActualizar btnActualizar;
@@ -73,13 +75,14 @@ public class ViewFacturar extends JDialog {
 	private JTextField txtArticulo;
 	private JTextField txtPrecio;
 	private JTextField txtImpuesto18;
+	private JButton btnPendientes;
 	
 	public ViewFacturar(Window view) {
 		
 		super(view,"Facturar",Dialog.ModalityType.DOCUMENT_MODAL);
 		panelAcciones=new JPanel();
 		panelAcciones.setBorder(new TitledBorder(new LineBorder(new Color(130, 135, 144)), "Opciones", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelAcciones.setBounds(20, 11, 164, 459);
+		panelAcciones.setBounds(20, 11, 178, 459);
 		panelAcciones.setLayout(null);
 		//panelAcciones.setVisible(false);
 		
@@ -89,23 +92,27 @@ public class ViewFacturar extends JDialog {
 		
 		btnBuscar = new BotonBuscar1();
 		btnBuscar.setHorizontalAlignment(SwingConstants.LEFT);
-		btnBuscar.setBounds(10, 35,144, 38);
+		btnBuscar.setBounds(10, 24,158, 38);
 		panelAcciones.add(btnBuscar);
 		//btnBuscar.getInputMap().put(KeyStroke.getKeyStroke("F1"), sumar());
 		
 		btnCliente = new BotonBuscarClientes();
+		btnCliente.setText("F3 Clientes");
 		btnCliente.setHorizontalAlignment(SwingConstants.LEFT);
-		btnCliente.setBounds(10, 105, 144, 38);
+		btnCliente.setBounds(10, 148, 158, 38);
 		panelAcciones.add(btnCliente);
 		
 		btnCobrar = new BotonCobrar();
+		btnCobrar.setText("F2 Cobrar");
 		btnCobrar.setHorizontalAlignment(SwingConstants.LEFT);
-		btnCobrar.setBounds(10, 180, 144, 38);
+		btnCobrar.setBounds(10, 86, 158, 38);
+		
 		panelAcciones.add(btnCobrar);
 		
 		btnActualizar=new BotonActualizar();
+		btnActualizar.setText("F7 Actualizar");
 		btnActualizar.setHorizontalAlignment(SwingConstants.LEFT);
-		btnActualizar.setBounds(10, 255, 144, 38);
+		btnActualizar.setBounds(10, 210, 158, 38);
 		//getContentPane().add(btnActualizar);
 		panelAcciones.add(btnActualizar);
 		btnActualizar.setVisible(false);
@@ -113,14 +120,26 @@ public class ViewFacturar extends JDialog {
 		btnGuardar = new BotonGuardar();
 		btnGuardar.setHorizontalAlignment(SwingConstants.LEFT);
 		btnGuardar.setText("F4 Guardar");
-		btnGuardar.setBounds(10, 255, 144, 38);
+		btnGuardar.setBounds(10, 210, 158, 38);
 		panelAcciones.add(btnGuardar);
 		
 		btnCerrar = new BotonCancelar();
 		btnCerrar.setHorizontalAlignment(SwingConstants.LEFT);
 		btnCerrar.setText("Esc Cerrar");
-		btnCerrar.setBounds(10, 330, 144, 38);
+		btnCerrar.setBounds(10, 396, 158, 38);
 		panelAcciones.add(btnCerrar);
+		
+		btnCierreCaja = new JButton("F6 Cierre");
+		btnCierreCaja.setHorizontalAlignment(SwingConstants.LEFT);
+		btnCierreCaja.setIcon(new ImageIcon(ViewFacturar.class.getResource("/View/imagen/caja.png")));
+		btnCierreCaja.setBounds(10, 334, 158, 38);
+		panelAcciones.add(btnCierreCaja);
+		
+		btnPendientes = new JButton("F5 Pendientes");
+		btnPendientes.setIcon(new ImageIcon(ViewFacturar.class.getResource("/View/imagen/lista.png")));
+		btnPendientes.setHorizontalAlignment(SwingConstants.LEFT);
+		btnPendientes.setBounds(10, 272, 158, 38);
+		panelAcciones.add(btnPendientes);
 		
 		
 		panelDatosFactura=new JPanel();
@@ -403,6 +422,15 @@ public class ViewFacturar extends JDialog {
 		txtIdcliente.addKeyListener(c);
 		txtNombrecliente.addKeyListener(c);
 		txtFechafactura.addKeyListener(c);
+		
+		btnCierreCaja.addKeyListener(c);
+		btnCierreCaja.addActionListener(c);
+		btnCierreCaja.setActionCommand("CIERRECAJA");
+		
+		
+		btnPendientes.addKeyListener(c);
+		btnPendientes.addActionListener(c);
+		btnPendientes.setActionCommand("PENDIENTES");
 		
 		this.btnBuscar.addKeyListener(c);
 		this.btnBuscar.addActionListener(c);
