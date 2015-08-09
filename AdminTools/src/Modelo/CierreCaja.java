@@ -9,6 +9,7 @@ public class CierreCaja {
 	private Integer noFacturaFinal;
 	private BigDecimal total=new BigDecimal(0.0);
 	private BigDecimal efectivo=new BigDecimal(0.0);
+	private BigDecimal tarjeta=new BigDecimal(0.0);
 	private BigDecimal credito=new BigDecimal(0.0);
 	
 	public void setId(Integer i){
@@ -30,6 +31,17 @@ public class CierreCaja {
 	public BigDecimal getEfectivo(){
 		return efectivo;
 	}
+	
+	
+	public void setTarjeta(BigDecimal t){
+		tarjeta=t;
+	}
+	public BigDecimal getTarjeta(){
+		return tarjeta;
+	}
+	
+	
+	
 	
 	public void setTotal(BigDecimal t){
 		total=t;

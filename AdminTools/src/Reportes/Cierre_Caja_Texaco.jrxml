@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.4.final using JasperReports Library version 6.0.4  -->
+<!-- 2015-08-08T18:06:51 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Factura_Saint_Paul" pageWidth="612" pageHeight="396" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="df013db5-f76e-44d3-b0df-bcbc46d93160">
 	<property name="com.jaspersoft.studio.data.sql.tables" value="Y2xpbmljYS52X2VuY2FiZXphZG9fZmFjdHVyYSBBUyAsNDU3LDY0LGNmNjcwZWMxLWNlM2MtNGVk&#xA;Yi05ZTVkLWRiZGE0OTAwMTkzMztjbGluaWNhLnZfZGV0YWxsZV9mYWN0dXJhIEFTICwxMzYsMzYs&#xA;NTEyOGQwOTAtNjhhYi00ZjQ5LTg3YTgtNGRjMTZiZDUwNjk5Ow=="/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
@@ -82,11 +84,11 @@ from encabezado_factura
 				<text><![CDATA[San Juan Pueblo, La Masica, Atlantida, Frente el Banco de Occidente]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="223" y="0" width="164" height="22" uuid="3c2bd69a-9200-41f6-af53-6a56715225f5"/>
+				<reportElement x="0" y="0" width="570" height="22" uuid="3c2bd69a-9200-41f6-af53-6a56715225f5"/>
 				<textElement>
 					<font size="13"/>
 				</textElement>
-				<text><![CDATA[Clinica Medica "Saint Paul"]]></text>
+				<text><![CDATA[TIENDA DE CONVENIENCIA TEXACO]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="239" y="23" width="140" height="12" uuid="9d982688-d65f-4bf8-9278-8e0aa6805123"/>

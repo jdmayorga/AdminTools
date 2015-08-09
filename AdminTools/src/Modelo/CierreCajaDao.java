@@ -19,6 +19,8 @@ public class CierreCajaDao {
 	public boolean registrarCierre(){
 		boolean resultado=false;
 		 Connection con = null;
+		 
+		 //SE CONSIGUE EL ITEM PARA EL CIERRE DE CAJA
 		 CierreCaja unCierre=this.getCierre();
 		 String sql= "INSERT INTO cierre_caja("
 					+ "fecha,"
@@ -76,29 +78,7 @@ public class CierreCajaDao {
 		
         Connection con = null;
         
-    	String sql="SELECT " 
-+" DATE_FORMAT(now(), '%d/%m/%Y %h:%i:%s') as fecha,"
-+" encabezado_factura.usuario, "
-+" (SELECT factura_final FROM cierre_caja ORDER BY  idCierre DESC LIMIT 1)+1 as factura_inicio, "
-
-+" (SELECT numero_factura FROM encabezado_factura ORDER BY numero_factura DESC LIMIT 1) as factura_ultima, "
-
-+" (SELECT SUM(total) as total_efectivo FROM encabezado_factura WHERE "
-+" tipo_factura = 1 and estado_factura='ACT' and numero_factura>factura_inicio and numero_factura<=factura_ultima) as total_efectivo, "
-
-+" (SELECT SUM(total) as total_efectivo FROM encabezado_factura WHERE " 
-+" tipo_factura = 2 and estado_factura='ACT' and numero_factura>factura_inicio and numero_factura<=factura_ultima) as total_credito, "
-
-+" (SELECT SUM(total) as total_efectivo FROM encabezado_factura WHERE "
-+" estado_factura='ACT' and numero_factura>factura_inicio and numero_factura<=factura_ultima) as total "
-
-+" from encabezado_factura"
-	
-+"	WHERE  "
-+"		encabezado_factura.numero_factura>(SELECT factura_final FROM cierre_caja ORDER BY  idCierre DESC LIMIT 1)  "
-+"			and "
-+"		encabezado_factura.numero_factura<=(SELECT numero_factura FROM encabezado_factura ORDER BY numero_factura DESC LIMIT 1) "
-+" LIMIT 1";
+    	String sql="select * from v_cierre_caja;";
         //Statement stmt = null;
     	CierreCaja unaCierre=new CierreCaja();
 		
@@ -120,6 +100,7 @@ public class CierreCajaDao {
 				unaCierre.setNoFacturaFinal(res.getInt("factura_ultima"));
 				unaCierre.setEfectivo(res.getBigDecimal("total_efectivo"));
 				unaCierre.setCredito(res.getBigDecimal("total_credito"));
+				unaCierre.setTarjeta(res.getBigDecimal("total_tarjeta"));
 				unaCierre.setTotal(res.getBigDecimal("total"));
 			
 			 }
