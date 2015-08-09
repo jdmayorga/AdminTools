@@ -28,8 +28,9 @@ public class CierreCajaDao {
 					+ "factura_final,"
 					+ "efectivo,"
 					+ "creditos,"
-					+ "totalventa)"
-					+ " VALUES (now(),?,?,?,?,?)";
+					+ "totalventa,"
+					+ "tarjeta)"
+					+ " VALUES (now(),?,?,?,?,?,?)";
 		 if(unCierre!=null)
 		 try {
 				con = Conexion.getPoolConexion().getConnection();
@@ -40,6 +41,7 @@ public class CierreCajaDao {
 				registrarCierre.setBigDecimal(3, unCierre.getEfectivo());
 				registrarCierre.setBigDecimal(4, unCierre.getCredito());
 				registrarCierre.setBigDecimal(5, unCierre.getTotal());
+				registrarCierre.setBigDecimal(6, unCierre.getTarjeta());
 				
 				
 				

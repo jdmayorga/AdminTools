@@ -27,6 +27,7 @@ import javax.swing.table.DefaultTableModel;
 import Modelo.AbstractJasperReports;
 import Modelo.Articulo;
 import Modelo.ArticuloDao;
+import Modelo.CierreCajaDao;
 import Modelo.Cliente; 
 import Modelo.ClienteDao;
 import Modelo.Conexion;
@@ -54,6 +55,8 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 	private int filaPulsada=0;
 	private boolean resultado=false;
 	
+	private int tipoView=1;
+	private int netBuscar=0;
 	private static final Pattern numberPattern=Pattern.compile("-?\\d+");
 	//private ViewListaArticulo viewListaArticulo=null;
 	//private CtlArticuloBuscar ctlArticulo=null;
@@ -114,6 +117,7 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 					view.getTxtPrecio().setText("");
 					view.getTxtBuscar().setText("");
 					selectRowInset();
+					
 				}else{
 					String busca=this.view.getTxtBuscar().getText();
 					//if(this.isNumber(busca)){
@@ -128,12 +132,14 @@ public class CtlFacturar  implements ActionListener, MouseListener, TableModelLi
 							this.view.getModeloTabla().agregarDetalle();
 							view.getTxtBuscar().setText("");
 							selectRowInset();
+							
 						}else{
 							JOptionPane.showMessageDialog(view, "No se encontro el articulo");
 						}
 						
 					//}
 				}
+				netBuscar=0;
 			break;
 		case "BUSCARCLIENTE":
 			myCliente=null;
@@ -561,6 +567,7 @@ public void calcularTotal(DetalleFactura detalle){
 		
 		//Recoger qué fila se ha pulsadao en la tabla
 		filaPulsada = this.view.geTableDetalle().getSelectedRow();
+		
 		if(e.getKeyCode()==KeyEvent.VK_F1){
 			buscarArticulo();
 		}else
@@ -592,7 +599,19 @@ public void calcularTotal(DetalleFactura detalle){
 								}else
 									if(e.getKeyCode()==KeyEvent.VK_F7){
 										actualizar();
-									}
+									}else
+										if(e.getKeyCode()==KeyEvent.VK_DOWN){
+											
+											this.netBuscar++;
+											this.buscarMasOmenos(netBuscar);
+										}else
+											if(e.getKeyCode()==KeyEvent.VK_UP){
+												if(netBuscar>=1){
+													this.netBuscar--;
+													this.buscarMasOmenos(netBuscar);
+												}
+													
+											}
 								 
 							
 								
@@ -606,7 +625,26 @@ public void calcularTotal(DetalleFactura detalle){
 	}
 	private void cierreCaja() {
 		// TODO Auto-generated method stub
-		
+		try {
+			//AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "Cierre_Caja_Saint_Paul.jasper",1 );
+			AbstractJasperReports.createReport(conexion.getPoolConexion().getConnection(), 4, 0);
+			
+			//this.view.setModal(false);
+			//AbstractJasperReports.imprimierFactura();
+			AbstractJasperReports.Imprimir2();
+			
+			CierreCajaDao cierre=new CierreCajaDao(conexion);
+			
+			if(!cierre.registrarCierre()){
+				JOptionPane.showMessageDialog(view, "No se guardo el cierre de corte. Vuelva a hacer el corte.");
+			}else{
+				JOptionPane.showMessageDialog(view, "Se realizo el corte correctamente.");
+			}
+			
+		} catch (SQLException ee) {
+			// TODO Auto-generated catch block
+			ee.printStackTrace();
+		}
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {
@@ -630,7 +668,11 @@ public void calcularTotal(DetalleFactura detalle){
 	                //view.getToolkit().beep();
 	        }
 		}
-		//if(txtCampo.getText().trim().length()==0)
+		
+		//que no se la fecha de arriba y abajo
+		if(e.getKeyCode()!=KeyEvent.VK_DOWN && e.getKeyCode()!= KeyEvent.VK_UP)
+		
+		//se comprueba que hay algo que buscar
 		if(e.getComponent()==this.view.getTxtBuscar()&&view.getTxtBuscar().getText().trim().length()!=0){
 			//JOptionPane.showMessageDialog(view, "2");
 			//JOptionPane.showMessageDialog(view, view.getTxtBuscar().getText());
@@ -640,6 +682,8 @@ public void calcularTotal(DetalleFactura detalle){
 			if(myArticulo!=null){
 				view.getTxtArticulo().setText(myArticulo.getArticulo());
 				view.getTxtPrecio().setText("L. "+myArticulo.getPrecioVenta());
+				netBuscar=0;
+				netBuscar++;
 				
 			}
 			else{
@@ -653,6 +697,8 @@ public void calcularTotal(DetalleFactura detalle){
 			view.getTxtArticulo().setText("");
 			view.getTxtPrecio().setText("");
 		}
+		
+		
 		if(caracter=='+'){
 			if(filaPulsada>=0){
 				//JOptionPane.showMessageDialog(view,e.getKeyChar()+" FIla:"+filaPulsada);
@@ -673,7 +719,31 @@ public void calcularTotal(DetalleFactura detalle){
 		
 	}
 		
-	
+	private void buscarMasOmenos(int p){
+		//se comprueba que hay algo que buscar
+				if(view.getTxtBuscar().getText().trim().length()!=0){
+					//JOptionPane.showMessageDialog(view, "2");
+					//JOptionPane.showMessageDialog(view, view.getTxtBuscar().getText());
+					this.myArticulo=this.myArticuloDao.buscarArticuloNombre(view.getTxtBuscar().getText(),p);
+					
+					//JOptionPane.showMessageDialog(view, myArticulo);
+					if(myArticulo!=null){
+						view.getTxtArticulo().setText(myArticulo.getArticulo());
+						view.getTxtPrecio().setText("L. "+myArticulo.getPrecioVenta());
+						
+					}
+					else{
+						myArticulo=null;
+						view.getTxtArticulo().setText("");
+						view.getTxtPrecio().setText("");
+					}
+				}
+				else{
+					myArticulo=null;
+					view.getTxtArticulo().setText("");
+					view.getTxtPrecio().setText("");
+				}
+	}
 	
 	private void salir(){
 		//facturaDao.desconectarBD();
@@ -690,7 +760,8 @@ public void calcularTotal(DetalleFactura detalle){
 		facturaDao.registrarFacturaTemp(myFactura);
 		myFactura.setIdFactura(facturaDao.getIdFacturaGuardada());
 		resultado=true;
-		this.view.setVisible(false);
+		//this.view.setVisible(false);
+		setEmptyView();
 		
 	}
 	private void actualizar() {
@@ -703,55 +774,70 @@ public void calcularTotal(DetalleFactura detalle){
 	private void cobrar(){
 		
 		
-		//se muestra la vista para cobrar y introducir el cambio
-		ViewCambioPago viewPago=new ViewCambioPago(this.view);
-		CtlCambioPago ctlPago=new CtlCambioPago(viewPago,myFactura.getTotal());
-		//se muestra y ventana del cobro y se devuelve un resultado del cobro
-		boolean resulPago=ctlPago.pagar();
+		//verificamos que se agregaron articulos a la factura
+		if(view.getModeloTabla().getRowCount()>1){
 		
-		//se procede a verificar si se cobro
-		if(resulPago)
-		{
-			//si la forma de pago fue en efectivo
-			if(ctlPago.getFormaPago()==1){
-				myFactura.setPago(ctlPago.getEfectivo());
-				myFactura.setCambio(ctlPago.getCambio());
-				myFactura.setTipoPago(1);
-			}
-			//si la forma de pago fue con tarjeta de credito o debito
-			if(ctlPago.getFormaPago()==2){
-				myFactura.setPago(myFactura.getTotal());
-				myFactura.setCambio(new BigDecimal(00));
-				myFactura.setTipoPago(2);
-				myFactura.setObservacion(ctlPago.getRefencia());
-			}
-			setFactura();
-			boolean resul=facturaDao.registrarFactura(myFactura);
+				//se muestra la vista para cobrar y introducir el cambio
+				ViewCambioPago viewPago=new ViewCambioPago(this.view);
+				CtlCambioPago ctlPago=new CtlCambioPago(viewPago,myFactura.getTotal());
+				//se muestra y ventana del cobro y se devuelve un resultado del cobro
+				boolean resulPago=ctlPago.pagar();
 				
-			if(resul){
-				myFactura.setIdFactura(facturaDao.getIdFacturaGuardada());
-				
-					try {
-						/*this.view.setVisible(false);
-						this.view.dispose();*/
-						//AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "Factura_Saint_Paul.jasper",myFactura.getIdFactura() );
-						AbstractJasperReports.createReport(conexion.getPoolConexion().getConnection(), 1, myFactura.getIdFactura());
-						//AbstractJasperReports.showViewer();
-						AbstractJasperReports.imprimierFactura();
-						//myFactura=null;
-						setEmptyView();
-						//myFactura.
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+				//se procede a verificar si se cobro
+				if(resulPago)
+				{
+					//si la forma de pago fue en efectivo
+					if(ctlPago.getFormaPago()==1){
+						myFactura.setPago(ctlPago.getEfectivo());
+						myFactura.setCambio(ctlPago.getCambio());
+						myFactura.setTipoPago(1);
 					}
+					//si la forma de pago fue con tarjeta de credito o debito
+					if(ctlPago.getFormaPago()==2){
+						myFactura.setPago(myFactura.getTotal());
+						myFactura.setCambio(new BigDecimal(00));
+						myFactura.setTipoPago(2);
+						myFactura.setObservacion(ctlPago.getRefencia());
+					}
+					setFactura();
+					boolean resul=facturaDao.registrarFactura(myFactura);
+						
+					if(resul){
+						myFactura.setIdFactura(facturaDao.getIdFacturaGuardada());
+						
+							try {
+								/*this.view.setVisible(false);
+								this.view.dispose();*/
+								//AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "Factura_Saint_Paul.jasper",myFactura.getIdFactura() );
+								AbstractJasperReports.createReport(conexion.getPoolConexion().getConnection(), 1, myFactura.getIdFactura());
+								//AbstractJasperReports.showViewer();
+								AbstractJasperReports.imprimierFactura();
+								//myFactura=null;
+								setEmptyView();
+								
+								//si la view es de actualizacion al cobrar se cierra la view
+								if(this.tipoView==2){
+									myFactura=null;
+									view.setVisible(false);
+								}
+								//myFactura.
+							} catch (SQLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						
+						
+					}else{
+						JOptionPane.showMessageDialog(view, "No se guardo la factura", "Error Base de Datos", JOptionPane.ERROR_MESSAGE);
+						this.view.setVisible(false);
+						this.view.dispose();
+					}
+				}
 				
-				
-			}else{
-				JOptionPane.showMessageDialog(view, "No se guardo la factura", "Error Base de Datos", JOptionPane.ERROR_MESSAGE);
-				this.view.setVisible(false);
-				this.view.dispose();
-			}
+					
+		}//fin del if donde se verifica que hay articulos que facturar
+		else{
+			JOptionPane.showMessageDialog(view, "Para cobrar debe agregar articulos primero.");
 		}
 		
 	}
@@ -932,7 +1018,11 @@ public void calcularTotal(DetalleFactura detalle){
 		this.view.getBtnGuardar().setVisible(false);
 		this.view.getBtnActualizar().setVisible(true);
 		this.view.getModeloTabla().agregarDetalle();
+		tipoView=2;
 		this.view.setVisible(true);
+		
+		//para controlar que es una actualizacion la que se hace
+		
 		
 		return myFactura;
 		

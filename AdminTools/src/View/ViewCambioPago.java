@@ -173,6 +173,9 @@ public class ViewCambioPago extends JDialog {
 	public  JToggleButton getTglbtnTarjetaCredito(){
 		return tglbtnTarjetaCredito;
 	}
+	public JButton getBtnCobrar(){
+		return btnCobrar;
+	}
 	public void conectarCtl(CtlCambioPago c) {
 		// TODO Auto-generated method stub
 		
@@ -181,12 +184,14 @@ public class ViewCambioPago extends JDialog {
 		tglbtnTarjetaCredito.addItemListener(c);
 		txtEfectivo.addActionListener(c);
 		txtEfectivo.addKeyListener(c);
+		
 		txtEfectivo.setActionCommand("CAMBIO");
 		txtReferenciatarjeta.addKeyListener(c);
 		
-		txtEfectivo.addKeyListener(c);
+		
 		tglbtnEfectivo.addKeyListener(c);
 		tglbtnTarjetaCredito.addKeyListener(c);
+		
 		btnCerrar.addActionListener(c);
 		btnCerrar.setActionCommand("CERRAR");
 		this.btnCerrar.addKeyListener(c);
@@ -196,6 +201,8 @@ public class ViewCambioPago extends JDialog {
 		this.btnCobrar.addKeyListener(c);
 		this.addWindowListener(c);
 		
+		txtCambio.addActionListener(c);
+		txtCambio.setActionCommand("IMPRIMIR");
 		
 	}
 	public static void main(String arg[]){

@@ -163,12 +163,16 @@ public class ViewFacturar extends JDialog {
 		txtBuscar.setColumns(10);
 		
 		txtArticulo = new JTextField();
+		txtArticulo.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		txtArticulo.setForeground(new Color(0, 0, 255));
 		txtArticulo.setEditable(false);
 		txtArticulo.setBounds(284, 19, 258, 20);
 		panelBuscar.add(txtArticulo);
 		txtArticulo.setColumns(10);
 		
 		txtPrecio = new JTextField();
+		txtPrecio.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		txtPrecio.setForeground(new Color(0, 0, 255));
 		txtPrecio.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtPrecio.setEditable(false);
 		txtPrecio.setBounds(611, 19, 104, 20);
@@ -362,6 +366,9 @@ public class ViewFacturar extends JDialog {
 	}
 	public JButton getBtnCerrar(){
 		return btnCerrar;
+	}
+	public JButton getBtnPendientes(){
+		return this.btnPendientes;
 	}
 	public JPanel getPanelAcciones(){
 		return panelAcciones;

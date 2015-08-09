@@ -60,6 +60,15 @@ public class CtlCambioPago implements ActionListener,ItemListener, WindowListene
 			if(this.estadoPago){ 
 				cambio=efectivo.subtract(total);
 				view.getTxtCambio().setText(""+cambio.setScale(2, BigDecimal.ROUND_HALF_EVEN));
+				/*
+				int resul=JOptionPane.showConfirmDialog(view, "¿Imprimir Factura?","Confirmar factura", JOptionPane.YES_NO_OPTION);
+				//sin confirmo la anulacion
+				if(resul==0){
+					this.cobrar();
+					
+				}*/
+				view.getTxtCambio().requestFocusInWindow();
+				//view.getBtnCobrar().requestFocusInWindow();
 			}
 			
 		break;
@@ -68,6 +77,9 @@ public class CtlCambioPago implements ActionListener,ItemListener, WindowListene
 			break;
 		case "COBRAR":
 			cobrar();
+			break;
+		case "IMPRIMIR":
+			this.cobrar();
 			break;
 		}
 	}
@@ -120,12 +132,13 @@ public class CtlCambioPago implements ActionListener,ItemListener, WindowListene
 	public void windowClosing(WindowEvent e) {
 		// TODO Auto-generated method stub
 		
+		salir();
 	}
 
 	@Override
 	public void windowClosed(WindowEvent e) {
 		// TODO Auto-generated method stub
-		salir();
+		
 	}
 
 	@Override

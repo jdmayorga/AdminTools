@@ -71,11 +71,16 @@ public class CtlFacturaLista implements ActionListener, MouseListener {
         		ViewFacturar viewFacturar=new ViewFacturar(this.view);
         		CtlFacturar ctlFacturar=new CtlFacturar(viewFacturar,conexion);
         		
+        		viewFacturar.getBtnPendientes().setEnabled(false);
+        		
+        		//viewFacturar.getBtnCobrar()
+        		
         		//si se cobro la factura se debe eleminiar el temp por eso se guarda el id
         		int idFactura=myFactura.getIdFactura();
         		
         		//se llama al controlador de la factura para que la muestre 
         		myFactura=ctlFacturar.actualizarFactura(myFactura);
+        		
         		
         		//si la factura se cobro se regresara null sino modificamos la factura en la lista
         		if(myFactura==null){
@@ -92,7 +97,7 @@ public class CtlFacturaLista implements ActionListener, MouseListener {
         	else{//si solo seleccion la fila se guarda el id de proveedor para accion de eliminar
         		
         		this.view.getBtnEliminar().setEnabled(true);
-        		this.view.getBtnCobrar().setEnabled(true);
+        		//this.view.getBtnCobrar().setEnabled(true);
         		/*idProveedor=identificador;
         		filaTabla=filaPulsada;*/
         		

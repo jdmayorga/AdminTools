@@ -4,17 +4,39 @@ import java.awt.Dialog;
 import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.print.PageFormat;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import javax.print.attribute.AttributeSet;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.HashPrintServiceAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.PrintServiceAttributeSet;
+import javax.print.attribute.standard.Copies;
+import javax.print.attribute.standard.Destination;
+import javax.print.attribute.standard.MediaPrintableArea;
+import javax.print.attribute.standard.MediaSize;
+import javax.print.attribute.standard.MediaSizeName;
+import javax.print.attribute.standard.PrinterName;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
+import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
 import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.engine.JRExporter;
+import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrintManager;
@@ -45,7 +67,7 @@ public abstract class AbstractJasperReports
 		factura=AbstractJasperReports.class.getResourceAsStream("/Reportes/factura_texaco.jasper");
 		facturaCompra=AbstractJasperReports.class.getResourceAsStream("/Reportes/Factura_Compra_Saint_Paul.jasper");
 		facturaReimpresion=AbstractJasperReports.class.getResourceAsStream("/Reportes/Factura_Saint_Paul_Reimpresion.jasper");
-		cierreCaja=AbstractJasperReports.class.getResourceAsStream("/Reportes/Cierre_Caja_Saint_Paul.jasper");
+		cierreCaja=AbstractJasperReports.class.getResourceAsStream("/Reportes/Cierre_Caja_Texaco.jasper");
 		
 		
 		try {
@@ -176,6 +198,65 @@ public abstract class AbstractJasperReports
 		
 		
 	}
+	
+	 public static void Imprimir2(){  
+		 
+		 
+		 
+		 
+		 try {
+
+
+		        //String report = JasperCompileManager.compileReportToFile(sourceFileName);
+
+
+		        //JasperPrint jasperPrint = JasperFillManager.fillReport(report, para, ds);
+
+
+		        PrinterJob printerJob = PrinterJob.getPrinterJob();
+
+
+		        PageFormat pageFormat = PrinterJob.getPrinterJob().defaultPage();
+		        printerJob.defaultPage(pageFormat);
+
+		        int selectedService = 0;
+
+
+		        AttributeSet attributeSet = new HashPrintServiceAttributeSet(new PrinterName("\\\\TEXACO-PC\\EPSON L210 Series", null));
+
+
+		        PrintService[] printService = PrintServiceLookup.lookupPrintServices(null, attributeSet);
+
+		        try {
+		            printerJob.setPrintService(printService[selectedService]);
+
+		        } catch (Exception e) {
+
+		            System.out.println(e);
+		        }
+		        JRPrintServiceExporter exporter;
+		        PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
+		        printRequestAttributeSet.add(MediaSizeName.NA_LETTER);
+		        printRequestAttributeSet.add(new Copies(1));
+
+		        // these are deprecated
+		        exporter = new JRPrintServiceExporter();
+		        exporter.setParameter(JRExporterParameter.JASPER_PRINT, reportFilled);
+		        exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE, printService[selectedService]);
+		        exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE_ATTRIBUTE_SET, printService[selectedService].getAttributes());
+		        exporter.setParameter(JRPrintServiceExporterParameter.PRINT_REQUEST_ATTRIBUTE_SET, printRequestAttributeSet);
+		        exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
+		        exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
+		        exporter.exportReport();
+
+		    } catch (JRException e) {
+		        e.printStackTrace();
+		    }
+		//}   
+		         
+		         
+		         
+		}
 
 	public static void exportToPDF( String destination )
 	{

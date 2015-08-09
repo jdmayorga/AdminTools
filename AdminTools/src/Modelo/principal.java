@@ -3,6 +3,8 @@ package Modelo;
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import Controlador.CtlAgregarCompras;
@@ -35,7 +37,8 @@ public class principal {
 		CtlLogin ctlLogin=new CtlLogin(viewLogin,conexion);
 		
 		boolean login=ctlLogin.login();
-		
+		JDialog.setDefaultLookAndFeelDecorated(true);
+		JFrame.setDefaultLookAndFeelDecorated(true);
 		if(login){
 			
 			if(conexion.getUsuarioLogin().getTipoPermiso()==1){
@@ -48,6 +51,7 @@ public class principal {
 				ViewFacturar vistaFacturar=new ViewFacturar(null);
 				vistaFacturar.pack();
 				CtlFacturar ctlFacturar=new CtlFacturar(vistaFacturar,conexion );
+				vistaFacturar.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); //.setDefaultCloseOperation(JDialog.EXIT_ON_CLOSE);
 				vistaFacturar.setVisible(true);
 			}
 		

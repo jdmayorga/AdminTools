@@ -265,7 +265,68 @@ public class ArticuloDao {
 			buscarArt=conn.prepareStatement("SELECT * FROM v_articulos where v_articulos.articulo LIKE ? LIMIT 1");
 			buscarArt.setString(1,  i + "%");
 			res = buscarArt.executeQuery();
-			while(res.next()){
+			
+			while(res.next())
+			//for(int x=0;x>)
+			{
+				existe=true;
+				unArticulo.setId(Integer.parseInt(res.getString("codigo_articulo")));
+				unArticulo.setArticulo(res.getString("articulo"));
+				unArticulo.getMarcaObj().setMarca(res.getString("marca"));
+				unArticulo.getMarcaObj().setId(res.getInt("codigo_marca"));
+				unArticulo.getImpuestoObj().setPorcentaje(res.getString("impuesto"));
+				unArticulo.getImpuestoObj().setId(res.getInt("codigo_impuesto"));
+				unArticulo.setPrecioVenta(res.getDouble("precio_articulo"));
+				unArticulo.setTipoArticulo(res.getInt("tipo_articulo"));
+				
+			 }
+					
+					
+			} catch (SQLException e) {
+					JOptionPane.showMessageDialog(null, "Error, no se conecto");
+					System.out.println(e);
+			}
+			finally
+			{
+				try{
+					if(res != null) res.close();
+	                if(buscarArt != null)buscarArt.close();
+	                if(conn != null) conn.close();
+				} // fin de try
+				catch ( SQLException excepcionSql )
+				{
+				excepcionSql.printStackTrace();
+				//conexion.desconectar();
+				} // fin de catch
+			} // fin de finally
+		
+			if (existe) {
+				return unArticulo;
+			}
+			else return null;
+		
+		
+		
+	}
+	
+	
+	/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Metodo para buscar articulo por por ID pool>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+	public Articulo buscarArticuloNombre(String i, int posicion){
+		Articulo unArticulo=new Articulo();
+		ResultSet res=null;
+		PreparedStatement buscarArt=null;
+		Connection conn=null;
+		boolean existe=false;
+		
+		try {
+			conn=conexion.getPoolConexion().getConnection();
+			buscarArt=conn.prepareStatement("SELECT * FROM v_articulos where v_articulos.articulo LIKE ? LIMIT "+posicion+","+posicion);
+			buscarArt.setString(1,  i + "%");
+			res = buscarArt.executeQuery();
+			
+			while(res.next())
+			//for(int x=0;x>)
+			{
 				existe=true;
 				unArticulo.setId(Integer.parseInt(res.getString("codigo_articulo")));
 				unArticulo.setArticulo(res.getString("articulo"));
