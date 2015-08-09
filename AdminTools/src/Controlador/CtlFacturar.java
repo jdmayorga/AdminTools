@@ -631,13 +631,14 @@ public void calcularTotal(DetalleFactura detalle){
 			
 			//this.view.setModal(false);
 			//AbstractJasperReports.imprimierFactura();
-			AbstractJasperReports.Imprimir2();
+			
 			
 			CierreCajaDao cierre=new CierreCajaDao(conexion);
 			
 			if(!cierre.registrarCierre()){
 				JOptionPane.showMessageDialog(view, "No se guardo el cierre de corte. Vuelva a hacer el corte.");
 			}else{
+				AbstractJasperReports.Imprimir2();
 				JOptionPane.showMessageDialog(view, "Se realizo el corte correctamente.");
 			}
 			
@@ -889,6 +890,7 @@ public void calcularTotal(DetalleFactura detalle){
 		this.view.getTxtIdcliente().setText("1");;
 		this.view.getTxtNombrecliente().setText("Consumidor final");
 		
+		this.myCliente=null;
 		
 		this.view.getTxtArticulo().setText("");
 		this.view.getTxtBuscar().setText("");

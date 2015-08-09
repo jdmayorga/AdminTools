@@ -66,7 +66,7 @@ public abstract class AbstractJasperReports
 		
 		factura=AbstractJasperReports.class.getResourceAsStream("/Reportes/factura_texaco.jasper");
 		facturaCompra=AbstractJasperReports.class.getResourceAsStream("/Reportes/Factura_Compra_Saint_Paul.jasper");
-		facturaReimpresion=AbstractJasperReports.class.getResourceAsStream("/Reportes/Factura_Saint_Paul_Reimpresion.jasper");
+		facturaReimpresion=AbstractJasperReports.class.getResourceAsStream("/Reportes/factura_texaco_reimpresion.jasper");
 		cierreCaja=AbstractJasperReports.class.getResourceAsStream("/Reportes/Cierre_Caja_Texaco.jasper");
 		
 		
@@ -223,6 +223,8 @@ public abstract class AbstractJasperReports
 
 
 		        AttributeSet attributeSet = new HashPrintServiceAttributeSet(new PrinterName("\\\\TEXACO-PC\\EPSON L210 Series", null));
+		        
+		        //AttributeSet attributeSet = new HashPrintServiceAttributeSet(new PrinterName("\\\\CONTABILIDAD-PC\\EPSON LX-300+ /II (Copiar 1)", null));
 
 
 		        PrintService[] printService = PrintServiceLookup.lookupPrintServices(null, attributeSet);

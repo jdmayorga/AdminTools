@@ -247,7 +247,7 @@ public class CtlFacturas implements ActionListener, MouseListener, ChangeListene
 				//this.view.dispose();
 				AbstractJasperReports.createReportFactura( conexion.getPoolConexion().getConnection(), "Factura_Saint_Paul_Reimpresion.jasper",myFactura.getIdFactura() );
 				//AbstractJasperReports.showViewer();
-				AbstractJasperReports.imprimierFactura();
+				AbstractJasperReports.showViewer(view);
 				this.view.getBtnImprimir().setEnabled(false);
 				myFactura=null;
 			} catch (SQLException ee) {

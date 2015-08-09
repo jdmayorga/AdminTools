@@ -29,8 +29,11 @@ public class CierreCajaDao {
 					+ "efectivo,"
 					+ "creditos,"
 					+ "totalventa,"
-					+ "tarjeta)"
-					+ " VALUES (now(),?,?,?,?,?,?)";
+					+ "tarjeta,"
+					+ "usuario,"
+					+ "isv15,"
+					+ "isv18)"
+					+ " VALUES (now(),?,?,?,?,?,?,?,?,?)";
 		 if(unCierre!=null)
 		 try {
 				con = Conexion.getPoolConexion().getConnection();
@@ -42,6 +45,10 @@ public class CierreCajaDao {
 				registrarCierre.setBigDecimal(4, unCierre.getCredito());
 				registrarCierre.setBigDecimal(5, unCierre.getTotal());
 				registrarCierre.setBigDecimal(6, unCierre.getTarjeta());
+				registrarCierre.setString(7, unCierre.getUsuario());
+				registrarCierre.setBigDecimal(8, unCierre.getIsv15());
+				registrarCierre.setBigDecimal(9, unCierre.getIsv18());
+				
 				
 				
 				
@@ -103,7 +110,12 @@ public class CierreCajaDao {
 				unaCierre.setEfectivo(res.getBigDecimal("total_efectivo"));
 				unaCierre.setCredito(res.getBigDecimal("total_credito"));
 				unaCierre.setTarjeta(res.getBigDecimal("total_tarjeta"));
+				
+				unaCierre.setIsv15(res.getBigDecimal("total_isv15"));
+				unaCierre.setIsv18(res.getBigDecimal("total_isv18"));
+				
 				unaCierre.setTotal(res.getBigDecimal("total"));
+				unaCierre.setUsuario(res.getString("usuario"));//.setTotal(res.getBigDecimal("total"));
 			
 			 }
 					

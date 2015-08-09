@@ -80,6 +80,7 @@ public class ViewFacturar extends JDialog {
 	public ViewFacturar(Window view) {
 		
 		super(view,"Facturar",Dialog.ModalityType.DOCUMENT_MODAL);
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ViewFacturar.class.getResource("/View/imagen/logo-admin-tool1.png")));
 		panelAcciones=new JPanel();
 		panelAcciones.setBorder(new TitledBorder(new LineBorder(new Color(130, 135, 144)), "Opciones", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelAcciones.setBounds(20, 11, 178, 459);

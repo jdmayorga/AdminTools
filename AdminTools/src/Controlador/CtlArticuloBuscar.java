@@ -105,8 +105,12 @@ public class CtlArticuloBuscar implements ActionListener,MouseListener, WindowLi
 		// TODO Auto-generated method stub
 		//Recoger qué fila se ha pulsadao en la tabla
         filaPulsada = this.view.getTablaArticulos().getSelectedRow();
+        //JOptionPane.showMessageDialog(view, filaPulsada);
 		if (e.getClickCount() == 2){
+			
 			myArticulo=this.view.getModelo().getArticulo(filaPulsada);
+			
+			
 			//myArticuloDao.desconectarBD();
 			this.view.setVisible(false);
 			//JOptionPane.showMessageDialog(null,myMarca);
@@ -148,6 +152,7 @@ public class CtlArticuloBuscar implements ActionListener,MouseListener, WindowLi
 				
 				
 				switch(comando){
+				
 				case "BUSCAR":
 					//si se seleciono el boton ID
 					if(this.view.getRdbtnId().isSelected()){  
@@ -214,10 +219,27 @@ public class CtlArticuloBuscar implements ActionListener,MouseListener, WindowLi
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
+		
+		//filaPulsada = this.view.getTablaArticulos().getSelectedRow();
+		//JOptionPane.showConfirmDialog(view, filaPulsada);
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
 			this.myArticulo=null;
 	         view.setVisible(false);
 	      }
+		
+		if(e.getKeyCode() == KeyEvent.VK_ENTER){
+			
+			if(filaPulsada>0){
+				//Se recoge el id de la fila marcada
+	            int identificador= (int)this.view.getModelo().getValueAt(filaPulsada, 0);
+	            
+	            //se consigue el proveedore de la fila seleccionada
+	            myArticulo=this.view.getModelo().getArticulo(filaPulsada);// .getCliente(filaPulsada);
+	            
+				//myArticulo=view.getModelo().getArticulo(filaPulsada-1);
+				view.setVisible(false);
+			}
+		}
 		
 		if(e.getComponent()==this.view.getTxtBuscar()&&view.getTxtBuscar().getText().trim().length()!=0){
 			
@@ -226,7 +248,7 @@ public class CtlArticuloBuscar implements ActionListener,MouseListener, WindowLi
 			cargarTabla(myArticuloDao.buscarArticulo(this.view.getTxtBuscar().getText()));
 			
 			this.view.getTablaArticulos().setRowSelectionInterval(0	, 0);
-			filaPulsada = this.view.getTablaArticulos().getSelectedRow();
+			
 			myArticulo=view.getModelo().getArticulo(0);
 		}
 	}

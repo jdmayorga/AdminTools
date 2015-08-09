@@ -254,6 +254,7 @@ public void conectarControladorBuscar(CtlArticuloBuscar c){
 		 tablaArticulos.addMouseListener(c);
 		 tablaArticulos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		 tablaArticulos.addKeyListener(c);
+		 
 	}
 	
 
